@@ -170,20 +170,6 @@ class Ggs_Admin {
 		);
 
 		$this->add_field(
-			'admin_bar_disp',
-			__( '管理バーの停止', '' ),
-			function () {
-				$args = array(
-					'id'      => 'ggsupports_general_admin_bar_disp',
-					'default' => 1,
-					'desc' => '管理バーを停止します。',
-				);
-				Ggs_Helper::radiobox( $args );
-			},
-			'general'
-		);
-
-		$this->add_field(
 			'xmlrpc',
 			__( 'xmlrpcの停止', '' ),
 			function () {
@@ -198,11 +184,11 @@ class Ggs_Admin {
 		);
 
 		$this->add_field(
-			'aunthor_archive',
+			'author_archive',
 			__( '著者アーカイブの無効', '' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_aunthor_archive',
+					'id'      => 'ggsupports_general_author_archive',
 					'default' => 0,
 					'desc' => 'セキュリティ対策として著者アーカイブを無効にします。',
 				);
@@ -216,9 +202,22 @@ class Ggs_Admin {
 			__( '自動更新の無効化', '' ),
 			function () {
 				$args = array(
-					'id'      => 'disablepports_general_auto_update',
+					'id'      => 'ggsupports_general_disable_update',
 					'default' => 0,
 					'desc' => 'WordPress本体、プラグインの更新を停止し非表示にします。',
+				);
+				Ggs_Helper::radiobox( $args );
+			},
+			'general'
+		);
+		$this->add_field(
+			'show_current_tempalte',
+			__( '現在のテンプレート名を管理バーに表示', '' ),
+			function () {
+				$args = array(
+					'id'      => 'ggsupports_general_show_current_tempalte',
+					'default' => 1,
+					'desc' => 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -257,6 +256,25 @@ class Ggs_Admin {
 				wp_editor( $dashboard_contents, 'ggsupports_options_ggsupports_dashboard_contents', $editor_settings );
 			},
 			'dashboard'
+		);
+
+		/**
+		 * 2 ダッシュボードウィジェット
+		 */
+		$this->add_section( 'admin_menu', function () {
+			echo '管理メニューの設定';
+		} );
+
+		$this->add_field(
+			'admin_menu',
+			__( 'コンテンツ', '' ),
+			function () {
+				?>
+
+				<input name="ggsupports_options[ggsupports_admin_menu][]" type="hidden"/>
+			<?php
+			},
+			'admin_menu'
 		);
 
 	}
@@ -301,7 +319,9 @@ class Ggs_Admin {
 					'jquery',
 					'jquery-ui-tabs',
 					'jquery-ui-button',
-					'jquery-ui-accordion'
+					'jquery-ui-accordion',
+					'jquery-ui-droppable',
+					'jquery-ui-draggable',
 				), false );
 				wp_enqueue_style( 'jquery-ui-smoothness', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ), false, null );
 				break;

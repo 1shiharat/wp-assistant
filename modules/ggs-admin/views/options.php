@@ -12,6 +12,7 @@
 		<ul>
 			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-basic-setting">サイト設定</a></li>
 			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-dashboard-setting">ダッシュボードウィジェット</a></li>
+			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-admin_menu-setting">管理メニュー</a></li>
 		</ul>
 		<div id="<?php echo Ggs_Config::get_prefix(); ?>-basic-setting">
 
@@ -29,6 +30,14 @@
 			<?php
 			settings_fields( 'ggsupports_settings' );
 			do_settings_fields( 'ggsupports_options_page', 'ggsupports_dashboard_section'  );
+			?>
+		</div>
+		<div id="<?php echo Ggs_Config::get_prefix(); ?>-admin_menu-setting">
+			<p>管理画面左メニューの選択をしてください。<br />
+			</p>
+			<?php
+			settings_fields( 'ggsupports_settings' );
+			do_settings_fields( 'ggsupports_options_page', 'ggsupports_admin_menu_section'  );
 			?>
 		</div>
 	</div>

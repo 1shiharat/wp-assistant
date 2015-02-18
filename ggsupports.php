@@ -87,6 +87,7 @@ class GGSupports {
 
 		// wp_headやwp_footerなどから余計な記述を削除
 		add_action( 'plugins_loaded', array( new Ggs_Cleanup(), '__construct' ), 10 );
+		add_action( 'plugins_loaded', array( new Ggs_Admin_Menu(), '__construct' ), 10 );
 
 		// Ace Editor
 		add_action( 'admin_init', array( new Ace_editor(), '__construct' ), 10 );

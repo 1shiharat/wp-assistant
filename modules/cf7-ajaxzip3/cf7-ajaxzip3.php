@@ -21,7 +21,9 @@ class Cf7_ajaxzip3 {
 			return false;
 		}
 
-		wp_enqueue_script( 'cf7_ajaxzip3', plugins_url( '/', __FILE__ ) . '/assets/js/ajaxzip3.js', array( 'jquery' ), null, false );
+		add_action( 'wp_enqueue_scripts', function(){
+			wp_enqueue_script( 'cf7_ajaxzip3', plugins_url( '/', __FILE__ ) . '/assets/js/ajaxzip3.js', array( 'jquery' ), null, false );
+		} );
 
 		add_action( 'wp_head', function () {
 			?>

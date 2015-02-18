@@ -1,4 +1,5 @@
 <?php
+
 if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 	class Ggs_Cleanup {
 
@@ -7,7 +8,7 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'wp_head', array( $this, 'head_cleaner' ), 10 );
-			add_action( 'wp_head', array( $this, 'link_tag_cleaner' ), 10 );
+//			add_action( 'wp_head', array( $this, 'link_tag_cleaner' ), 10 );
 			add_action( 'init', array( $this, 'init' ), 10 );
 		}
 
@@ -62,9 +63,7 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 		 */
 		public function link_tag_cleaner( $input ) {
 			preg_match_all( "!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches );
-			// Only display media if it is meaningful
 			$media = $matches[3][0] !== '' && $matches[3][0] !== 'all' ? ' media="' . $matches[3][0] . '"' : '';
-
 			return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
 		}
 
@@ -197,6 +196,97 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 
 						return $headers;
 					}, 10, 1 );
+			}
+		}
+
+		public function ggsupports_general_author_archive( $option ){
+
+			if ( ! $option ) return;
+			/**
+			 * 著者ページヘのアクセスをリダイレクト
+			 */
+			add_action(
+				'template_redirect',
+				function() {
+					global $post;
+					$authorrequest = FALSE;
+					if ( is_404() && ( get_query_var( 'author' ) || get_query_var( 'author_name' ) ) ) {
+						$authorrequest = true;
+					}
+
+					if ( is_404() && ! ( get_query_var( 'author' ) || get_query_var( 'author_name' ) ) ) {
+						return;
+					}
+
+					if ( ( is_author() || $authorrequest ) ) {
+						$author_can = false;
+
+						if ( ! is_404() ) {
+							if( is_object( $post ) ) {
+								$author_can = author_can( get_the_ID(), 'administrator' );
+							}
+						}
+
+						if ( $author_can===true || !is_404() || is_404() ) {
+
+							if ( $url == '' ) {
+								$url = home_url();
+							}
+							wp_redirect( $url, "302" );
+							exit;
+						}
+					}
+				}
+			);
+			/**
+			 * 著者ページへのリンクを削除
+			 */
+			add_filter( 'author_link',
+			    function( $content ) {
+					return '';
+				},
+				10,
+				1
+			);
+		}
+
+		public function ggsupports_general_disable_update( $option ){
+			if ( intval( $option ) ){
+
+				// コア
+				add_filter( 'pre_site_transient_update_core', '__return_zero' );
+				remove_action( 'wp_version_check', 'wp_version_check' );
+				remove_action( 'admin_init', '_maybe_update_core' );
+
+				// プラグイン
+				remove_action( 'load-update-core.php', 'wp_update_plugins' );
+				add_filter( 'pre_site_transient_update_plugins', create_function( '$a', "return null;" ) );
+
+				// テーマ
+				remove_action( 'load-update-core.php', 'wp_update_themes' );
+				add_filter( 'pre_site_transient_update_themes', create_function( '$a', "return null;" ) );
+
+			}
+		}
+
+		public function ggsupports_general_show_current_tempalte( $option ){
+			if ( intval( $option )
+			 && ! is_admin() ){
+				add_action( 'admin_bar_menu', function( $wp_admin_bar ){
+					global $template;
+					$title = sprintf(
+						'<span class="" style="font-size:13px;">テンプレート : </span> <span class="ab-label">%s</span>',
+						basename( $template )
+					);
+					$wp_admin_bar->add_menu(
+						array(
+							'id'    => 'admin_bar_template_name',
+							'meta'  => array(),
+							'title' => $title,
+							'href'  => admin_url( '/theme-editor.php?file=' . basename( $template ) . '&theme=' . get_template() )
+						)
+					);
+				}, 9999 );
 			}
 		}
 	}
