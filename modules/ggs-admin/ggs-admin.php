@@ -10,6 +10,9 @@ class Ggs_Admin {
 	public $option_setting_slug = '';
 	public $prefix = '';
 
+	/**
+	 * 初期化
+	 */
 	public function __construct() {
 		$this->option_setting_slug = 'ggsupports_settings';
 		$this->option_page_slug    = 'ggsupports_options_page';
@@ -25,15 +28,17 @@ class Ggs_Admin {
 	 * ダッシュボードに登録
 	 */
 	public function add_dashboard_widgets() {
-		wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
-			include( 'views/dashboard.php' );
-		} );
-		global $wp_meta_boxes;
-		$normal_dashboard      = $wp_meta_boxes['dashboard']['normal']['core'];
-		$example_widget_backup = array( 'ggs_dashboard_widget' => $normal_dashboard['ggs_dashboard_widget'] );
-		unset( $normal_dashboard['ggs_dashboard_widget'] );
-		$sorted_dashboard                             = array_merge( $example_widget_backup, $normal_dashboard );
-		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+		if ( Ggs_Helper::get_ggs_options( 'ggsupports_dashboard_dashboard_disp' ) ) {
+			wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
+				include( 'views/dashboard.php' );
+			} );
+			global $wp_meta_boxes;
+			$normal_dashboard      = $wp_meta_boxes['dashboard']['normal']['core'];
+			$example_widget_backup = array( 'ggs_dashboard_widget' => $normal_dashboard['ggs_dashboard_widget'] );
+			unset( $normal_dashboard['ggs_dashboard_widget'] );
+			$sorted_dashboard                             = array_merge( $example_widget_backup, $normal_dashboard );
+			$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+		}
 	}
 
 
@@ -64,7 +69,7 @@ class Ggs_Admin {
 		$this->add_section( 'general', '' );
 		$this->add_field(
 			'feed_links',
-			__( 'フィードリンク (RSS)', '' ),
+			__( 'フィードリンク (RSS)', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_feed_links',
@@ -77,7 +82,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'wp_generator',
-			__( 'ジェネレーターメタタグの出力 (バージョン情報の出力)', '' ),
+			__( 'ジェネレーターメタタグの出力 (バージョン情報の出力)', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_wp_generator',
@@ -90,7 +95,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'wp_shortlink_wp_head',
-			__( 'ショートリンクの出力', '' ),
+			__( 'ショートリンクの出力', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_wp_shortlink_wp_head',
@@ -104,7 +109,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'wpautop',
-			__( 'ショートリンクの出力', '' ),
+			__( 'ショートリンクの出力', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_wpautop',
@@ -117,7 +122,7 @@ class Ggs_Admin {
 		);
 		$this->add_field(
 			'wpautop',
-			__( '自動整形の停止', '' ),
+			__( '自動整形の停止', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_wpautop',
@@ -130,7 +135,7 @@ class Ggs_Admin {
 		);
 		$this->add_field(
 			'revision',
-			__( 'リビジョンコントロールの停止', '' ),
+			__( 'リビジョンコントロールの停止', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_revision',
@@ -143,7 +148,7 @@ class Ggs_Admin {
 		);
 		$this->add_field(
 			'jquery',
-			__( 'jQueryライブラリの読み込み', '' ),
+			__( 'jQueryライブラリの読み込み', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_jquery',
@@ -157,7 +162,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'bootstrap',
-			__( 'Bootstrap3フレームワークの読み込み', '' ),
+			__( 'Bootstrap3フレームワークの読み込み', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_bootstrap',
@@ -171,7 +176,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'xmlrpc',
-			__( 'xmlrpcの停止', '' ),
+			__( 'xmlrpcの停止', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_xmlrpc',
@@ -185,7 +190,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'author_archive',
-			__( '著者アーカイブの無効', '' ),
+			__( '著者アーカイブの無効', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_author_archive',
@@ -199,7 +204,7 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'disable_update',
-			__( '自動更新の無効化', '' ),
+			__( '自動更新の無効化', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_disable_update',
@@ -212,7 +217,7 @@ class Ggs_Admin {
 		);
 		$this->add_field(
 			'show_current_tempalte',
-			__( '現在のテンプレート名を管理バーに表示', '' ),
+			__( '現在のテンプレート名を管理バーに表示', 'ggsupports' ),
 			function () {
 				$args = array(
 					'id'      => 'ggsupports_general_show_current_tempalte',
@@ -231,8 +236,22 @@ class Ggs_Admin {
 		} );
 
 		$this->add_field(
+			'dashboard_disp',
+			__( 'ダッシュボードウィジェットの有効化', 'ggsupports' ),
+			function () {
+				$args = array(
+					'id'      => 'ggsupports_dashboard_dashboard_disp',
+					'default' => 0,
+					'desc' => '',
+				);
+				Ggs_Helper::radiobox( $args );
+			},
+			'dashboard'
+		);
+
+		$this->add_field(
 			'contents',
-			__( 'コンテンツ', '' ),
+			__( '', 'ggsupports' ),
 			function () {
 				$contents           = ( get_option( 'ggsupports_options' ) ) ? get_option( 'ggsupports_options' ) : '';
 				$dashboard_contents = ( isset( $contents['ggsupports_dashboard_contents'] ) ? $contents['ggsupports_dashboard_contents'] : '' );
@@ -267,11 +286,13 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'admin_menu',
-			__( 'コンテンツ', '' ),
+			__( 'コンテンツ', 'ggsupports' ),
 			function () {
+				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
 				?>
+				<div id="ggs_admin_menus"></div>
 
-				<input name="ggsupports_options[ggsupports_admin_menu][]" type="hidden"/>
+				<input type="hidden" id="ggsupports_admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="ggsupports_options[ggsupports_admin_menu]" />
 			<?php
 			},
 			'admin_menu'
@@ -344,11 +365,23 @@ class Ggs_Admin {
 		);
 	}
 
+	/**
+	 * SettingAPI add_setting_field のワッパー
+	 *
+	 * @param $name
+	 * @param $title
+	 * @param $callback
+	 * @param $section
+	 *
+	 * @param string $desc
+	 */
 	public function add_field( $name, $title, $callback, $section, $desc = '' ) {
-
+		if ( $title ) {
+			$title = '<h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>';
+		}
 		add_settings_field(
 			$this->prefix . $section . '_' . $name,
-			'<h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>',
+			$title,
 			$callback,
 			$this->option_page_slug,
 			$this->prefix . $section . '_section'

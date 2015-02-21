@@ -37,7 +37,7 @@
 			</p>
 			<?php
 			settings_fields( 'ggsupports_settings' );
-			do_settings_fields( 'ggsupports_options_page', 'ggsupports_admin_menu_section'  );
+			do_settings_fields( 'ggsupports_options_page', 'ggsupports_admin_menu_section' );
 			?>
 		</div>
 	</div>
