@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 if ( ! class_exists( 'GGSupports_Autoload' ) ) {
 	/**
 	 * Generic autoloader for classes named in WordPress coding style.

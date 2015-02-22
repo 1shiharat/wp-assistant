@@ -8,6 +8,11 @@ Version: 1.0.0
 Author URI: http://grow-group.jp/
 */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 
 require 'autoload.php';
 require 'inc/ggs-helper.php';
@@ -81,7 +86,6 @@ class GGSupports {
 	 * コンストラクタ
 	 */
 	private function __construct() {
-
 		// class のオートロード
 		new GGSupports_Autoload( __DIR__ . '/modules' );
 
@@ -95,9 +99,5 @@ class GGSupports {
 
 		// CF7拡張
 		add_action( 'wp', array( new Cf7_ajaxzip3(), 'cf7_ajaxzip3' ), 10 );
-
 	}
-
 }
-
-

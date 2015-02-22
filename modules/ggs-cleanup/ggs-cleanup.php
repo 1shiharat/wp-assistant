@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 	class Ggs_Cleanup {
@@ -23,7 +27,6 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 				if ( strpos( $option_key, 'general' )
 				     && method_exists( $this, $option_key )
 				) {
-
 					$this->{$option_key}( $option );
 				}
 			}
@@ -269,7 +272,7 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 			}
 		}
 
-		public function ggsupports_general_show_current_tempalte( $option ){
+		public function ggsupports_general_show_current_template( $option ){
 			if ( intval( $option )
 			 && ! is_admin() ){
 				add_action( 'admin_bar_menu', function( $wp_admin_bar ){
@@ -289,5 +292,27 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 				}, 9999 );
 			}
 		}
+
+		public function ggsupports_general_show_current_tempalte( $option ){
+			if ( intval( $option )
+			     && ! is_admin() ){
+				add_action( 'admin_bar_menu', function( $wp_admin_bar ){
+					global $template;
+					$title = sprintf(
+						'<span class="" style="font-size:13px;">テンプレート : </span> <span class="ab-label">%s</span>',
+						basename( $template )
+					);
+					$wp_admin_bar->add_menu(
+						array(
+							'id'    => 'admin_bar_template_name',
+							'meta'  => array(),
+							'title' => $title,
+							'href'  => admin_url( '/theme-editor.php?file=' . basename( $template ) . '&theme=' . get_template() )
+						)
+					);
+				}, 9999 );
+			}
+		}
+
 	}
 }

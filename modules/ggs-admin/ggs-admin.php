@@ -6,8 +6,11 @@
  */
 class Ggs_Admin {
 
+	/** @var string 設定ページのスラッグ */
 	public $option_page_slug = '';
+
 	public $option_setting_slug = '';
+
 	public $prefix = '';
 
 	/**
@@ -22,6 +25,7 @@ class Ggs_Admin {
 		add_action( 'load-index.php', array( $this, 'hide_welcome_panel' ) );
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
+		add_action( 'wp_ajax_update_ggsupports_option', array( $this, 'update_ggsupports_option' ) );
 	}
 
 	/**
@@ -114,7 +118,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_wpautop',
 					'default' => 0,
-					'desc' => '',
+					'desc'    => '',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -127,7 +131,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_wpautop',
 					'default' => 0,
-					'desc' => '記事を出力する際の自動整形を停止します。',
+					'desc'    => '記事を出力する際の自動整形を停止します。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -140,7 +144,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_revision',
 					'default' => 0,
-					'desc' => '投稿、固定ページのリビジョン管理のを無効にすることができます。',
+					'desc'    => '投稿、固定ページのリビジョン管理のを無効にすることができます。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -153,7 +157,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_jquery',
 					'default' => 0,
-					'desc' => 'WordPressに内包されているjQueryライブラリを読み込みます。',
+					'desc'    => 'WordPressに内包されているjQueryライブラリを読み込みます。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -181,7 +185,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_xmlrpc',
 					'default' => 0,
-					'desc' => 'セキュリティ対策としてxmlrpcを無効にします。',
+					'desc'    => 'セキュリティ対策としてxmlrpcを無効にします。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -195,7 +199,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_author_archive',
 					'default' => 0,
-					'desc' => 'セキュリティ対策として著者アーカイブを無効にします。',
+					'desc'    => 'セキュリティ対策として著者アーカイブを無効にします。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -209,20 +213,20 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_disable_update',
 					'default' => 0,
-					'desc' => 'WordPress本体、プラグインの更新を停止し非表示にします。',
+					'desc'    => 'WordPress本体、プラグインの更新を停止し非表示にします。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
 			'general'
 		);
 		$this->add_field(
-			'show_current_tempalte',
+			'show_current_template',
 			__( '現在のテンプレート名を管理バーに表示', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_show_current_tempalte',
+					'id'      => 'ggsupports_general_show_current_template',
 					'default' => 1,
-					'desc' => 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。',
+					'desc'    => 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -242,7 +246,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_dashboard_dashboard_disp',
 					'default' => 0,
-					'desc' => '',
+					'desc'    => '',
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -260,7 +264,7 @@ class Ggs_Admin {
 					'media_buttons'       => true,
 					'default_editor'      => '',
 					'drag_drop_upload'    => true,
-					'textarea_name'       => 'ggsupports_options[ggsupports_dashboard_contents]',
+					'textarea_name'       => 'ggsupports_dashboard_contents',
 					'textarea_rows'       => 50,
 					'tabindex'            => '',
 					'tabfocus_elements'   => ':prev,:next',
@@ -278,25 +282,42 @@ class Ggs_Admin {
 		);
 
 		/**
-		 * 2 ダッシュボードウィジェット
+		 * 3 管理メニューの設定
 		 */
 		$this->add_section( 'admin_menu', function () {
 			echo '管理メニューの設定';
 		} );
 
 		$this->add_field(
-			'admin_menu',
-			__( 'コンテンツ', 'ggsupports' ),
+			'admin_menu_user',
+			__( '有効なアカウント', 'ggsupports' ),
 			function () {
-				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
-				?>
-				<div id="ggs_admin_menus"></div>
-
-				<input type="hidden" id="ggsupports_admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="ggsupports_options[ggsupports_admin_menu]" />
+				_e( 'shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
+				echo '<br />';
+				$selected = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu_user' );
+				$this->dropdown_users( array(
+					'name'     => 'ggsupports_admin_menu_user[]',
+					'id'       => 'ggsupports_admin_menu_user',
+					'selected' => $selected
+				) ); ?>
 			<?php
 			},
 			'admin_menu'
 		);
+
+		$this->add_field(
+			'admin_menu',
+			__( 'サイドメニュー一覧', 'ggsupports' ),
+			function () {
+				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
+				?>
+				<div id="ggs_admin_menus"></div>
+				<input type="hidden" id="ggsupports_admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="ggsupports_admin_menu"/>
+			<?php
+			},
+			'admin_menu'
+		);
+
 
 	}
 
@@ -306,7 +327,7 @@ class Ggs_Admin {
 	 */
 	public function add_admin_menu() {
 
-		add_options_page( 'GrowGroup制作サポート', 'GrowGroup制作サポート', 'manage_options', $this->option_page_slug, array(
+		add_menu_page( __( '制作サポート', 'ggsupports' ), __( '制作サポート', 'ggsupports' ), 'manage_options', $this->option_page_slug, array(
 			$this,
 			'option_page'
 		) );
@@ -335,7 +356,7 @@ class Ggs_Admin {
 			case 'index.php' :
 				wp_enqueue_script( 'ggs_dashboard_widget', plugins_url( 'assets/js/dashboard.js', __FILE__ ), array( 'jquery' ), false );
 				break;
-			case 'settings_page_ggsupports_options_page' :
+			case 'toplevel_page_ggsupports_options_page' :
 				wp_enqueue_script( 'ggs_admin_scripts', plugins_url( 'assets/js/scripts.js', __FILE__ ), array(
 					'jquery',
 					'jquery-ui-tabs',
@@ -345,6 +366,10 @@ class Ggs_Admin {
 					'jquery-ui-draggable',
 				), false );
 				wp_enqueue_style( 'jquery-ui-smoothness', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ), false, null );
+				wp_localize_script( 'ggs_admin_scripts', 'GGSSETTINGS', array(
+					'action'    => 'update_ggsupports_option',
+					'_wp_nonce' => wp_create_nonce( __FILE__ )
+				) );
 				break;
 		}
 
@@ -386,7 +411,141 @@ class Ggs_Admin {
 			$this->option_page_slug,
 			$this->prefix . $section . '_section'
 		);
-
 	}
+
+	public function dropdown_users( $args = '' ) {
+		$defaults = array(
+			'show_option_all'         => '',
+			'show_option_none'        => '',
+			'hide_if_only_one_author' => '',
+			'orderby'                 => 'display_name',
+			'order'                   => 'ASC',
+			'include'                 => '',
+			'exclude'                 => '',
+			'multi'                   => 0,
+			'show'                    => 'display_name',
+			'echo'                    => 1,
+			'selected'                => 0,
+			'name'                    => 'user',
+			'class'                   => '',
+			'id'                      => '',
+			'blog_id'                 => $GLOBALS['blog_id'],
+			'who'                     => '',
+			'include_selected'        => false,
+			'option_none_value'       => - 1
+		);
+
+		$defaults['selected'] = is_author() ? get_query_var( 'author' ) : 0;
+
+		$r                 = wp_parse_args( $args, $defaults );
+		$show              = $r['show'];
+		$show_option_all   = $r['show_option_all'];
+		$show_option_none  = $r['show_option_none'];
+		$option_none_value = $r['option_none_value'];
+
+		$query_args           = wp_array_slice_assoc( $r, array(
+			'blog_id',
+			'include',
+			'exclude',
+			'orderby',
+			'order',
+			'who'
+		) );
+		$query_args['fields'] = array( 'ID', 'user_login', $show );
+		$users                = get_users( $query_args );
+
+		$output = '';
+		if ( ! empty( $users ) && ( empty( $r['hide_if_only_one_author'] ) || count( $users ) > 1 ) ) {
+			$name = esc_attr( $r['name'] );
+			if ( $r['multi'] && ! $r['id'] ) {
+				$id = '';
+			} else {
+				$id = $r['id'] ? " id='" . esc_attr( $r['id'] ) . "'" : " id='$name'";
+			}
+			$output = "<select name='{$name}'{$id} class='" . $r['class'] . "' multiple>\n";
+
+			if ( $show_option_all ) {
+				$output .= "\t<option value='0'>$show_option_all</option>\n";
+			}
+
+			if ( $show_option_none ) {
+				$_selected = selected( $option_none_value, $r['selected'], false );
+				$output .= "\t<option value='" . esc_attr( $option_none_value ) . "'$_selected>$show_option_none</option>\n";
+			}
+
+			$found_selected = false;
+			$i              = 0;
+			foreach ( (array) $users as $user ) {
+				$user->ID = (int) $user->ID;
+				if ( is_array( $r['selected'] )
+				     && in_array( $user->ID, $r['selected'] )
+				) {
+					$_selected = ' selected="selected"';
+				} else {
+					$_selected = "";
+				}
+
+				if ( $_selected ) {
+					$found_selected = true;
+				}
+				$display = ! empty( $user->$show ) ? $user->$show : '(' . $user->user_login . ')';
+				$output .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
+				$i ++;
+			}
+
+			if ( $r['include_selected'] && ! $found_selected && ( $r['selected'] > 0 ) ) {
+				$user      = get_userdata( $r['selected'] );
+				$_selected = selected( $user->ID, $r['selected'], false );
+				$display   = ! empty( $user->$show ) ? $user->$show : '(' . $user->user_login . ')';
+				$output .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
+			}
+
+			$output .= "</select>";
+		}
+
+		$html = $output;
+
+		if ( $r['echo'] ) {
+			echo $html;
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Ajax で受けた情報を保存
+	 * @return void
+	 */
+	public function update_ggsupports_option() {
+		if ( ! wp_verify_nonce( $_REQUEST['_wp_nonce'], __FILE__ ) ) {
+			echo false;
+			exit();
+		}
+		$form_str = urldecode( $_REQUEST['form'] );
+
+		parse_str( $form_str, $form_array );
+
+		if ( $form_array ) {
+			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
+			echo update_option( 'ggsupports_options', $settings );
+		}
+		exit();
+	}
+
+	/**
+	 * 無害化
+	 *
+	 * @param $fields
+	 *
+	 * @return array|string
+	 */
+	public function sanitizes_fields( $fields ) {
+		if ( is_array( $fields ) ) {
+			return array_map( 'sanitize_text_field', $fields );
+		}
+
+		return sanitize_text_field( $fields );
+	}
+
 
 }
