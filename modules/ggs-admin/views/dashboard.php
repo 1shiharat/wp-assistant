@@ -177,7 +177,7 @@
 	</style>
 	<div class="welcome-panel-content">
 		<?php
-			echo Ggs_Config::get_ggs_options( 'ggsupports_dashboard_contents' );
+			echo Ggs_Config::get_options( 'ggsupports_dashboard_contents' );
 		?>
 	</div>
 </div>

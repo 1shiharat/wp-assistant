@@ -568,6 +568,7 @@ class Ggs_Admin {
 
 	/**
 	 * Ajax で受けた情報を保存
+	 *
 	 * @return void
 	 */
 	public function update_ggsupports_option() {
@@ -581,6 +582,7 @@ class Ggs_Admin {
 
 		if ( $form_array ) {
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
+			$settings['ggsupports_dashboard_contents'] = $form_array['ggsupports_dashboard_contents'];
 			echo update_option( 'ggsupports_options', $settings );
 		}
 		exit();
@@ -597,7 +599,6 @@ class Ggs_Admin {
 		if ( is_array( $fields ) ) {
 			return array_map( 'sanitize_text_field', $fields );
 		}
-
 		return sanitize_text_field( $fields );
 	}
 
