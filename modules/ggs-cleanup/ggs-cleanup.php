@@ -13,7 +13,7 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 		public function __construct() {
 			add_action( 'wp_head', array( $this, 'head_cleaner' ), 10 );
 //			add_action( 'wp_head', array( $this, 'link_tag_cleaner' ), 10 );
-			add_action( 'init', array( $this, 'init' ), 10 );
+			add_action( 'registered_taxonomy', array( $this, 'init' ), 1 );
 		}
 
 		public function init() {
@@ -253,6 +253,29 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 			);
 		}
 
+		/**
+		 * Bootstrap を読み込み
+		 *
+		 * @param $option
+		 *
+		 * @return void
+		 */
+		public function ggsupports_general_bootstrap( $option ){
+			if ( intval( $option ) ){
+				add_action( 'wp_enqueue_scripts', function(){
+					if ( ! is_admin() ){
+						wp_enqueue_style( 'bootstrap-css', '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css', array(), false, null );
+						wp_register_script( 'bootstrap', '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js', array( 'jquery' ), false, null );
+						wp_enqueue_script( 'bootstrap' );
+					}
+				}, 99 );
+			}
+		}
+
+		/**
+		 * 更新を非表示に
+		 * @param $option
+		 */
 		public function ggsupports_general_disable_update( $option ){
 			if ( intval( $option ) ){
 
@@ -270,8 +293,13 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 				add_filter( 'pre_site_transient_update_themes', create_function( '$a', "return null;" ) );
 
 			}
+
 		}
 
+		/**
+		 * 現在のテンプレートを表示
+		 * @param $option
+		 */
 		public function ggsupports_general_show_current_template( $option ){
 			if ( intval( $option )
 			 && ! is_admin() ){
@@ -290,6 +318,14 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 						)
 					);
 				}, 9999 );
+			}
+		}
+
+		public function ggsupports_general_jetpack_dev_mode( $option ){
+			if ( intval( $option ) ){
+				if ( ! defined( 'JETPACK_DEV_DEBUG' ) ) {
+					define( 'JETPACK_DEV_DEBUG', true );
+				}
 			}
 		}
 

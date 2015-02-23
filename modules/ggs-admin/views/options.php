@@ -6,10 +6,10 @@
 <form id="ggsupports_settings_form" action='options.php' method='post'>
 	<div class="ggs-message-wrap">
 		<div class="ggs-message ggs-message-success updated">
-			<h3><span class="dashicons dashicons-update"></span> 設定を保存しました</h3>
+			<h3><span class="dashicons dashicons-update"></span> <?php _e( '設定を保存しました', 'ggsupports' ) ?></h3>
 		</div>
 		<div class="ggs-message ggs-message-faild error">
-			<h3><span class="dashicons dashicons-dismiss"></span> 保存に失敗しました</h3>
+			<h3><span class="dashicons dashicons-dismiss"></span> <?php _e( '保存に失敗しました', 'ggsupports' ) ?></h3>
 		</div>
 	</div>
 
@@ -20,7 +20,8 @@
 			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-basic-setting"><?php _e( 'サイト設定', 'ggsupports' ) ?></a></li>
 			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-dashboard-setting"><?php _e( 'ダッシュボードウィジェット', 'ggsupports' ) ?></a></li>
 			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-admin_menu-setting"><?php _e( '管理メニュー', 'ggsupports' ) ?></a></li>
-			<li class="pull-right"><button type="submit" name="submit" id="submit" class="button button-primary">変更を保存</button><span class="spinner"></span> </li>
+			<li><a href="#<?php echo Ggs_Config::get_prefix(); ?>-tools-setting"><?php _e( 'ツール', 'ggsupports' ) ?></a></li>
+			<li class="pull-right"><button type="submit" name="submit" id="submit" class="button button-primary"><?php _e( '変更を保存', 'ggsupports' ); ?></button><span class="spinner"></span> </li>
 		</ul>
 		<div id="<?php echo Ggs_Config::get_prefix(); ?>-basic-setting">
 
@@ -40,11 +41,26 @@
 			?>
 		</div>
 		<div id="<?php echo Ggs_Config::get_prefix(); ?>-admin_menu-setting">
-			<p><?php _e( '非表示にしたいサイドメニューを選択をしてください。', 'ggsupports' ) ?><br /></p>
 			<?php
 			settings_fields( 'ggsupports_settings' );
 			do_settings_fields( 'ggsupports_options_page', 'ggsupports_admin_menu_section' );
 			?>
 		</div>
+		<div id="<?php echo Ggs_Config::get_prefix(); ?>-tools-setting">
+			<h3>設定のエクスポート</h3>
+			<p>
+			<?php
+				_e( '設定をエクスポートします。', 'ggsupports' );
+			?>
+			</p>
+
+			<div class="option-export">
+				<button id="option-export" class="button-secondary">設定をエクスポート</button>
+			</div>
+
+		</div>
+	</div>
+	<div class="panel-footer">
+
 	</div>
 </form>

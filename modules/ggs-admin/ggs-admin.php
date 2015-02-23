@@ -131,7 +131,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_wpautop',
 					'default' => 0,
-					'desc'    => '記事を出力する際の自動整形を停止します。',
+					'desc'    => __( '記事を出力する際の自動整形を停止します。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -144,7 +144,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_revision',
 					'default' => 0,
-					'desc'    => '投稿、固定ページのリビジョン管理のを無効にすることができます。',
+					'desc'    => __( '投稿、固定ページのリビジョン管理のを無効にすることができます。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -157,7 +157,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_jquery',
 					'default' => 0,
-					'desc'    => 'WordPressに内包されているjQueryライブラリを読み込みます。',
+					'desc'    => __( 'WordPressに内包されているjQueryライブラリを読み込みます。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -169,7 +169,7 @@ class Ggs_Admin {
 			__( 'Bootstrap3フレームワークの読み込み', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_bootstrap',
+					'id'      => __( 'ggsupports_general_bootstrap', 'ggsupports' ),
 					'default' => 0,
 				);
 				Ggs_Helper::radiobox( $args );
@@ -185,7 +185,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_xmlrpc',
 					'default' => 0,
-					'desc'    => 'セキュリティ対策としてxmlrpcを無効にします。',
+					'desc'    => __( 'セキュリティ対策としてxmlrpcを無効にします。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -199,7 +199,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_author_archive',
 					'default' => 0,
-					'desc'    => 'セキュリティ対策として著者アーカイブを無効にします。',
+					'desc'    => __( 'セキュリティ対策として著者アーカイブを無効にします。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -213,7 +213,7 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_disable_update',
 					'default' => 0,
-					'desc'    => 'WordPress本体、プラグインの更新を停止し非表示にします。',
+					'desc'    => __( 'WordPress本体、プラグインの更新を停止し非表示にします。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -226,7 +226,20 @@ class Ggs_Admin {
 				$args = array(
 					'id'      => 'ggsupports_general_show_current_template',
 					'default' => 1,
-					'desc'    => 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。',
+					'desc'    => __( 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。', 'ggsupports' ),
+				);
+				Ggs_Helper::radiobox( $args );
+			},
+			'general'
+		);
+		$this->add_field(
+			'jetpack_dev_mode',
+			__( 'Jetpackの開発者モードを有効化', 'ggsupports' ),
+			function () {
+				$args = array(
+					'id'      => 'ggsupports_general_jetpack_dev_mode',
+					'default' => 0,
+					'desc'    => __( 'jetpackの開発者モードを有効化し、認証なしで複数の機能を有効化します。', 'ggsupports' ),
 				);
 				Ggs_Helper::radiobox( $args );
 			},
@@ -236,7 +249,7 @@ class Ggs_Admin {
 		 * 2 ダッシュボードウィジェット
 		 */
 		$this->add_section( 'dashboard', function () {
-			echo 'ダッシュボードウィジェットに表示するコンテンツを入力してください。';
+			echo __( 'ダッシュボードウィジェットに表示するコンテンツを入力してください。', 'ggsupports' );
 		} );
 
 		$this->add_field(
@@ -257,6 +270,7 @@ class Ggs_Admin {
 			'contents',
 			__( '', 'ggsupports' ),
 			function () {
+				_e( '<p>ダッシュボードに表示させるコンテンツを入力してください。</p>', 'ggsupports' );
 				$contents           = ( get_option( 'ggsupports_options' ) ) ? get_option( 'ggsupports_options' ) : '';
 				$dashboard_contents = ( isset( $contents['ggsupports_dashboard_contents'] ) ? $contents['ggsupports_dashboard_contents'] : '' );
 				$editor_settings    = array(
@@ -290,9 +304,9 @@ class Ggs_Admin {
 
 		$this->add_field(
 			'admin_menu_user',
-			__( '有効なアカウント', 'ggsupports' ),
+			__( 'アカウントの選択', 'ggsupports' ),
 			function () {
-				_e( 'shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
+				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
 				$selected = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu_user' );
 				$this->dropdown_users( array(
@@ -310,7 +324,9 @@ class Ggs_Admin {
 			__( 'サイドメニュー一覧', 'ggsupports' ),
 			function () {
 				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
+				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
 				?>
+
 				<div id="ggs_admin_menus"></div>
 				<input type="hidden" id="ggsupports_admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="ggsupports_admin_menu"/>
 			<?php
@@ -327,10 +343,48 @@ class Ggs_Admin {
 	 */
 	public function add_admin_menu() {
 
-		add_menu_page( __( '制作サポート', 'ggsupports' ), __( '制作サポート', 'ggsupports' ), 'manage_options', $this->option_page_slug, array(
-			$this,
-			'option_page'
-		) );
+		add_menu_page(
+			__( '制作サポート', 'ggsupports' ),
+			__( '制作サポート', 'ggsupports' ),
+			'manage_options',
+			$this->option_page_slug,
+			array(
+				$this,
+				'option_page'
+			)
+		);
+
+		add_submenu_page(
+			$this->option_page_slug,
+			__( 'サイト設定', 'ggsupports' ),
+			__( 'サイト設定', 'ggsupports' ),
+			'manage_options',
+			$this->option_page_slug,
+			function(){
+
+			}
+		);
+
+		add_submenu_page(
+			$this->option_page_slug,
+			__( 'DW設定', 'ggsupports' ),
+			__( 'DW設定', 'ggsupports' ),
+			'manage_options',
+			$this->option_page_slug . '#ggs-dashboard-setting',
+			function(){
+
+			}
+		);
+
+		add_submenu_page(
+			$this->option_page_slug,
+			__( '管理メニュー設定', 'ggsupports' ),
+			__( '管理メニュー設定', 'ggsupports' ),
+			'manage_options',
+			$this->option_page_slug . '#ggs-admin_menu-setting',
+			function(){
+			}
+		);
 
 	}
 
