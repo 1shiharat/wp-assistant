@@ -18,6 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 require 'autoload.php';
 require 'inc/ggs-helper.php';
 add_action( 'registered_taxonomy', array( 'GGSupports', 'get_instance' ) );
+register_activation_hook( __FILE__, array( 'GGSupports', 'activate' ) );
 
 /**
  * Class GGSupports_Config
@@ -49,6 +50,9 @@ class Ggs_Config{
 		return self::$version;
 	}
 
+	/**
+	 * オプションを取得
+	 */
 	public static function get_options( $option_key = '' ){
 		$options = get_option( 'ggsupports_options' );
 		if ( $option_key ){
@@ -101,5 +105,17 @@ class GGSupports {
 
 		// CF7拡張
 		add_action( 'wp', array( new Cf7_ajaxzip3(), 'cf7_ajaxzip3' ), 10 );
+	}
+
+	public function activate(){
+		$options = get_option( 'ggsupports_options' );
+
+		// オプションがない場合、初期設定
+		if ( ! $options ){
+			update_option( 'ggsupports_options', array(
+				''
+			) );
+		}
+
 	}
 }
