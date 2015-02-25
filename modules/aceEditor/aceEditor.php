@@ -11,6 +11,7 @@
 
 namespace siteSupports\modules\aceEditor;
 
+use siteSupports\config;
 use siteSupports\inc\helper;
 /**
  * Class Ace_editor
@@ -38,11 +39,12 @@ class aceEditor {
 			return;
 		}
 
-		wp_enqueue_script( 'ace-editor', plugins_url( '/assets/ace/src-noconflict/ace.js', __FILE__ ), array( 'jquery' ), null );
+		$ace_version = '1.1.8';
+		wp_enqueue_script( 'ace-editor', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ace.js' , array( 'jquery' ), null );
 		wp_enqueue_script( 'emmet', '//nightwing.github.io/emmet-core/emmet.js', array( 'ace-editor' ), null );
-		wp_enqueue_script( 'ace-editor-emmet', plugins_url( '/assets/ace/src-noconflict/ext-emmet.js', __FILE__ ), array( 'ace-editor' ), null );
-		wp_enqueue_script( 'ace-editor-launguage', plugins_url( '/assets/ace/src-noconflict/ext-language_tools.js', __FILE__ ), array( 'ace-editor' ), null );
-		wp_enqueue_script( 'ace-editor-init', plugins_url( '/aceinit.js', __FILE__ ), array( 'ace-editor' ), null );
+		wp_enqueue_script( 'ace-editor-emmet', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-emmet.js', array( 'ace-editor' ), null );
+		wp_enqueue_script( 'ace-editor-launguage', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-language_tools.js', array( 'ace-editor' ), null );
+		wp_enqueue_script( 'ace-editor-init', config::get( 'plugin_url' ) . 'modules/aceEditor/assets/aceinit.js', array( 'ace-editor' ), null );
 
 		// ファイルの拡張子を取得
 		$file_name = isset( $_REQUEST['file'] ) ? esc_html( $_REQUEST['file'] ) : 'style.css';
