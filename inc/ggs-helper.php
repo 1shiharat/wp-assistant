@@ -13,7 +13,7 @@ class Ggs_Helper {
 	 *
 	 * @return bool|mixed|void
 	 */
-	public static function get_ggs_options( $option_key = '' ) {
+	public static function get_options( $option_key = '' ) {
 		$options = get_option( 'ggsupports_options' );
 		if ( $option_key ) {
 			if ( isset( $options[ $option_key ] ) ) {
@@ -34,7 +34,7 @@ class Ggs_Helper {
 	 * @param bool $output
 	 */
 	public static function checked( $option_key, $option_value, $defaults = '' ) {
-		$value = self::get_ggs_options( $option_key );
+		$value = self::get_options( $option_key );
 		if ( $value == $option_value ) {
 			echo 'checked="checked"';
 

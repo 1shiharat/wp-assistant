@@ -4,10 +4,8 @@ Plugin Name: GrowGroup - サイト制作サポート
 Plugin URI: http://grow-group.jp/
 Description: Webサイト制作のお助けプラグイン
 Author: 1shiharaT
-Version: 1.0.1
+Version: 1.0.0
 Author URI: http://grow-group.jp/
-GitHub Plugin URI: https://github.com/1shiharaT/ggsupports.git
-GitHub Branch: master
 */
 
 // If this file is called directly, abort.
@@ -15,9 +13,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 require 'autoload.php';
 require 'inc/ggs-helper.php';
 add_action( 'registered_taxonomy', array( 'GGSupports', 'get_instance' ) );
+
 
 /**
  * Class GGSupports_Config
@@ -27,7 +27,7 @@ class Ggs_Config{
 
 	public static $prefix = 'ggs';
 
-	public static $version = '';
+	public static $version = '1.0.0';
 
 	public static $plugin_url = '';
 
@@ -44,12 +44,10 @@ class Ggs_Config{
 	 * @return string
 	 */
 	public static function get_version(){
-		$version = get_file_data( __FILE__, array( 'version' => 'version' ) );
-		self::$version = $version['version'];
 		return self::$version;
 	}
 
-	public static function get_options( $option_key = '' ){
+	public static function get_ggs_options( $option_key = '' ){
 		$options = get_option( 'ggsupports_options' );
 		if ( $option_key ){
 			if ( isset( $options[$option_key] )  ){

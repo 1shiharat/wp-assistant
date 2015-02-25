@@ -51,7 +51,6 @@
         }
         flag = false;
         $('#ggs-tabs').find( '.spinner').show();
-        console.log($('#ggsupports_settings_form').serialize());
         $.ajax({
             'type': 'post',
             'url' : ajaxurl,

@@ -33,7 +33,7 @@ if ( ! class_exists( 'Ggs_Cleanup' ) ) {
 		}
 
 		public function get_options() {
-			$options = Ggs_Helper::get_ggs_options();
+			$options = Ggs_Helper::get_options();
 
 			return $options;
 		}

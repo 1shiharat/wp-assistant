@@ -14,6 +14,14 @@ class Ggs_Admin {
 	public $prefix = '';
 
 	/**
+	 * 設定名
+	 * @var string
+	 */
+	public $setting_section_names = '';
+
+	public $setting_field_names = '';
+
+	/**
 	 * 初期化
 	 */
 	public function __construct() {
@@ -32,7 +40,7 @@ class Ggs_Admin {
 	 * ダッシュボードに登録
 	 */
 	public function add_dashboard_widgets() {
-		if ( Ggs_Helper::get_ggs_options( 'ggsupports_dashboard_dashboard_disp' ) ) {
+		if ( Ggs_Helper::get_options( 'ggsupports_dashboard_dashboard_disp' ) ) {
 			wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
 				include( 'views/dashboard.php' );
 			} );
@@ -308,7 +316,7 @@ class Ggs_Admin {
 			function () {
 				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
-				$selected = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu_user' );
+				$selected = Ggs_Helper::get_options( 'ggsupports_admin_menu_user' );
 				$this->dropdown_users( array(
 					'name'     => 'ggsupports_admin_menu_user[]',
 					'id'       => 'ggsupports_admin_menu_user',
@@ -323,7 +331,7 @@ class Ggs_Admin {
 			'admin_menu',
 			__( 'サイドメニュー一覧', 'ggsupports' ),
 			function () {
-				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
+				$checked_admin_menus = Ggs_Helper::get_options( 'ggsupports_admin_menu' );
 				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
 				?>
 
@@ -458,6 +466,7 @@ class Ggs_Admin {
 		if ( $title ) {
 			$title = '<h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>';
 		}
+		$this->setting_field_names[] = $this->prefix . $section . '_' . $name;
 		add_settings_field(
 			$this->prefix . $section . '_' . $name,
 			$title,
@@ -467,6 +476,12 @@ class Ggs_Admin {
 		);
 	}
 
+	/**
+	 * ユーザードロップダウンの出力
+	 * @param string $args
+	 *
+	 * @return string
+	 */
 	public function dropdown_users( $args = '' ) {
 		$defaults = array(
 			'show_option_all'         => '',
@@ -568,7 +583,6 @@ class Ggs_Admin {
 
 	/**
 	 * Ajax で受けた情報を保存
-	 *
 	 * @return void
 	 */
 	public function update_ggsupports_option() {
@@ -582,6 +596,12 @@ class Ggs_Admin {
 
 		if ( $form_array ) {
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
+			foreach ( $settings as $settting_key => $setting ){
+
+				if ( ! in_array( $settting_key,  $this->setting_field_names ) ){
+					unset( $settings[$settting_key] );
+				}
+			}
 			$settings['ggsupports_dashboard_contents'] = $form_array['ggsupports_dashboard_contents'];
 			echo update_option( 'ggsupports_options', $settings );
 		}
