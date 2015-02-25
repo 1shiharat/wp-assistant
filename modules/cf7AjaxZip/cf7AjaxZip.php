@@ -1,12 +1,25 @@
 <?php
-class Cf7_ajaxzip3 {
+/**
+ * =====================================================
+ * ContactForm7にajaxzip3を利用できるように
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   gpl v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
+ */
+namespace siteSupports\modules\cf7AjaxZip3;
+
+use siteSupports\config;
+use siteSupports\inc\helper;
+class cf7AjaxZip3 {
 
 	/**
 	 * contact-form-7にajaxzip3.jsを追加
 	 * 自動的に郵便番号から住所が入力
 	 * @return bool
 	 */
-	function cf7_ajaxzip3() {
+	function cf7AjaxZip() {
 		global $post;
 
 		/**

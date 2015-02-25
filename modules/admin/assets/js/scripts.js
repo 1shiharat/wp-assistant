@@ -51,18 +51,23 @@
         }
         flag = false;
         $('#ggs-tabs').find( '.spinner').show();
-        console.log($('#ggsupports_settings_form').serialize());
+        console.log($('#ggs_settings_form').serialize());
         $.ajax({
             'type': 'post',
             'url' : ajaxurl,
             'data' :{
                 'action' : GGSSETTINGS.action,
                 '_wp_nonce' : GGSSETTINGS._wp_nonce,
-                'form': $('#ggsupports_settings_form').serialize(),
+                'form': $('#ggs_settings_form').serialize(),
             },
             'success' : function(data){
-                $('#ggs-tabs').find( '.spinner').hide();
-                ggsMessage( 'success' );
+                if ( 1 == data ) {
+                    $('#ggs-tabs').find('.spinner').hide();
+                    ggsMessage('success');
+                } else {
+                    $('#ggs-tabs').find('.spinner').hide();
+                    ggsMessage('faild');
+                }
                 flag = true;
             }
         })

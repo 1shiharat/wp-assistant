@@ -2,33 +2,38 @@
 /**
  * モジュールのオートロード
  */
+namespace siteSupports;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! class_exists( 'GGSupports_Autoload' ) ) {
-	/**
-	 * Generic autoloader for classes named in WordPress coding style.
-	 */
-	class GGSupports_Autoload {
+/**
+ * Generic autoloader for classes named in WordPress coding style.
+ */
+class autoload{
 
-		private $dir = '';
+	private $dir = '';
 
-		public function __construct( $dir = '' ) {
+	public function __construct( $dir = '' ) {
 
-			if ( ! empty( $dir ) ) {
-				$this->dir = $dir;
-			}
-			spl_autoload_register( array( $this, 'spl_autoload_register' ) );
+		if ( ! empty( $dir ) ) {
+			$this->dir = $dir;
 		}
-
-		public function spl_autoload_register( $class_name ) {
-			$class_path = $this->dir . '/' . strtolower( str_replace( '_', '-', $class_name ) ). '/' . strtolower( str_replace( '_', '-', $class_name ) ) . '.php';
-			if ( file_exists( $class_path ) ){
-				include $class_path;
-			}
-		}
-
+		spl_autoload_register( array( '\\' . __NAMESPACE__ . '\autoload', 'autoload' ) );
 	}
+
+	function autoload( $cls ) {
+		$cls = ltrim( $cls, '\\');
+		if ( strpos( $cls, __NAMESPACE__ ) !== 0)
+			return;
+
+		$cls = str_replace(__NAMESPACE__, '', $cls);
+
+		$path = untrailingslashit( \siteSupports\config::get( 'plugin_dir' ) ) . str_replace('\\', '/', $cls) . '.php';
+		require_once( $path );
+	}
+
+
 }

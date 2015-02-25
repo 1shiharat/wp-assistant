@@ -37,7 +37,7 @@
             }
         });
         ;
-        $('#ggsupports_admin_menu_hidden').val(checkedMenuID.join(','));
+        $('#admin_menu_hidden').val(checkedMenuID.join(','));
     }
 
     // ロード時のイベント

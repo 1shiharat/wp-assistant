@@ -1,3 +1,7 @@
+<?php
+use siteSupports\config;
+use siteSupports\inc\helper;
+?>
 <div id="ggsdashboard" class="welcome-panel">
 	<style type="text/css">
 		.template-logo{
@@ -177,7 +181,7 @@
 	</style>
 	<div class="welcome-panel-content">
 		<?php
-			echo Ggs_Config::get_options( 'ggsupports_dashboard_contents' );
+			echo helper::get_option( 'dashboard_contents' );
 		?>
 	</div>
 </div>

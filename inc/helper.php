@@ -1,10 +1,14 @@
 <?php
-// If this file is called directly, abort.
+namespace siteSupports\inc;
+
+use siteSupports\config;
+use siteSupports\inc\helper;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class Ggs_Helper {
+class helper {
 
 	/**
 	 * プラグインオプションの取得
@@ -13,8 +17,8 @@ class Ggs_Helper {
 	 *
 	 * @return bool|mixed|void
 	 */
-	public static function get_ggs_options( $option_key = '' ) {
-		$options = get_option( 'ggsupports_options' );
+	public static function get_option( $option_key = '' ) {
+		$options = get_option( config::get( 'prefix' ) . 'options' );
 		if ( $option_key ) {
 			if ( isset( $options[ $option_key ] ) ) {
 				return $options[ $option_key ];
@@ -34,17 +38,16 @@ class Ggs_Helper {
 	 * @param bool $output
 	 */
 	public static function checked( $option_key, $option_value, $defaults = '' ) {
-		$value = self::get_ggs_options( $option_key );
+		$value = static::get_option( $option_key );
 		if ( $value == $option_value ) {
 			echo 'checked="checked"';
-
 			return;
 		}
+
 		if ( $defaults
 		     && ( $option_value == $defaults )
 		) {
 			echo 'checked="checked"';
-
 			return;
 		}
 	}
@@ -74,11 +77,11 @@ class Ggs_Helper {
 		?>
 		<div class="form-group form-group-radiobox">
 			<p><?php echo $settings['desc'] ?></p>
-			<input id="<?php echo $settings['id'] ?>_true" name="<?php echo $settings['id'] ?>" type="radio" value="<?php echo $settings['value']['true'] ?>" <?php Ggs_Helper::checked( $settings['id'], 1, $settings['default'] ) ?> />
+			<input id="<?php echo $settings['id'] ?>_true" name="<?php echo $settings['id'] ?>" type="radio" value="<?php echo $settings['value']['true'] ?>" <?php static::checked( $settings['id'], 1, $settings['default'] ) ?> />
 			<label for="<?php echo $settings['id'] ?>_true">
 				<?php echo $settings['label']['true'] ?>
 			</label>
-			<input id="<?php echo $settings['id'] ?>_false" name="<?php echo $settings['id'] ?>" type="radio" value="<?php echo $settings['value']['false'] ?>" <?php Ggs_Helper::checked( $settings['id'], 0, $settings['default'] ) ?> />
+			<input id="<?php echo $settings['id'] ?>_false" name="<?php echo $settings['id'] ?>" type="radio" value="<?php echo $settings['value']['false'] ?>" <?php static::checked( $settings['id'], 0, $settings['default'] ) ?> />
 			<label for="<?php echo $settings['id'] ?>_false">
 				<?php echo $settings['label']['false'] ?>
 			</label>

@@ -1,10 +1,19 @@
 <?php
-
 /**
- * Class Ggs_Admin
- * 管理画面用クラス
+ * =====================================================
+ * 管理画面設定ページを構築
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   gpl v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
  */
-class Ggs_Admin {
+namespace siteSupports\modules\admin;
+
+use siteSupports\config;
+use siteSupports\inc\helper;
+
+class admin {
 
 	/** @var string 設定ページのスラッグ */
 	public $option_page_slug = '';
@@ -14,12 +23,19 @@ class Ggs_Admin {
 	public $prefix = '';
 
 	/**
+	 * 設定名
+	 * @var string
+	 */
+	public $setting_section_names = '';
+
+	public $setting_field_names = '';
+
+	/**
 	 * 初期化
 	 */
 	public function __construct() {
-		$this->option_setting_slug = 'ggsupports_settings';
-		$this->option_page_slug    = 'ggsupports_options_page';
-		$this->prefix              = 'ggsupports_';
+		$this->option_setting_slug = config::get( 'prefix' ) . 'ggs_settings';
+		$this->option_page_slug    = config::get( 'prefix' ) . 'options_page';
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'load-index.php', array( $this, 'hide_welcome_panel' ) );
@@ -32,7 +48,7 @@ class Ggs_Admin {
 	 * ダッシュボードに登録
 	 */
 	public function add_dashboard_widgets() {
-		if ( Ggs_Helper::get_ggs_options( 'ggsupports_dashboard_dashboard_disp' ) ) {
+		if ( helper::get_option( 'dashboard_dashboard_disp' ) ) {
 			wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
 				include( 'views/dashboard.php' );
 			} );
@@ -65,7 +81,7 @@ class Ggs_Admin {
 	public function settings_init() {
 
 		// 設定項目を登録
-		register_setting( 'ggsupports_settings', 'ggsupports_options' );
+		register_setting( config::get( 'prefix' ) . '_settings', config::get( 'prefix' ) . '_options' );
 
 		/**
 		 * 1. サイト設定
@@ -76,12 +92,13 @@ class Ggs_Admin {
 			__( 'フィードリンク (RSS)', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_feed_links',
+					'id'      => 'feed_links',
 					'default' => 0,
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 
 		$this->add_field(
@@ -89,12 +106,13 @@ class Ggs_Admin {
 			__( 'ジェネレーターメタタグの出力 (バージョン情報の出力)', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_wp_generator',
+					'id'      => 'wp_generator',
 					'default' => 0,
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 
 		$this->add_field(
@@ -102,12 +120,13 @@ class Ggs_Admin {
 			__( 'ショートリンクの出力', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_wp_shortlink_wp_head',
+					'id'      => 'wp_shortlink_wp_head',
 					'default' => 0,
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 
 
@@ -116,52 +135,56 @@ class Ggs_Admin {
 			__( 'ショートリンクの出力', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_wpautop',
+					'id'      => 'wpautop',
 					'default' => 0,
 					'desc'    => '',
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		$this->add_field(
 			'wpautop',
 			__( '自動整形の停止', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_wpautop',
+					'id'      => 'wpautop',
 					'default' => 0,
 					'desc'    => __( '記事を出力する際の自動整形を停止します。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		$this->add_field(
 			'revision',
 			__( 'リビジョンコントロールの停止', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_revision',
+					'id'      => 'revision',
 					'default' => 0,
 					'desc'    => __( '投稿、固定ページのリビジョン管理のを無効にすることができます。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		$this->add_field(
 			'jquery',
 			__( 'jQueryライブラリの読み込み', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_jquery',
+					'id'      => 'jquery',
 					'default' => 0,
 					'desc'    => __( 'WordPressに内包されているjQueryライブラリを読み込みます。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 
 		$this->add_field(
@@ -169,13 +192,14 @@ class Ggs_Admin {
 			__( 'Bootstrap3フレームワークの読み込み', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => __( 'ggsupports_general_bootstrap', 'ggsupports' ),
+					'id'      => 'bootstrap',
 					'default' => 0,
+					'desc'    => __( 'Bootstrap フレームワークを自動的に読み込みます。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
 			'general',
-			'Bootstrap フレームワークを自動的に読み込みます。'
+			0
 		);
 
 		$this->add_field(
@@ -183,13 +207,14 @@ class Ggs_Admin {
 			__( 'xmlrpcの停止', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_xmlrpc',
+					'id'      => 'xmlrpc',
 					'default' => 0,
 					'desc'    => __( 'セキュリティ対策としてxmlrpcを無効にします。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			1
 		);
 
 		$this->add_field(
@@ -197,13 +222,14 @@ class Ggs_Admin {
 			__( '著者アーカイブの無効', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_author_archive',
+					'id'      => 'author_archive',
 					'default' => 0,
 					'desc'    => __( 'セキュリティ対策として著者アーカイブを無効にします。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 
 		$this->add_field(
@@ -211,39 +237,42 @@ class Ggs_Admin {
 			__( '自動更新の無効化', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_disable_update',
+					'id'      => 'disable_update',
 					'default' => 0,
 					'desc'    => __( 'WordPress本体、プラグインの更新を停止し非表示にします。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		$this->add_field(
 			'show_current_template',
 			__( '現在のテンプレート名を管理バーに表示', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_show_current_template',
+					'id'      => 'show_current_template',
 					'default' => 1,
 					'desc'    => __( 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		$this->add_field(
 			'jetpack_dev_mode',
 			__( 'Jetpackの開発者モードを有効化', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_general_jetpack_dev_mode',
+					'id'      => 'jetpack_dev_mode',
 					'default' => 0,
 					'desc'    => __( 'jetpackの開発者モードを有効化し、認証なしで複数の機能を有効化します。', 'ggsupports' ),
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'general'
+			'general',
+			0
 		);
 		/**
 		 * 2 ダッシュボードウィジェット
@@ -257,28 +286,28 @@ class Ggs_Admin {
 			__( 'ダッシュボードウィジェットの有効化', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'ggsupports_dashboard_dashboard_disp',
+					'id'      => 'dashboard_disp',
 					'default' => 0,
 					'desc'    => '',
 				);
-				Ggs_Helper::radiobox( $args );
+				helper::radiobox( $args );
 			},
-			'dashboard'
+			'dashboard',
+			0
 		);
 
 		$this->add_field(
-			'contents',
+			'dashboard_contents',
 			__( '', 'ggsupports' ),
 			function () {
 				_e( '<p>ダッシュボードに表示させるコンテンツを入力してください。</p>', 'ggsupports' );
-				$contents           = ( get_option( 'ggsupports_options' ) ) ? get_option( 'ggsupports_options' ) : '';
-				$dashboard_contents = ( isset( $contents['ggsupports_dashboard_contents'] ) ? $contents['ggsupports_dashboard_contents'] : '' );
+				$dashboard_contents = helper::get_option( 'dashboard_contents' );
 				$editor_settings    = array(
 					'wpautop'             => false,
 					'media_buttons'       => true,
 					'default_editor'      => '',
 					'drag_drop_upload'    => true,
-					'textarea_name'       => 'ggsupports_dashboard_contents',
+					'textarea_name'       => 'dashboard_contents',
 					'textarea_rows'       => 50,
 					'tabindex'            => '',
 					'tabfocus_elements'   => ':prev,:next',
@@ -290,9 +319,10 @@ class Ggs_Admin {
 					'tinymce'             => true,
 					'quicktags'           => true
 				);
-				wp_editor( $dashboard_contents, 'ggsupports_options_ggsupports_dashboard_contents', $editor_settings );
+				wp_editor( $dashboard_contents, 'dashboard_contents', $editor_settings );
 			},
-			'dashboard'
+			'dashboard',
+			''
 		);
 
 		/**
@@ -308,30 +338,31 @@ class Ggs_Admin {
 			function () {
 				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
-				$selected = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu_user' );
+				$selected = helper::get_option( 'admin_menu_user' );
 				$this->dropdown_users( array(
-					'name'     => 'ggsupports_admin_menu_user[]',
-					'id'       => 'ggsupports_admin_menu_user',
+					'name'     => 'admin_menu_user[]',
+					'id'       => 'admin_menu_user',
 					'selected' => $selected
 				) ); ?>
 			<?php
 			},
-			'admin_menu'
+			'admin_menu',
+			''
 		);
 
 		$this->add_field(
 			'admin_menu',
 			__( 'サイドメニュー一覧', 'ggsupports' ),
 			function () {
-				$checked_admin_menus = Ggs_Helper::get_ggs_options( 'ggsupports_admin_menu' );
+				$checked_admin_menus = helper::get_option( 'admin_menu' );
 				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
 				?>
-
 				<div id="ggs_admin_menus"></div>
-				<input type="hidden" id="ggsupports_admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="ggsupports_admin_menu"/>
+				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
 			<?php
 			},
-			'admin_menu'
+			'admin_menu',
+			''
 		);
 
 
@@ -360,7 +391,7 @@ class Ggs_Admin {
 			__( 'サイト設定', 'ggsupports' ),
 			'manage_options',
 			$this->option_page_slug,
-			function(){
+			function () {
 
 			}
 		);
@@ -371,7 +402,7 @@ class Ggs_Admin {
 			__( 'DW設定', 'ggsupports' ),
 			'manage_options',
 			$this->option_page_slug . '#ggs-dashboard-setting',
-			function(){
+			function () {
 
 			}
 		);
@@ -382,7 +413,7 @@ class Ggs_Admin {
 			__( '管理メニュー設定', 'ggsupports' ),
 			'manage_options',
 			$this->option_page_slug . '#ggs-admin_menu-setting',
-			function(){
+			function () {
 			}
 		);
 
@@ -408,10 +439,10 @@ class Ggs_Admin {
 
 		switch ( $hook ) {
 			case 'index.php' :
-				wp_enqueue_script( 'ggs_dashboard_widget', plugins_url( 'assets/js/dashboard.js', __FILE__ ), array( 'jquery' ), false );
+				wp_enqueue_script( 'ggs_dashboard_widget', config::get( 'plugin_url' ) . 'modules/admin/assets/js/dashboard.js', array( 'jquery' ), false );
 				break;
-			case 'toplevel_page_ggsupports_options_page' :
-				wp_enqueue_script( 'ggs_admin_scripts', plugins_url( 'assets/js/scripts.js', __FILE__ ), array(
+			case 'toplevel_page_' . config::get( 'prefix' ) . 'options_page' :
+				wp_enqueue_script( 'ggs_admin_scripts', config::get( 'plugin_url' ) . 'modules/admin/assets/js/scripts.js', array(
 					'jquery',
 					'jquery-ui-tabs',
 					'jquery-ui-button',
@@ -419,7 +450,8 @@ class Ggs_Admin {
 					'jquery-ui-droppable',
 					'jquery-ui-draggable',
 				), false );
-				wp_enqueue_style( 'jquery-ui-smoothness', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ), false, null );
+
+				wp_enqueue_style( 'jquery-ui-smoothness', config::get( 'plugin_url' ) . 'modules/admin/assets/css/jquery-ui.css', false, null );
 				wp_localize_script( 'ggs_admin_scripts', 'GGSSETTINGS', array(
 					'action'    => 'update_ggsupports_option',
 					'_wp_nonce' => wp_create_nonce( __FILE__ )
@@ -437,7 +469,7 @@ class Ggs_Admin {
 	 */
 	public function add_section( $name, $title ) {
 		add_settings_section(
-			$this->prefix . $name . '_section',
+			$name . '_section',
 			$title,
 			'',
 			$this->option_page_slug
@@ -454,19 +486,35 @@ class Ggs_Admin {
 	 *
 	 * @param string $desc
 	 */
-	public function add_field( $name, $title, $callback, $section, $desc = '' ) {
+	public function add_field( $name, $title, $callback, $section, $desc = '', $default = 0 ) {
+
 		if ( $title ) {
 			$title = '<h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>';
 		}
+
 		add_settings_field(
-			$this->prefix . $section . '_' . $name,
+			$name,
 			$title,
 			$callback,
 			$this->option_page_slug,
-			$this->prefix . $section . '_section'
+			$section . '_section'
 		);
+
+		$this->setting_field_names[] = $name;
+
+		if ( ! config::get( 'install' ) ) {
+			update_option( config::get( 'prefix' ) . '_options', $default );
+		}
+
 	}
 
+	/**
+	 * ユーザードロップダウンの出力
+	 *
+	 * @param string $args
+	 *
+	 * @return string
+	 */
 	public function dropdown_users( $args = '' ) {
 		$defaults = array(
 			'show_option_all'         => '',
@@ -553,7 +601,6 @@ class Ggs_Admin {
 				$display   = ! empty( $user->$show ) ? $user->$show : '(' . $user->user_login . ')';
 				$output .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
 			}
-
 			$output .= "</select>";
 		}
 
@@ -568,23 +615,32 @@ class Ggs_Admin {
 
 	/**
 	 * Ajax で受けた情報を保存
-	 *
 	 * @return void
 	 */
 	public function update_ggsupports_option() {
+
 		if ( ! wp_verify_nonce( $_REQUEST['_wp_nonce'], __FILE__ ) ) {
-			echo false;
+			echo 0;
 			exit();
 		}
-		$form_str = urldecode( $_REQUEST['form'] );
 
+		$form_str = urldecode( $_REQUEST['form'] );
 		parse_str( $form_str, $form_array );
 
 		if ( $form_array ) {
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
-			$settings['ggsupports_dashboard_contents'] = $form_array['ggsupports_dashboard_contents'];
-			echo update_option( 'ggsupports_options', $settings );
+
+			foreach ( $settings as $settting_key => $setting ) {
+				if ( ! in_array( $settting_key, $this->setting_field_names ) ) {
+					unset( $settings[ $settting_key ] );
+				}
+			}
+
+			$settings['dashboard_contents'] = $form_array['dashboard_contents'];
+			echo update_option( config::get( 'prefix' ) . 'options', $settings );
+			exit();
 		}
+		echo 0;
 		exit();
 	}
 
