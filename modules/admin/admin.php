@@ -339,7 +339,8 @@ class admin {
 				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
 				$selected = helper::get_option( 'admin_menu_user' );
-				$this->dropdown_users( array(
+
+				admin::dropdown_users( array(
 					'name'     => 'admin_menu_user[]',
 					'id'       => 'admin_menu_user',
 					'selected' => $selected
@@ -515,7 +516,7 @@ class admin {
 	 *
 	 * @return string
 	 */
-	public function dropdown_users( $args = '' ) {
+	public static function dropdown_users( $args = '' ) {
 		$defaults = array(
 			'show_option_all'         => '',
 			'show_option_none'        => '',
