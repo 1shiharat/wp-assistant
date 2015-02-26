@@ -10,6 +10,7 @@
  */
 namespace siteSupports\modules\cleanup;
 
+use siteSupports\config;
 use siteSupports\inc\helper;
 
 class cleanup {
@@ -25,7 +26,7 @@ class cleanup {
 
 	public function init() {
 
-		$options = static::get_options();
+		$options = config::get( 'options' );
 
 		foreach ( $options as $option_key => $option ) {
 			/**
@@ -37,20 +38,6 @@ class cleanup {
 				$this->{$option_key}( $option );
 			}
 		}
-	}
-
-	/**
-	 * オプションを取得
-	 * @return bool|mixed|void
-	 */
-	public static function get_options() {
-		$options = helper::get_option();
-		if ( ! $options ){
-			$options = array(
-
-			);
-		}
-		return $options;
 	}
 
 	/**

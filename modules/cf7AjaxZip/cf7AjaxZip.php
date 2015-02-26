@@ -8,11 +8,12 @@
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports\modules\cf7AjaxZip3;
+namespace siteSupports\modules\cf7AjaxZip;
 
 use siteSupports\config;
 use siteSupports\inc\helper;
-class cf7AjaxZip3 {
+
+class cf7AjaxZip {
 
 	/**
 	 * contact-form-7にajaxzip3.jsを追加
