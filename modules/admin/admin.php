@@ -48,7 +48,7 @@ class admin {
 	 * ダッシュボードに登録
 	 */
 	public function add_dashboard_widgets() {
-		if ( helper::get_option( 'dashboard_dashboard_disp' ) ) {
+		if ( config::get_option( 'dashboard_disp' ) ) {
 			wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
 				include( 'views/dashboard.php' );
 			} );
@@ -261,13 +261,13 @@ class admin {
 			0
 		);
 		$this->add_field(
-			'jetpack_dev_mode',
-			__( 'Jetpackの開発者モードを有効化', 'ggsupports' ),
+			'admin_page_nav',
+			__( '管理画面編集ナビの有効化', 'ggsupports' ),
 			function () {
 				$args = array(
-					'id'      => 'jetpack_dev_mode',
-					'default' => 0,
-					'desc'    => __( 'jetpackの開発者モードを有効化し、認証なしで複数の機能を有効化します。', 'ggsupports' ),
+					'id'      => 'admin_page_nav',
+					'default' => 1,
+					'desc'    => __( '管理画面の記事編集画面で、次の記事、前の記事リンクを表示します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -301,7 +301,7 @@ class admin {
 			__( '', 'ggsupports' ),
 			function () {
 				_e( '<p>ダッシュボードに表示させるコンテンツを入力してください。</p>', 'ggsupports' );
-				$dashboard_contents = helper::get_option( 'dashboard_contents' );
+				$dashboard_contents = config::get_option( 'dashboard_contents' );
 				$editor_settings    = array(
 					'wpautop'             => false,
 					'media_buttons'       => true,
@@ -338,8 +338,7 @@ class admin {
 			function () {
 				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
-				$selected = helper::get_option( 'admin_menu_user' );
-
+				$selected = config::get_option( 'admin_menu_user' );
 				admin::dropdown_users( array(
 					'name'     => 'admin_menu_user[]',
 					'id'       => 'admin_menu_user',
@@ -355,7 +354,7 @@ class admin {
 			'admin_menu',
 			__( 'サイドメニュー一覧', 'ggsupports' ),
 			function () {
-				$checked_admin_menus = helper::get_option( 'admin_menu' );
+				$checked_admin_menus = config::get_option( 'admin_menu' );
 				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
 				?>
 				<div id="ggs_admin_menus"></div>
@@ -365,6 +364,11 @@ class admin {
 			'admin_menu',
 			''
 		);
+
+		/**
+		 * 他のモジュールから拡張可能なようにアクションフックを仕掛ける
+		 */
+		do_action( 'ggs_settings_fields_after', $this );
 
 
 	}

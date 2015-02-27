@@ -21,6 +21,7 @@ use siteSupports\config;
 			<li><a href="#ggs-basic-setting"><?php _e( 'サイト設定', 'ggsupports' ) ?></a></li>
 			<li><a href="#ggs-dashboard-setting"><?php _e( 'ダッシュボードウィジェット', 'ggsupports' ) ?></a></li>
 			<li><a href="#ggs-admin_menu-setting"><?php _e( '管理メニュー', 'ggsupports' ) ?></a></li>
+			<li><a href="#ggs-optimize-setting"><?php _e( '最適化', 'ggsupports' ) ?></a></li>
 			<li><a href="#ggs-tools-setting"><?php _e( 'ツール', 'ggsupports' ) ?></a></li>
 			<li class="pull-right"><button type="submit" name="submit" id="submit" class="button button-primary"><?php _e( '変更を保存', 'ggsupports' ); ?></button><span class="spinner"></span> </li>
 		</ul>
@@ -45,6 +46,15 @@ use siteSupports\config;
 			do_settings_fields( config::get( 'prefix' ) . 'options_page', 'admin_menu_section' );
 			?>
 		</div>
+
+		<div id="ggs-optimize-setting">
+			<div class="acoordion">
+			<?php
+			do_settings_fields( config::get( 'prefix' ) . 'options_page', 'optimize_section' );
+			?>
+			</div>
+		</div>
+
 		<div id="ggs-tools-setting">
 			<h3><?php _e( '設定をエクスポート', 'ggsupports' ); ?></h3>
 			<p><?php _e( '設定をエクスポートします。', 'ggsupports' ); ?></p>

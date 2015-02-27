@@ -11,42 +11,21 @@ if ( ! defined( 'WPINC' ) ) {
 class helper {
 
 	/**
-	 * プラグインオプションの取得
-	 *
-	 * @param string $option_key
-	 *
-	 * @return bool|mixed|void
-	 */
-	public static function get_option( $option_key = '' ) {
-		$options = get_option( config::get( 'prefix' ) . 'options' );
-		if ( $option_key ) {
-			if ( isset( $options[ $option_key ] ) ) {
-				return $options[ $option_key ];
-			}
-		} else {
-			return $options;
-		}
-
-		return false;
-	}
-
-	/**
 	 * チェックを返す
 	 *
 	 * @param $option_key
 	 * @param $option_value
 	 * @param bool $output
 	 */
-	public static function checked( $option_key, $option_value, $defaults = '' ) {
-		$value = static::get_option( $option_key );
+	public static function checked( $option_key, $option_value, $default = false ) {
+		$value = config::get_option( $option_key );
+
 		if ( $value == $option_value ) {
 			echo 'checked="checked"';
 			return;
 		}
 
-		if ( $defaults
-		     && ( $option_value == $defaults )
-		) {
+		if ( ! $value && $default && $option_value == $default ) {
 			echo 'checked="checked"';
 			return;
 		}
@@ -60,7 +39,7 @@ class helper {
 	public static function radiobox( $args = array() ) {
 
 		$defaults = array(
-			'id'      => 'ggsupports_radiobox',
+			'id'      => 'ggs_radiobox',
 			'label'   => array(
 				'true'  => '有効',
 				'false' => '無効',

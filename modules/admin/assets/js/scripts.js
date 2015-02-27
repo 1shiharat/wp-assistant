@@ -37,6 +37,12 @@
             window.scrollTo(0, 0);
         });
         $('.form-group-radiobox').buttonset();
+        $('#submit').attr( 'disabled', 'disabled' );
+
+        $('#ggs_settings_form input,#ggs_settings_form textarea, #ggs_settings_form select').change(function(){
+            console.log('ishihar');
+            $('#submit').removeAttr( 'disabled' );
+        })
     });
 
     var flag = true;
@@ -51,7 +57,6 @@
         }
         flag = false;
         $('#ggs-tabs').find( '.spinner').show();
-        console.log($('#ggs_settings_form').serialize());
         $.ajax({
             'type': 'post',
             'url' : ajaxurl,
@@ -64,6 +69,7 @@
                 if ( 1 == data ) {
                     $('#ggs-tabs').find('.spinner').hide();
                     ggsMessage('success');
+                    $('#submit').attr( 'disabled', 'disabled' );
                 } else {
                     $('#ggs-tabs').find('.spinner').hide();
                     ggsMessage('faild');

@@ -15,6 +15,8 @@ use siteSupports\modules\cleanup;
 use siteSupports\modules\aceEditor;
 use siteSupports\modules\menuEditor;
 use siteSupports\modules\cf7AjaxZip;
+use siteSupports\modules\optimize;
+use siteSupports\modules\breadcrumb;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -55,8 +57,8 @@ class config{
 	/**
 	 * オプションを取得
 	 */
-	public static function get_options( $option_key = '' ){
-		$options = get_option( 'ggsupports_options' );
+	public static function get_option( $option_key = '' ){
+		$options = static::get( 'options' );
 		if ( $option_key ){
 			if ( isset( $options[$option_key] )  ){
 				return $options[$option_key];
@@ -68,15 +70,12 @@ class config{
 	}
 }
 
-
 /**
  * Class GGSupports
  * プラグインのメインクラス
  */
 class siteSupports {
-
 	private static $instance = null;
-
 	/**
 	 * インスタンスを取得
 	 * @return GGSupports|null クラスのインスタンス
@@ -89,13 +88,10 @@ class siteSupports {
 		return self::$instance;
 	}
 
-	/**
-	 * コンストラクタ
-	 */
 	private function __construct() {
-		// class のオートロード
 		new \siteSupports\autoload();
 
+		// キャッシュをセット
 		config::set( 'prefix', 'ggs_' );
 		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
 		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
@@ -107,16 +103,22 @@ class siteSupports {
 		add_action( 'init', array( new admin\admin(), '__construct' ), 10 );
 		add_action( 'init', array( new aceEditor\aceEditor(), '__construct' ), 10 );
 		add_action( 'init', array( new menuEditor\menuEditor(), '__construct' ), 10 );
+		add_action( 'init', array( new optimize\optimize(), '__construct' ), 10 );
 		add_action( 'init', array( new cf7AjaxZip\cf7AjaxZip(), 'cf7AjaxZip' ), 10 );
+		add_action( 'wp_footer', array( '\siteSupports\modules\breadcrumb\breadcrumb', 'shortcode' ), 10 );
+
+
 	}
 
+	/**
+	 * プラグイン有効化時のアクション
+	 */
 	public function activate(){
-
-		$options = get_option( 'ggsupports_options' );
+		$options = get_option( 'ggs_options' );
 		// オプションがない場合、初期設定
 		if ( ! $options ){
 			update_option( 'ggsupports_install', true );
 		}
-
 	}
+
 }
