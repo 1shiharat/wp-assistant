@@ -94,6 +94,7 @@ class admin {
 				$args = array(
 					'id'      => 'feed_links',
 					'default' => 0,
+					'desc' => __( 'wp_head に出力されるフィードリンクのオンオフを設定してください。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -108,6 +109,7 @@ class admin {
 				$args = array(
 					'id'      => 'wp_generator',
 					'default' => 0,
+					'desc' => __( 'wp_head にWordPressのバージョン情報を出力します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -122,6 +124,7 @@ class admin {
 				$args = array(
 					'id'      => 'wp_shortlink_wp_head',
 					'default' => 0,
+					'desc' => __( 'wp_head にショートリンクを出力します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -129,21 +132,6 @@ class admin {
 			0
 		);
 
-
-		$this->add_field(
-			'wpautop',
-			__( 'ショートリンクの出力', 'ggsupports' ),
-			function () {
-				$args = array(
-					'id'      => 'wpautop',
-					'default' => 0,
-					'desc'    => '',
-				);
-				helper::radiobox( $args );
-			},
-			'general',
-			0
-		);
 		$this->add_field(
 			'wpautop',
 			__( '自動整形の停止', 'ggsupports' ),
@@ -151,7 +139,7 @@ class admin {
 				$args = array(
 					'id'      => 'wpautop',
 					'default' => 0,
-					'desc'    => __( '記事を出力する際の自動整形を停止します。', 'ggsupports' ),
+					'desc'    => __( '自動整形を停止します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -165,13 +153,14 @@ class admin {
 				$args = array(
 					'id'      => 'revision',
 					'default' => 0,
-					'desc'    => __( '投稿、固定ページのリビジョン管理のを無効にすることができます。', 'ggsupports' ),
+					'desc'    => __( 'リビジョンコントロールを無効にすることができます。<br /> ※ 非表示にするのみです。データベースには蓄積されます。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
 			'general',
 			0
 		);
+
 		$this->add_field(
 			'jquery',
 			__( 'jQueryライブラリの読み込み', 'ggsupports' ),

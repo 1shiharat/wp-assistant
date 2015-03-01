@@ -45,6 +45,10 @@ class breadcrumb {
 	 * @return string
 	 */
 	public function __construct( $templates = array(), $options = array(), $strings = array(), $autorun = true ) {
+		add_shortcode( 'ggs_breadcrumb', array( $this, 'shortcode' ) );
+	}
+
+	public function init( $templates = array(), $options = array(), $strings = array(), $autorun = true  ){
 		/**
 		 * Set for HTML of breadcrumbs.
 		 */
@@ -81,10 +85,13 @@ class breadcrumb {
 			'paged'     => __( '%d ページ', 'ggsupports' ),
 			'404_error' => __( 'エラー: ページが見つかりませんでした。', 'ggsupports' ),
 		) );
+
 		// Generate breadcrumb
 		if ( $autorun ) {
 			echo $this->output();
+			return true;
 		}
+		return $this->output();
 	}
 
 	/**
@@ -160,6 +167,7 @@ class breadcrumb {
 		$post_type                     = get_post_type();
 		$queried_object                = get_queried_object();
 		$this->options['show_pagenum'] = ( $this->options['show_pagenum'] && is_paged() ) ? true : false;
+
 		// Home & Front Page
 		$this->breadcrumb['home'] = $this->template( $this->strings['home'], 'current' );
 		$home_linked              = $this->template( array(
@@ -336,8 +344,10 @@ class breadcrumb {
 			);
 		}
 	}
-	public function shortcode(){
-		new \siteSupports\modules\breadcrumb\breadcrumb();
+
+	public function shortcode( $content = '', $attr = array() ){
+		$breadcrumbs = new \siteSupports\modules\breadcrumb\breadcrumb();
+		return $this->init( $templates = array(), $options = array(), $strings = array(), $autorun = false  );
 	}
 }
 

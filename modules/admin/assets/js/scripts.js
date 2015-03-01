@@ -3,8 +3,12 @@
      * メッセージを表示
      * @param type メッセージの種類
      */
-    var ggsMessage = function (type) {
+    var ggsMessage = function (type, message) {
         var messageContainer = $('.ggs-message-' + type);
+        if ( message ){
+            messageContainer.html( message );
+        }
+
         var already = 'message-aleady';
         messageContainer.fadeIn();
         if ( ! messageContainer.hasClass(already)) {
@@ -78,4 +82,45 @@
             }
         })
     });
+
+    $(document).on('click','#optimize_submit',function(e){
+        e.preventDefault();
+        if ( false == flag ){
+            return false;
+        }
+        flag = false;
+        $('.run_optimize').find( '.spinner').show();
+        var nonce = $('#optimize_nonce').val();
+        $.ajax({
+            'type': 'post',
+            'url' : ajaxurl,
+            'data' :{
+                'action' : 'run_optimize',
+                '_wp_optimize_nonce' : nonce,
+            },
+            'success' : function(data){
+                if ( data.status == 'faild' ){
+                    $('.run_optimize').find('.spinner').hide();
+                    ggsMessage('faild',data.html );
+                    return false;
+                }
+
+                if ( data.optimize_revision ) {
+                    ggsMessage('success',data.optimize_revision );
+                }
+
+                if( data.optimize_auto_draft ) {
+                    ggsMessage('success',data.optimize_auto_draft );
+                }
+
+                if( data.optimize_trash ) {
+                    ggsMessage('success',data.optimize_trash );
+                }
+
+                flag = true;
+            }
+        });
+
+    })
+
 })(jQuery);
