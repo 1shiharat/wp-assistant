@@ -144,7 +144,7 @@ class admin {
 				helper::radiobox( $args );
 			},
 			'general',
-			0
+			1
 		);
 		$this->add_field(
 			'revision',
@@ -158,7 +158,7 @@ class admin {
 				helper::radiobox( $args );
 			},
 			'general',
-			0
+			1
 		);
 
 		$this->add_field(
@@ -218,7 +218,7 @@ class admin {
 				helper::radiobox( $args );
 			},
 			'general',
-			0
+			1
 		);
 
 		$this->add_field(
@@ -247,7 +247,7 @@ class admin {
 				helper::radiobox( $args );
 			},
 			'general',
-			0
+			1
 		);
 		$this->add_field(
 			'admin_page_nav',
@@ -261,7 +261,7 @@ class admin {
 				helper::radiobox( $args );
 			},
 			'general',
-			0
+			1
 		);
 		/**
 		 * 2 ダッシュボードウィジェット
@@ -303,9 +303,9 @@ class admin {
 					'editor_css'          => '',
 					'editor_class'        => '',
 					'teeny'               => false,
-					'dfw'                 => true,
+					'dfw'                 => false,
 					'_content_editor_dfw' => false,
-					'tinymce'             => true,
+					'tinymce'             => false,
 					'quicktags'           => true
 				);
 				wp_editor( $dashboard_contents, 'dashboard_contents', $editor_settings );
@@ -339,37 +339,6 @@ class admin {
 			)
 		);
 
-		add_submenu_page(
-			$this->option_page_slug,
-			__( 'サイト設定', 'ggsupports' ),
-			__( 'サイト設定', 'ggsupports' ),
-			'manage_options',
-			$this->option_page_slug,
-			function () {
-
-			}
-		);
-
-		add_submenu_page(
-			$this->option_page_slug,
-			__( 'DW設定', 'ggsupports' ),
-			__( 'DW設定', 'ggsupports' ),
-			'manage_options',
-			$this->option_page_slug . '#ggs-dashboard-setting',
-			function () {
-
-			}
-		);
-
-		add_submenu_page(
-			$this->option_page_slug,
-			__( '管理メニュー設定', 'ggsupports' ),
-			__( '管理メニュー設定', 'ggsupports' ),
-			'manage_options',
-			$this->option_page_slug . '#ggs-admin_menu-setting',
-			function () {
-			}
-		);
 	}
 
 	/**
@@ -444,7 +413,7 @@ class admin {
 	 *
 	 * @param string $desc
 	 */
-	public function add_field( $name, $title, $callback, $section, $desc = '', $default = 0 ) {
+	public function add_field( $name, $title, $callback, $section, $default = 0 ) {
 
 		if ( $title ) {
 			$title = '<h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>';
@@ -520,20 +489,5 @@ class admin {
 	}
 
 
-	/**
-	 * デフォルトのオプションを更新
-	 */
-	public function set_default_options(){
-		$install_flg = get_option( config::get( 'prefix' ) . 'install' );
-		if ( $this->setting_field_names ){
-			foreach( $this->setting_field_names as $field_name ){
-				$defaults[$field_name] = '0';
-			}
-
-		}
-		if ( ! $install_flg && $defaults ){
-			update_option( config::get( 'prefix' ) . 'options', $defaults  );
-		}
-	}
 
 }

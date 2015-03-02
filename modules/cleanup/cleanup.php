@@ -10,6 +10,7 @@
  */
 namespace siteSupports\modules\cleanup;
 
+use siteSupports\modules\adminPostNav;
 use siteSupports\config;
 use siteSupports\inc\helper;
 
@@ -129,7 +130,7 @@ class cleanup {
 	 * @param $option
 	 */
 	public function wpautop( $option ) {
-		if ( ! intval( $option ) ) {
+		if ( 1 == intval( $option ) ) {
 			/**
 			 * 通常コンテンツ
 			 */
@@ -154,6 +155,12 @@ class cleanup {
 		}
 	}
 
+	/**
+	 * リビジョンコントロールの非表示
+	 * @param $option
+	 *
+	 * @return bool
+	 */
 	public function revision( $option ) {
 		if ( ! intval( $option ) ) {
 			// リビジョンの停止
@@ -377,6 +384,12 @@ class cleanup {
 			$i ++;
 		}
 
+	}
+
+	public function admin_page_nav( $option ){
+		if ( intval( $option ) ) {
+			add_action( 'admin_init', array( new adminPostNav\adminPostNav(), 'init' ) );
+		}
 	}
 
 	/**

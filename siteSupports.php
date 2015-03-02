@@ -10,13 +10,13 @@ Author URI: http://grow-group.jp/
 
 namespace siteSupports;
 
-use siteSupports\modules\admin;
-use siteSupports\modules\cleanup;
 use siteSupports\modules\aceEditor;
-use siteSupports\modules\menuEditor;
-use siteSupports\modules\cf7AjaxZip;
-use siteSupports\modules\optimize;
+use siteSupports\modules\admin;
 use siteSupports\modules\breadcrumb;
+use siteSupports\modules\cf7AjaxZip;
+use siteSupports\modules\cleanup;
+use siteSupports\modules\menuEditor;
+use siteSupports\modules\optimize;
 use siteSupports\modules\tools;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -24,61 +24,19 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require 'autoload.php';
+require 'config.php';
 $GLOBALS['siteSupports'] = \siteSupports\siteSupports::get_instance();
 
-register_activation_hook( __FILE__ , \siteSupports\siteSupports::activate() );
-
-class config{
-
-	public static $prefix = 'ggs';
-
-	/**
-	 * キャッシュを取得
-	 * @param $key
-	 * @param $data
-	 */
-	public static function set( $key, $data ){
-		wp_cache_set( $key, $data, static::$prefix . '_options' );
-	}
-
-	/**
-	 * キャッシュから値を取得
-	 * @return string
-	 */
-	public static function get( $key ){
-		return wp_cache_get( $key, static::$prefix . '_options' );
-	}
-
-	/**
-	 * キャッシュから値を削除
-	 * @return string
-	 */
-	public static function delete( $key ){
-		return wp_cache_delete( $key, static::$prefix . '_options' );
-	}
-
-	/**
-	 * オプションを取得
-	 */
-	public static function get_option( $option_key = '' ){
-		$options = static::get( 'options' );
-		if ( $option_key ){
-			if ( isset( $options[$option_key] )  ){
-				return $options[$option_key];
-			}
-		} else {
-			return $options;
-		}
-		return false;
-	}
-}
+register_activation_hook( __FILE__, \siteSupports\siteSupports::activate() );
 
 /**
  * Class GGSupports
  * プラグインのメインクラス
  */
 class siteSupports {
+
 	private static $instance = null;
+
 	/**
 	 * インスタンスを取得
 	 * @return GGSupports|null クラスのインスタンス
@@ -88,9 +46,16 @@ class siteSupports {
 		if ( null == self::$instance ) {
 			self::$instance = new self;
 		}
+
 		return self::$instance;
 	}
 
+	/**
+	 * 初期化
+	 *
+	 * 各モジュールをアクションフックに登録
+	 * @return void
+	 */
 	private function __construct() {
 		new \siteSupports\autoload();
 
@@ -104,24 +69,27 @@ class siteSupports {
 		add_action( 'admin_init', array( new optimize\optimize(), '__construct' ), 10 );
 		add_action( 'admin_init', array( new tools\tools(), '__construct' ), 10 );
 		add_action( 'init', array( new cf7AjaxZip\cf7AjaxZip(), 'cf7AjaxZip' ), 10 );
-		add_action( 'init', array( new breadcrumb\breadcrumb, '__construct' ), 10 );
+		add_action( 'init', array( new breadcrumb\breadcrumb(), '__construct' ), 10 );
 	}
 
 	/**
 	 * キャッシュをセット
 	 */
-	private static function set_cache(){
+	private static function set_cache() {
 		// キャッシュをセット
 		config::set( 'prefix', 'ggs_' );
 		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
 		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
 		config::set( 'options', get_option( config::get( 'prefix' ) . 'options' ) );
+		if ( get_option( config::get( 'prefix' ) . 'install' ) ) {
+			config::set( 'install', true );
+		}
 	}
 
 	/**
 	 * プラグイン有効化時のアクション
 	 */
-	public static function activate(){
+	public static function activate() {
 		static::set_cache();
 		update_option( config::get( 'prefix' ) . 'install', true );
 	}

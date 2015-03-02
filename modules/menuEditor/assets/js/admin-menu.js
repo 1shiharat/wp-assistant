@@ -46,10 +46,11 @@
             adminMenu = $('#adminmenu > li'),
             menus = getMenuArray(adminMenu),
             savedMenus = GGS_ADMIN_MENU.menus.split(',');
+
         $.each(menus, function () {
             if (this.menuID && this.menuName) {
                 var checked = '';
-                if ($.inArray(this.menuID, savedMenus) > 0) {
+                if ( $.inArray(this.menuID, savedMenus) >= 0) {
                     checked = ' checked="checked"';
                 }
                 menuInputRender.append('<p><input type="checkbox" name="ggsupports_checkobox[]" value="' + this.menuID + '" ' + checked + '/>' + this.menuName + '</p>');

@@ -56,6 +56,10 @@ class menuEditor{
 
 	} // construct
 
+	/**
+	 * フィールドを追加
+	 * @param $admin
+	 */
 	public function add_fields( $admin ){
 
 		$admin->add_section( 'admin_menu', function () {
@@ -66,6 +70,9 @@ class menuEditor{
 			'admin_menu_user',
 			__( 'アカウントの選択', 'ggsupports' ),
 			function () {
+				?>
+				<div>
+				<?php
 				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
 				echo '<br />';
 				$selected = config::get_option( 'admin_menu_user' );
@@ -74,6 +81,7 @@ class menuEditor{
 					'id'       => 'admin_menu_user',
 					'selected' => $selected
 				) ); ?>
+				</div>
 			<?php
 			},
 			'admin_menu',
@@ -83,12 +91,15 @@ class menuEditor{
 		$admin->add_field(
 			'admin_menu',
 			__( 'サイドメニュー一覧', 'ggsupports' ),
-			function () {
-				$checked_admin_menus = config::get_option( 'admin_menu' );
-				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
-				?>
+			function () { ?>
+				<div>
+				<?php
+				$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
+				<p><?php _e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' ); ?></p>
 				<div id="ggs_admin_menus"></div>
+
 				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
+				</div>
 			<?php
 			},
 			'admin_menu',
