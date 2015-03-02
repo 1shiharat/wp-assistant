@@ -87,6 +87,7 @@ class menuEditor{
 			'admin_menu',
 			''
 		);
+		get_header();
 
 		$admin->add_field(
 			'admin_menu',

@@ -26,6 +26,9 @@ class cleanup {
 		add_action( 'load_template', array( $this, 'log_template_load' ), 10, 1 );
 		add_action( 'template_include', array( $this, 'log_template_load' ), 10, 1 );
 		add_action( 'locate_template', array( $this, 'log_template_load' ), 10, 1 );
+
+		// load_template にフィルターを追加
+		$this->check_was_upgraded();
 	}
 
 
@@ -403,6 +406,42 @@ class cleanup {
 		$this->templates[] = $template;
 
 		return $template;
+	}
+
+	/**
+	 * wpのバージョンチェック後、オプションが設定されていないなら
+	 * load_template()にアクションフックを追加
+	 * その後現在のwpバージョンをオプションに保存する
+	 */
+	private function check_was_upgraded() {
+		global $wp_version;
+		$last_updated_core_on_version = get_option( config::get( 'prefix' ) . 'install_wp_version');
+		if ( ! $last_updated_core_on_version || version_compare( $wp_version, $last_updated_core_on_version, ">" ) ) {
+			$added_filter = $this->maybe_insert_filter_into_load_template();
+			if ( $added_filter ) {
+				update_option( config::get( 'prefix' ) . 'install_wp_version', $wp_version);
+			}
+		}
+	}
+
+	private function maybe_insert_filter_into_load_template() {
+		ob_start();
+		$handle = fopen( ABSPATH . WPINC . "/template.php", "r+");
+		ob_end_clean();
+		if ( ! $handle ) {
+			return false;
+		}
+		$source = fread( $handle, 100000);
+		$string_to_insert = "\$_template_file = apply_filters('load_template', \$_template_file );";
+		$string_to_insert_before = "if ( \$require_once )";
+		if ( $s = strpos($source, $string_to_insert) )
+			return true;
+		else {
+			$source = str_replace($string_to_insert_before, $string_to_insert . "\n\n\t" . $string_to_insert_before, $source );
+		}
+		rewind($handle);
+		$success = fwrite($handle, $source);
+		return $success;
 	}
 
 }

@@ -4,7 +4,7 @@ Plugin Name: GrowGroup - サイト制作サポート
 Plugin URI: http://grow-group.jp/
 Description: Webサイト制作のお助けプラグイン
 Author: 1shiharaT
-Version: 0.0.3
+Version: 0.0.5
 Author URI: http://grow-group.jp/
 */
 
