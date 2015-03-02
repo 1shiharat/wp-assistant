@@ -4,10 +4,10 @@
 * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2CArial%2Csans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=highlight_soft&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=flat&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=glass&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=glass&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=glass&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=glass&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
 * Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
 
-#ggs-tabs a:focus,
-#ggs-tabs a:active,
-#ggs-tabs .ui-accordion-header:focus,
-#ggs-tabs .ui-accordion-header:active{
+#ggs_tabs a:focus,
+#ggs_tabs a:active,
+#ggs_tabs .ui-accordion-header:focus,
+#ggs_tabs .ui-accordion-header:active{
     outline: none !important;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -1047,11 +1047,11 @@ body .ui-tooltip {
     box-shadow: 0 1px 1px 1px rgba(0,0,0,0.03);
 }
 
-#ggs-tabs{
+#ggs_tabs{
     max-width: 1000px;
 }
 
-#ggs-tabs .pull-right{
+#ggs_tabs .pull-right{
     float: right;
 }
 div.ggs-message{
@@ -1083,4 +1083,15 @@ div.ggs-message .ggs-message-success{
     border-color: #2c7091;
     color: #FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+}
+
+.label{
+    background: #DD514C;
+    display: inline-block;
+    float: right;
+    padding: 4px 10px;
+    color: #FFF;
+    box-shadow: inset 0px -1px 1px rgba(255,255,255,0.8),0px 1px 1px rgba(0,0,0,0.05);
+    font-size: 10px;
+    border-radius: 3px;
 }

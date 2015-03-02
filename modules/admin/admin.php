@@ -86,7 +86,7 @@ class admin {
 		/**
 		 * 1. サイト設定
 		 */
-		$this->add_section( 'general', '' );
+		$this->add_section( 'general', '', __( 'サイトの設定', 'ggsupports' ) );
 		$this->add_field(
 			'feed_links',
 			__( 'フィードリンク (RSS)', 'ggsupports' ),
@@ -268,7 +268,7 @@ class admin {
 		 */
 		$this->add_section( 'dashboard', function () {
 			echo __( 'ダッシュボードウィジェットに表示するコンテンツを入力してください。', 'ggsupports' );
-		} );
+		}, __( 'ダッシュボードウィジェット', 'ggsupports' ) );
 
 		$this->add_field(
 			'dashboard_disp',
@@ -311,46 +311,6 @@ class admin {
 				wp_editor( $dashboard_contents, 'dashboard_contents', $editor_settings );
 			},
 			'dashboard',
-			''
-		);
-
-		/**
-		 * 3 管理メニューの設定
-		 */
-		$this->add_section( 'admin_menu', function () {
-			echo '管理メニューの設定';
-		} );
-
-		$this->add_field(
-			'admin_menu_user',
-			__( 'アカウントの選択', 'ggsupports' ),
-			function () {
-				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
-				echo '<br />';
-				$selected = config::get_option( 'admin_menu_user' );
-				admin::dropdown_users( array(
-					'name'     => 'admin_menu_user[]',
-					'id'       => 'admin_menu_user',
-					'selected' => $selected
-				) ); ?>
-			<?php
-			},
-			'admin_menu',
-			''
-		);
-
-		$this->add_field(
-			'admin_menu',
-			__( 'サイドメニュー一覧', 'ggsupports' ),
-			function () {
-				$checked_admin_menus = config::get_option( 'admin_menu' );
-				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
-				?>
-				<div id="ggs_admin_menus"></div>
-				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
-			<?php
-			},
-			'admin_menu',
 			''
 		);
 
@@ -410,7 +370,6 @@ class admin {
 			function () {
 			}
 		);
-
 	}
 
 	/**
@@ -456,22 +415,27 @@ class admin {
 	}
 
 	/**
-	 * SettingAPI add_settings_section のラッパー
+	 * Setting API add_settings_section のラッパー
 	 *
 	 * @param $name
 	 * @param $title
 	 */
-	public function add_section( $name, $title ) {
+	public function add_section( $name, $title, $tabs_name ) {
+
+		$section_name = $name . '_section';
 		add_settings_section(
-			$name . '_section',
+			$section_name,
 			$title,
 			'',
 			$this->option_page_slug
 		);
+
+		$this->setting_section_names[$section_name] = $tabs_name;
+
 	}
 
 	/**
-	 * SettingAPI add_setting_field のワッパー
+	 * Setting API add_setting_field のワッパー
 	 *
 	 * @param $name
 	 * @param $title
@@ -497,114 +461,11 @@ class admin {
 		$this->setting_field_names[] = $name;
 
 		if ( ! config::get( 'install' ) ) {
-			update_option( config::get( 'prefix' ) . '_options', $default );
+			$options = get_option( config::get( 'prefix' ) . 'options' );
+			$options[$name] = $default;
+			update_option( config::get( 'prefix' ) . 'options', $options );
 		}
 
-	}
-
-	/**
-	 * ユーザードロップダウンの出力
-	 *
-	 * @param string $args
-	 *
-	 * @return string
-	 */
-	public static function dropdown_users( $args = '' ) {
-		$defaults = array(
-			'show_option_all'         => '',
-			'show_option_none'        => '',
-			'hide_if_only_one_author' => '',
-			'orderby'                 => 'display_name',
-			'order'                   => 'ASC',
-			'include'                 => '',
-			'exclude'                 => '',
-			'multi'                   => 0,
-			'show'                    => 'display_name',
-			'echo'                    => 1,
-			'selected'                => 0,
-			'name'                    => 'user',
-			'class'                   => '',
-			'id'                      => '',
-			'blog_id'                 => $GLOBALS['blog_id'],
-			'who'                     => '',
-			'include_selected'        => false,
-			'option_none_value'       => - 1
-		);
-
-		$defaults['selected'] = is_author() ? get_query_var( 'author' ) : 0;
-
-		$r                 = wp_parse_args( $args, $defaults );
-		$show              = $r['show'];
-		$show_option_all   = $r['show_option_all'];
-		$show_option_none  = $r['show_option_none'];
-		$option_none_value = $r['option_none_value'];
-
-		$query_args           = wp_array_slice_assoc( $r, array(
-			'blog_id',
-			'include',
-			'exclude',
-			'orderby',
-			'order',
-			'who'
-		) );
-		$query_args['fields'] = array( 'ID', 'user_login', $show );
-		$users                = get_users( $query_args );
-
-		$output = '';
-		if ( ! empty( $users ) && ( empty( $r['hide_if_only_one_author'] ) || count( $users ) > 1 ) ) {
-			$name = esc_attr( $r['name'] );
-			if ( $r['multi'] && ! $r['id'] ) {
-				$id = '';
-			} else {
-				$id = $r['id'] ? " id='" . esc_attr( $r['id'] ) . "'" : " id='$name'";
-			}
-			$output = "<select name='{$name}'{$id} class='" . $r['class'] . "' multiple>\n";
-
-			if ( $show_option_all ) {
-				$output .= "\t<option value='0'>$show_option_all</option>\n";
-			}
-
-			if ( $show_option_none ) {
-				$_selected = selected( $option_none_value, $r['selected'], false );
-				$output .= "\t<option value='" . esc_attr( $option_none_value ) . "'$_selected>$show_option_none</option>\n";
-			}
-
-			$found_selected = false;
-			$i              = 0;
-			foreach ( (array) $users as $user ) {
-				$user->ID = (int) $user->ID;
-				if ( is_array( $r['selected'] )
-				     && in_array( $user->ID, $r['selected'] )
-				) {
-					$_selected = ' selected="selected"';
-				} else {
-					$_selected = "";
-				}
-
-				if ( $_selected ) {
-					$found_selected = true;
-				}
-				$display = ! empty( $user->$show ) ? $user->$show : '(' . $user->user_login . ')';
-				$output .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
-				$i ++;
-			}
-
-			if ( $r['include_selected'] && ! $found_selected && ( $r['selected'] > 0 ) ) {
-				$user      = get_userdata( $r['selected'] );
-				$_selected = selected( $user->ID, $r['selected'], false );
-				$display   = ! empty( $user->$show ) ? $user->$show : '(' . $user->user_login . ')';
-				$output .= "\t<option value='$user->ID'$_selected>" . esc_html( $display ) . "</option>\n";
-			}
-			$output .= "</select>";
-		}
-
-		$html = $output;
-
-		if ( $r['echo'] ) {
-			echo $html;
-		}
-
-		return $html;
 	}
 
 	/**
@@ -621,9 +482,15 @@ class admin {
 		$form_str = urldecode( $_REQUEST['form'] );
 		parse_str( $form_str, $form_array );
 
+		/**
+		 * 値が有効な場合、値を照合してサニタイズ後オプションを更新
+		 */
 		if ( $form_array ) {
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
 
+			/**
+			 * add_fieldで追加したinput以外は受け付けない
+			 */
 			foreach ( $settings as $settting_key => $setting ) {
 				if ( ! in_array( $settting_key, $this->setting_field_names ) ) {
 					unset( $settings[ $settting_key ] );
@@ -652,5 +519,21 @@ class admin {
 		return sanitize_text_field( $fields );
 	}
 
+
+	/**
+	 * デフォルトのオプションを更新
+	 */
+	public function set_default_options(){
+		$install_flg = get_option( config::get( 'prefix' ) . 'install' );
+		if ( $this->setting_field_names ){
+			foreach( $this->setting_field_names as $field_name ){
+				$defaults[$field_name] = '0';
+			}
+
+		}
+		if ( ! $install_flg && $defaults ){
+			update_option( config::get( 'prefix' ) . 'options', $defaults  );
+		}
+	}
 
 }

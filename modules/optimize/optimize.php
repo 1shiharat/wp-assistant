@@ -8,7 +8,7 @@ use siteSupports\inc\helper;
 class optimize {
 
 	public function __construct() {
-		add_action( 'ggs_settings_fields_after', array( $this, 'optimize_fields' ), 10, 1 );
+		add_action( 'ggs_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
 		add_action( 'wp_ajax_run_optimize', array( $this, 'run_optimize' ), 10, 1 );
 	}
 
@@ -17,13 +17,19 @@ class optimize {
 	 *
 	 * @param $admin
 	 */
-	public function optimize_fields( $admin ) {
+	public function add_settings( $admin ) {
 		global $wpdb;
-		$admin->add_section( 'optimize', function () {
-			echo 'データベース最適化';
-		} );
+
+		$admin->add_section(
+			'optimize',
+			function () {
+				echo 'データベース最適化';
+			},
+			__( 'データベース最適化', 'ggsupports' )
+		);
 
 		$revision_posts_count = wp_count_posts( 'revision' );
+
 		$admin->add_field(
 			'optimize_revision',
 			__( 'すべてのリビジョンの削除', 'ggsupports' ) . ' <label class="label">リビジョン数 : <span class="post-count post-count-auto-draft">' . esc_attr( $revision_posts_count->inherit  ). '</label> ',
@@ -44,6 +50,7 @@ class optimize {
 			'optimize',
 			0
 		);
+
 		$draft_results = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = \"auto-draft\"" );
 		$admin->add_field(
 			'optimize_auto_draft',
@@ -106,11 +113,12 @@ class optimize {
 			'optimize',
 			0
 		);
-
 	}
 
 	/**
 	 * 最適化を実行
+	 *
+	 * @return void
 	 */
 	public function run_optimize(){
 		global $wpdb;

@@ -1,7 +1,7 @@
 <?php
 /**
  * =====================================================
- * 管理画面での設定を
+ * 管理画面での設定を出力
  * @package   siteSupports
  * @author    Grow Group
  * @license   gpl v2 or later
@@ -21,9 +21,7 @@ class cleanup {
 	 * 初期化
 	 */
 	public function __construct() {
-		add_action( 'wp_head', array( $this, 'head_cleaner' ), 10 );
-		add_action( 'registered_taxonomy', array( $this, 'init' ), 1 );
-
+		add_action( 'init', array( $this, 'init' ), 1 );
 		add_action( 'load_template', array( $this, 'log_template_load' ), 10, 1 );
 		add_action( 'template_include', array( $this, 'log_template_load' ), 10, 1 );
 		add_action( 'locate_template', array( $this, 'log_template_load' ), 10, 1 );
@@ -32,16 +30,23 @@ class cleanup {
 
 	public function init() {
 
-		$options = config::get( 'options' );
+		if ( ! get_option( config::get( 'prefix' ) . 'install' ) ){
+			$options = get_option( config::get( 'prefix' ) . 'options' );
+		} else {
+			$options = config::get( 'options' );
+		}
 
-		foreach ( $options as $option_key => $option ) {
-			/**
-			 * サイトの設定なおかつ、対応したメソッドが存在する場合発動
-			 */
-			if ( method_exists( $this, $option_key ) ) {
-				$this->{$option_key}( $option );
+
+		if ( is_array( $options ) ) {
+			foreach ( $options as $option_key => $option ) {
+				/**
+				 * サイトの設定なおかつ、対応したメソッドが存在する場合発動
+				 */
+				if ( method_exists( $this, $option_key ) ) {
+					$this->{$option_key}( $option );
+				}
+
 			}
-
 		}
 	}
 

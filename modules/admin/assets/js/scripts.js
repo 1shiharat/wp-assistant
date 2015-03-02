@@ -26,7 +26,7 @@
             '#ggs-dashboard-setting': 1,
             '#ggs-admin-menu-setting' : 2
         };
-        $('#ggs-tabs').tabs(
+        $('#ggs_tabs').tabs(
             'enable', tab_id
         );
     }
@@ -35,18 +35,19 @@
     $(function () {
         window.addEventListener("hashchange", changeOnHash, false);
         $('.acoordion').accordion({animate: 100, autoHeight: false,heightStyle:"content"});
-        $('#ggs-tabs').tabs();
-        $('#ggs-tabs ul li a').on( 'click', function () {
+        $('#ggs_tabs').tabs();
+        $('#ggs_tabs ul li a').on( 'click', function () {
             location.hash = $(this).attr('href');
             window.scrollTo(0, 0);
         });
         $('.form-group-radiobox').buttonset();
         $('#submit').attr( 'disabled', 'disabled' );
 
-        $('#ggs_settings_form input,#ggs_settings_form textarea, #ggs_settings_form select').change(function(){
-            console.log('ishihar');
-            $('#submit').removeAttr( 'disabled' );
-        })
+    });
+
+    $(document).change('#ggs_settings_form *',function(){
+        console.log('ishihar');
+        $('#submit').removeAttr( 'disabled' );
     });
 
     var flag = true;
@@ -60,7 +61,7 @@
             return false;
         }
         flag = false;
-        $('#ggs-tabs').find( '.spinner').show();
+        $('#ggs_tabs').find( '.spinner').show();
         $.ajax({
             'type': 'post',
             'url' : ajaxurl,

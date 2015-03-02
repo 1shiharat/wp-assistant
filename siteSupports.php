@@ -17,6 +17,7 @@ use siteSupports\modules\menuEditor;
 use siteSupports\modules\cf7AjaxZip;
 use siteSupports\modules\optimize;
 use siteSupports\modules\breadcrumb;
+use siteSupports\modules\tools;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -24,6 +25,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 require 'autoload.php';
 $GLOBALS['siteSupports'] = \siteSupports\siteSupports::get_instance();
+
+register_activation_hook( __FILE__ , \siteSupports\siteSupports::activate() );
 
 class config{
 
@@ -92,31 +95,35 @@ class siteSupports {
 		new \siteSupports\autoload();
 
 		// キャッシュをセット
-		config::set( 'prefix', 'ggs_' );
-		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
-		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
-		config::set( 'install', true );
-		config::set( 'options', get_option( 'ggs_options' ) );
-
+		static::set_cache();
 		// wp_headやwp_footerなどから余計な記述を削除
 		add_action( 'plugins_loaded', array( new cleanup\cleanup(), '__construct' ), 0 );
 		add_action( 'admin_init', array( new admin\admin(), '__construct' ), 10 );
 		add_action( 'admin_init', array( new aceEditor\aceEditor(), '__construct' ), 10 );
 		add_action( 'admin_init', array( new menuEditor\menuEditor(), '__construct' ), 10 );
 		add_action( 'admin_init', array( new optimize\optimize(), '__construct' ), 10 );
+		add_action( 'admin_init', array( new tools\tools(), '__construct' ), 10 );
 		add_action( 'init', array( new cf7AjaxZip\cf7AjaxZip(), 'cf7AjaxZip' ), 10 );
 		add_action( 'init', array( new breadcrumb\breadcrumb, '__construct' ), 10 );
 	}
 
 	/**
+	 * キャッシュをセット
+	 */
+	private static function set_cache(){
+		// キャッシュをセット
+		config::set( 'prefix', 'ggs_' );
+		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
+		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
+		config::set( 'options', get_option( config::get( 'prefix' ) . 'options' ) );
+	}
+
+	/**
 	 * プラグイン有効化時のアクション
 	 */
-	public function activate(){
-		$options = get_option( 'ggs_options' );
-		// オプションがない場合、初期設定
-		if ( ! $options ){
-			update_option( 'ggsupports_install', true );
-		}
+	public static function activate(){
+		static::set_cache();
+		update_option( config::get( 'prefix' ) . 'install', true );
 	}
 
 }

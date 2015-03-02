@@ -52,6 +52,50 @@ class menuEditor{
 			echo '</style>';
 		}, 999 );
 
+		add_action( 'ggs_settings_fields_after', array( $this, 'add_fields' ), 10, 1 );
+
 	} // construct
+
+	public function add_fields( $admin ){
+
+		$admin->add_section( 'admin_menu', function () {
+			echo '管理メニューの設定';
+		}, __( '管理メニューの設定', 'ggsupports' ) );
+
+		$admin->add_field(
+			'admin_menu_user',
+			__( 'アカウントの選択', 'ggsupports' ),
+			function () {
+				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
+				echo '<br />';
+				$selected = config::get_option( 'admin_menu_user' );
+				helper::dropdown_users( array(
+					'name'     => 'admin_menu_user[]',
+					'id'       => 'admin_menu_user',
+					'selected' => $selected
+				) ); ?>
+			<?php
+			},
+			'admin_menu',
+			''
+		);
+
+		$admin->add_field(
+			'admin_menu',
+			__( 'サイドメニュー一覧', 'ggsupports' ),
+			function () {
+				$checked_admin_menus = config::get_option( 'admin_menu' );
+				_e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' );
+				?>
+				<div id="ggs_admin_menus"></div>
+				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
+			<?php
+			},
+			'admin_menu',
+			''
+		);
+
+	}
+
 
 }
