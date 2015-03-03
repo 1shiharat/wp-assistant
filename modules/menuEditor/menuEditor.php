@@ -25,6 +25,11 @@ class menuEditor{
 	 */
 	public function __construct(){
 
+		add_action( 'admin_print_scripts', function(){
+			$admin_menus = config::get_option( 'admin_menu' );
+			wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'GGS_ADMIN_MENU', array( 'menus' => $admin_menus ) );
+		}, 10 );
+
 		add_action( 'admin_menu', function(){
 			$admin_menus = config::get_option( 'admin_menu' );
 			if ( ! $admin_menus ) return;
