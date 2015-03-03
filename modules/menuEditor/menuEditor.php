@@ -25,12 +25,6 @@ class menuEditor{
 	 */
 	public function __construct(){
 
-		add_action( 'admin_print_scripts', function(){
-			wp_enqueue_script( 'ggs_admin_menu',  config::get( 'plugin_url' ) . 'modules/menuEditor/assets/js/admin-menu.js', null, null );
-			$admin_menus = config::get_option( 'admin_menu' );
-			wp_localize_script( 'ggs_admin_menu', 'GGS_ADMIN_MENU', array( 'menus' => $admin_menus ) );
-		}, 9999 );
-
 		add_action( 'admin_menu', function(){
 			$admin_menus = config::get_option( 'admin_menu' );
 			if ( ! $admin_menus ) return;
@@ -72,7 +66,7 @@ class menuEditor{
 	public function add_fields( $admin ){
 
 		$admin->add_section( 'admin_menu', function () {
-			echo '管理メニューの設定';
+			_e( '管理メニューの設定', 'ggsupports' );
 		}, __( '管理メニューの設定', 'ggsupports' ) );
 
 		$admin->add_field(
@@ -114,8 +108,5 @@ class menuEditor{
 			'admin_menu',
 			''
 		);
-
 	}
-
-
 }

@@ -94,7 +94,7 @@ class admin {
 				$args = array(
 					'id'      => 'feed_links',
 					'default' => 0,
-					'desc' => __( 'wp_head に出力されるフィードリンクのオンオフを設定してください。', 'ggsupports' ),
+					'desc'    => __( 'wp_head に出力されるフィードリンクのオンオフを設定してください。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -109,7 +109,7 @@ class admin {
 				$args = array(
 					'id'      => 'wp_generator',
 					'default' => 0,
-					'desc' => __( 'wp_head にWordPressのバージョン情報を出力します。', 'ggsupports' ),
+					'desc'    => __( 'wp_head にWordPressのバージョン情報を出力します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -124,7 +124,7 @@ class admin {
 				$args = array(
 					'id'      => 'wp_shortlink_wp_head',
 					'default' => 0,
-					'desc' => __( 'wp_head にショートリンクを出力します。', 'ggsupports' ),
+					'desc'    => __( 'wp_head にショートリンクを出力します。', 'ggsupports' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -361,25 +361,22 @@ class admin {
 
 		switch ( $hook ) {
 			case 'index.php' :
-				wp_enqueue_script( 'ggs_dashboard_widget', config::get( 'plugin_url' ) . 'modules/admin/assets/js/dashboard.js', array( 'jquery' ), false );
-				break;
 			case 'toplevel_page_' . config::get( 'prefix' ) . 'options_page' :
-				wp_enqueue_script( 'ggs_admin_scripts', config::get( 'plugin_url' ) . 'modules/admin/assets/js/scripts.js', array(
+				wp_enqueue_script( config::get( 'prefix' ) . 'admin_scripts', config::get( 'plugin_url' ) . 'assets/js/plugins.min.js', array(
 					'jquery',
 					'jquery-ui-tabs',
 					'jquery-ui-button',
 					'jquery-ui-accordion',
-					'jquery-ui-droppable',
-					'jquery-ui-draggable',
-				), false );
+				), config::get( 'version' ) );
 
-				wp_enqueue_style( 'jquery-ui-smoothness', config::get( 'plugin_url' ) . 'modules/admin/assets/css/jquery-ui.css', false, null );
-				wp_localize_script( 'ggs_admin_scripts', 'GGSSETTINGS', array(
+				wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'GGSSETTINGS', array(
 					'action'    => 'update_ggsupports_option',
 					'_wp_nonce' => wp_create_nonce( __FILE__ )
 				) );
 				break;
 		}
+
+		wp_enqueue_style( 'jquery-ui-smoothness', config::get( 'plugin_url' ) . 'assets/css/plugins.min.css', config::get( 'version' ), config::get( 'version' ) );
 
 	}
 
@@ -399,7 +396,7 @@ class admin {
 			$this->option_page_slug
 		);
 
-		$this->setting_section_names[$section_name] = $tabs_name;
+		$this->setting_section_names[ $section_name ] = $tabs_name;
 
 	}
 
@@ -430,8 +427,8 @@ class admin {
 		$this->setting_field_names[] = $name;
 
 		if ( ! config::get( 'install' ) ) {
-			$options = get_option( config::get( 'prefix' ) . 'options' );
-			$options[$name] = $default;
+			$options          = get_option( config::get( 'prefix' ) . 'options' );
+			$options[ $name ] = $default;
 			update_option( config::get( 'prefix' ) . 'options', $options );
 		}
 
@@ -485,9 +482,9 @@ class admin {
 		if ( is_array( $fields ) ) {
 			return array_map( 'sanitize_text_field', $fields );
 		}
+
 		return sanitize_text_field( $fields );
 	}
-
 
 
 }

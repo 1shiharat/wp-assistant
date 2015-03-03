@@ -6,3 +6,4 @@
         $( '#ggs_dashboard_widget' ).remove();
     });
 })(jQuery);
+

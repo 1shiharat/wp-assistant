@@ -21,7 +21,6 @@
         textarea.on('change', function(){
             editor.getSession().setValue(textarea.val());
         });
-
     }
 
     $(function(){

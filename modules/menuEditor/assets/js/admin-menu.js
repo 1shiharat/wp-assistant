@@ -1,7 +1,5 @@
-;
-"use strict";
 (function ($) {
-
+    "use strict";
     /**
      * メニューの配列を整形
      * @param adminMenu
@@ -12,7 +10,7 @@
         if (typeof adminMenu == 'undefined') {
             return false;
         }
-        $.each(adminMenu, function (menuKey, menu) {;
+        $.each(adminMenu, function (menuKey, menu) {
             $(this).find(".wp-menu-name").find('.pending-count').remove();
             $(this).find(".wp-menu-name").find('.plugin-count').remove();
             var menuName = $(this).find(".wp-menu-name").text();
@@ -36,7 +34,7 @@
                 checkedMenuID[key] = $(this).val();
             }
         });
-        ;
+
         $('#admin_menu_hidden').val(checkedMenuID.join(','));
     }
 
@@ -62,7 +60,5 @@
     // チェックボックスのクリック時イベント
     $(document).on('click', '#ggs_admin_menus input', function () {
         changeCheckedInput();
-    })
-
-
+    });
 })(jQuery);

@@ -1,0 +1,38 @@
+{
+  "name": "site-supports",
+  "version": "0.0.7",
+  "description": "Support plugins in order to produce a WordPress site.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1shiharaT/site-supports.git"
+  },
+  "keywords": [
+    "WordPress"
+  ],
+  "author": "1shiharaT",
+  "license": "GPLv2 or Later",
+  "bugs": {
+    "url": "https://github.com/1shiharaT/site-supports/issues"
+  },
+  "homepage": "https://github.com/1shiharaT/site-supports",
+  "devDependencies": {
+    "streamqueue": "^0.1.3",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-plumber": "^0.6.6",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-ruby-sass": "^1.0.0-alpha.3",
+    "gulp": "^3.8.11",
+    "gulp-uglify": "^1.1.0",
+    "gulp-csso": "^1.0.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-jshint": "^1.9.2",
+    "browser-sync": "^2.2.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-concat": "^2.5.2",
+    "jshint-stylish": "^1.0.1"
+  }
+}

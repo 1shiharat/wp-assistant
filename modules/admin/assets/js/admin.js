@@ -1,5 +1,5 @@
-;
 (function ($) {
+    "use strict";
     $.fn.multiAccordion = function() {
         $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
             .find("h3")
@@ -22,6 +22,7 @@
 })(jQuery);
 
 (function ($) {
+    "use strict";
     /**
      * メッセージを表示
      * @param type メッセージの種類
@@ -40,8 +41,7 @@
                 messageContainer.fadeOut();
             }, 800);
         }
-        //messageContainer.addClass(already);
-    }
+    };
 
     function changeOnHash() {
         var tab_id = location.hash;
@@ -76,17 +76,18 @@
         $('#submit').removeAttr('disabled');
     });
 
-    var flag = true;
+    var submit_flag = true;
+
     /**
      * 変更を保存時のイベント
      * @return void
      */
     $(document).on('click', '#submit', function (e) {
         e.preventDefault();
-        if (false == flag) {
+        if (false === submit_flag) {
             return false;
         }
-        flag = false;
+        submit_flag = false;
         $('#ggs_tabs ul').find('.spinner').show();
         $.ajax({
             'type': 'post',
@@ -105,26 +106,28 @@
                     $('#ggs_tabs ul').find('.spinner').hide();
                     ggsMessage('faild');
                 }
-                flag = true;
+                submit_flag = true;
             }
-        })
+        });
     });
     function countReset( target ){
         if ( ! target ){
             return false;
         }
-        var target = $('.post-count-' + target);
+        target = $('.post-count-' + target);
         target.text('0');
     }
+
+    var optimize_flag = true;
     /**
      * 最適化の実行
      */
     $(document).on('click', '#optimize_submit', function (e) {
         e.preventDefault();
-        if (false == flag) {
+        if ( false === optimize_flag) {
             return false;
         }
-        flag = false;
+        optimize_flag = false;
         $('.run_optimize').find('.spinner').show();
         var nonce = $('#optimize_nonce').val();
         $.ajax({
@@ -139,7 +142,7 @@
                 if (data.status == 'faild') {
 
                     ggsMessage('faild', '<h3>' + data.html + '</h3>');
-                    return false;
+                    //return false;
                 }
 
                 var message;
@@ -163,11 +166,10 @@
                     ggsMessage('success', message );
                 }
 
-
-                flag = true;
+                optimize_flag = true;
             }
         });
 
-    })
+    });
 
 })(jQuery);

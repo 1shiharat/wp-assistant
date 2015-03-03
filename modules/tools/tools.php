@@ -18,24 +18,14 @@ class tools {
 
 	public function __construct(){
 		add_action( 'ggs_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'ajax_ggs_option_import', array( $this, 'ggs_option_import' ) );
+		add_action( 'wp_ajax_ggs_option_import', array( $this, 'option_import' ) );
 	}
-	public function enqueue_scripts( $hook ){
-		if ( 'toplevel_page_' . config::get( 'prefix' ) . 'options_page'  == $hook ){
-			wp_enqueue_script( 'ggs_admin_scripts', config::get( 'plugin_url' ) . 'modules/tools/assets/js/option-import.js', array( 'jquery' ), false );
-		}
-	}
-
-	public function ggs_option_import(){
-
-	}
-
 
 	/**
 	 * フィールドを追加
 	 *
-	 * @param $admin
+	 * @param $admin siteSupports\module\admin\admin クラスのインスタンス
+	 * @return void
 	 */
 	public function add_settings( $admin ) {
 
@@ -54,7 +44,7 @@ class tools {
 				?>
 				<div>
 					<p><?php _e( '設定をテキストファイルとしてダウンロード', 'ggsupports' ); ?></p>
-					<div class="option-export">
+					<div class="tools-option-export">
 						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( config::get_option() ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( '設定をエクスポート', 'ggsupports' ); ?></a>
 					</div>
 				</div>
@@ -83,15 +73,44 @@ class tools {
 			'tools_import',
 			__( '設定をインポート', 'ggsupports' ),
 			function () {
+				$nonce = wp_create_nonce( __FILE__ );
 				?>
 				<div>
-					<input id="import_file" type="file" />
+					<input id="tools_option_import_file" type="file" />
+					<p>
+						<input type="hidden" id="tools_option_import_nonce" name="tools_option_import_nonce" value="<?php echo $nonce ?>" />
+						<button id="tools_option_import" class="button-secondary">設定をインポート</button>
+						<input type="hidden" name="tools_option_import_data" id="tools_option_import_data" value="" />
+						<span class="spinner"></span>
+					</p>
 				</div>
 				<?php
 			},
 			'tools',
 			0
 		);
+	}
+
+	/**
+	 * オプションをインポート
+	 * @return bool
+	 */
+	public function option_import(){
+		$nonce = esc_html( $_REQUEST['wp_import_nonce'] );
+		$importdata = $_REQUEST['import_data'];
+
+		if ( ! wp_verify_nonce( $nonce, __FILE__ )
+		     || !$importdata ) {
+			return false;
+			exit();
+		}
+
+		$data = maybe_unserialize( stripslashes_deep( $importdata ) );
+		if ( is_array( $data ) ){
+			update_option( config::get( 'prefix' ). 'options', $data );
+			echo 1;
+			exit();
+		}
 
 	}
 }

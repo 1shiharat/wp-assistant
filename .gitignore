@@ -1,0 +1,42 @@
+###############################################################################
+##                                                                            #
+##       GIT IGNORE FOR WORDPRESS SITES                                       #
+##       ------------------------------                                       #
+##       NOTE: TO STOP TRACKING A FILE AFTER IGNORING IT,                     #
+##             USE THESE GIT COMMANDS:                                        #
+##                                                                            #
+##             git rm --cached <file>                                         #
+##             git add . # or git add <file>                                  #
+##                                                                            #
+###############################################################################
+
+## OS and Utility Stuff ##
+
+#==================#
+#     OS Files     #
+#==================#
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*[Tt]humbs.db
+*.Trashes
+
+#==================#
+#    Log files     #
+#==================#
+*.log
+error_log
+access_log
+.sass-cache
+.tags
+.tags_sorted_by_file
+
+#============================================#
+#    Config. ,components and npm Files       #
+#============================================#
+node_modules
+assets/components
+src

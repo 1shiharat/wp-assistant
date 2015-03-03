@@ -1,24 +1,7 @@
-/*! jQuery UI - v1.11.2 - 2014-10-16
-* http://jqueryui.com
-* Includes: core.css, accordion.css, autocomplete.css, button.css, datepicker.css, dialog.css, draggable.css, menu.css, progressbar.css, resizable.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2CArial%2Csans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=highlight_soft&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=flat&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=glass&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=glass&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=glass&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=glass&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
-* Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
-
-#ggs_tabs a:focus,
-#ggs_tabs a:active,
-#ggs_tabs .ui-accordion-header:focus,
-#ggs_tabs .ui-accordion-header:active{
-    outline: none !important;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
-/* Layout helpers
-----------------------------------*/
 .ui-helper-hidden {
     display: none;
 }
+
 .ui-helper-hidden-accessible {
     border: 0;
     clip: rect(0 0 0 0);
@@ -29,6 +12,7 @@
     position: absolute;
     width: 1px;
 }
+
 .ui-helper-reset {
     margin: 0;
     padding: 0;
@@ -58,7 +42,6 @@
     left: 0;
     position: absolute;
     opacity: 0;
-    filter:Alpha(Opacity=0); /* support: IE8 */
 }
 
 .ui-front {
@@ -485,8 +468,6 @@ button.ui-button::-moz-focus-inner {
     margin: 0;
     padding: 3px 1em 3px .4em;
     cursor: pointer;
-    min-height: 0; /* support: IE7 */
-    /* support: IE10, see #8844 */
     list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
 }
 .ui-menu .ui-menu-divider {
@@ -851,7 +832,6 @@ body .ui-tooltip {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-    font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -963,6 +943,7 @@ body .ui-tooltip {
 .ui-widget-header .ui-state-error a {
     color: #cd0a0a;
 }
+
 .ui-state-error-text,
 .ui-widget-content .ui-state-error-text,
 .ui-widget-header .ui-state-error-text {
@@ -977,18 +958,15 @@ body .ui-tooltip {
 .ui-widget-content .ui-priority-secondary,
 .ui-widget-header .ui-priority-secondary {
     opacity: .7;
-    filter:Alpha(Opacity=70); /* support: IE8 */
     font-weight: normal;
 }
 .ui-state-disabled,
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
     opacity: .35;
-    filter:Alpha(Opacity=35); /* support: IE8 */
     background-image: none;
 }
 .ui-state-disabled .ui-icon {
-    filter:Alpha(Opacity=35); /* support: IE8 - See #6059 */
 }
 
 
@@ -1025,48 +1003,13 @@ body .ui-tooltip {
 .ui-widget-overlay {
     background: #000 50% 50% repeat-x;
     opacity: .6;
-    filter: Alpha(Opacity=30); /* support: IE8 */
 }
 .ui-widget-shadow {
     margin: -8px 0 0 -8px;
     padding: 8px;
     background: #000 50% 50% repeat-x;
     opacity: .6;
-    filter: Alpha(Opacity=30); /* support: IE8 */
     border-radius: 8px;
-}
-
-#ggs_settings_form h1{
-    font-size: 2em;
-    margin: .67em 0;
-    display: inline-block;
-    background: #FFF;
-    line-height: 2em;
-    padding: 5px 15px;
-    border-radius: 4px;
-    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.03);
-}
-
-#ggs_tabs{
-    max-width: 1000px;
-}
-
-#ggs_tabs .pull-right{
-    float: right;
-}
-div.ggs-message{
-    display: none;
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    left: 0px;
-    margin: 0;
-    z-index: 100000;
-}
-
-div.ggs-message .ggs-message-success{
-    background: rgba(29, 173, 6, 0.7);
-    color: #FFF;
 }
 
 .ui-button{
@@ -1083,25 +1026,4 @@ div.ggs-message .ggs-message-success{
     border-color: #2c7091;
     color: #FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
-}
-
-.label{
-    background: #DD514C;
-    display: inline-block;
-    float: right;
-    padding: 3px 10px;
-    color: #FFF;
-    box-shadow: inset 0px -1px 1px rgba(255,255,255,0.8),0px 1px 1px rgba(0,0,0,0.05);
-    font-size: 10px;
-    border-radius: 3px;
-}
-#ggs_admin_menu_section h3,
-#ggs_optimize_section h3{
-    border: 1px solid #dedede;
-    font-size: 16px;
-    padding: 10px;
-}
-#submit{
-    font-weight: normal;
-
 }

@@ -14,7 +14,7 @@ Plugin Name: サイト制作サポート
 Plugin URI: http://grow-group.jp/
 Description: Webサイト制作のお助けプラグイン
 Author: 1shiharaT
-Version: 0.0.6
+Version: 0.0.7
 Author URI: http://grow-group.jp/
 */
 
@@ -88,6 +88,7 @@ class siteSupports {
 	 */
 	private static function set_cache() {
 		// キャッシュをセット
+		config::set( 'version', static::get_version() );
 		config::set( 'prefix', 'ggs_' );
 		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
 		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
@@ -105,4 +106,8 @@ class siteSupports {
 		update_option( config::get( 'prefix' ) . 'install', true );
 	}
 
+	public static function get_version(){
+		$filedata = get_file_data( __FILE__, array( 'version' => 'version' ) );
+		return $filedata['version'];
+	}
 }
