@@ -1,14 +1,13 @@
 <?php
 /**
  * =====================================================
- * エディターをカスタマイズ
+ * プラグイン・テーマ編集エディターを構築
  * @package   siteSupports
  * @author    Grow Group
- * @license   gpl v2 or later
+ * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-
 namespace siteSupports\modules\aceEditor;
 
 use siteSupports\config;

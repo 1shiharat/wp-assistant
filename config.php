@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * =====================================================
+ * プラグインの設定をcacheで管理
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
+ */
 namespace siteSupports;
 
 class config{

@@ -1,4 +1,13 @@
 <?php
+/**
+ * =====================================================
+ * 管理画面サイドメニューを管理
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
+ */
 namespace siteSupports\modules\menuEditor;
 
 use siteSupports\config;
@@ -87,7 +96,6 @@ class menuEditor{
 			'admin_menu',
 			''
 		);
-		get_header();
 
 		$admin->add_field(
 			'admin_menu',

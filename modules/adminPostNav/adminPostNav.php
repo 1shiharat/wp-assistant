@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * =====================================================
+ * 記事編集画面にナビゲーションを設置
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * @see https://github.com/wpverse/Advanced-Post-Navigation
+ * =====================================================
+ */
 namespace siteSupports\modules\adminPostNav;
 
 use siteSupports\config;

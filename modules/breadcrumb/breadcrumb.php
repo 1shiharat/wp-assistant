@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * =====================================================
+ * パンくずを出力
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * @see https://github.com/wpverse/Advanced-Post-Navigation
+ * =====================================================
+ */
 namespace siteSupports\modules\breadcrumb;
 
 use siteSupports\inc;

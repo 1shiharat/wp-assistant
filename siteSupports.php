@@ -1,10 +1,20 @@
 <?php
+/**
+ * =====================================================
+ * サイト制作サポートプラグイン
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
+ */
+
 /*
-Plugin Name: GrowGroup - サイト制作サポート
+Plugin Name: サイト制作サポート
 Plugin URI: http://grow-group.jp/
 Description: Webサイト制作のお助けプラグイン
 Author: 1shiharaT
-Version: 0.0.5
+Version: 0.0.6
 Author URI: http://grow-group.jp/
 */
 
@@ -61,7 +71,8 @@ class siteSupports {
 
 		// キャッシュをセット
 		static::set_cache();
-		// wp_headやwp_footerなどから余計な記述を削除
+
+		// 各モジュールを登録
 		add_action( 'plugins_loaded', array( new cleanup\cleanup(), '__construct' ), 0 );
 		add_action( 'admin_init', array( new admin\admin(), '__construct' ), 10 );
 		add_action( 'admin_init', array( new aceEditor\aceEditor(), '__construct' ), 10 );

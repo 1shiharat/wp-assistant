@@ -1,6 +1,12 @@
 <?php
 /**
- * モジュールのオートロード
+ * =====================================================
+ * 名前空間からファイルをオートロード
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
  */
 namespace siteSupports;
 

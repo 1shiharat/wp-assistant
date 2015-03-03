@@ -4,7 +4,7 @@
  * 管理画面での設定を出力
  * @package   siteSupports
  * @author    Grow Group
- * @license   gpl v2 or later
+ * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */

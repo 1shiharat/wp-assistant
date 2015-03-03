@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * =====================================================
+ * データベースの最適化
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * =====================================================
+ */
 namespace siteSupports\modules\optimize;
 
 use siteSupports\config;

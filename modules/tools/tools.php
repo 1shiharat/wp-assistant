@@ -1,4 +1,14 @@
 <?php
+/**
+ * =====================================================
+ * 設定のエクスポート・インポート
+ * @package   siteSupports
+ * @author    Grow Group
+ * @license   GPL v2 or later
+ * @link      http://grow-group.jp
+ * @todo インポートの動作を追加
+ * =====================================================
+ */
 namespace siteSupports\modules\tools;
 
 use siteSupports\config;
