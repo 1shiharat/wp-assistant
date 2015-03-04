@@ -1,8 +1,7 @@
 <?php
-namespace siteSupports\inc;
+namespace WP_Assistant\inc;
 
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -41,8 +40,8 @@ class helper {
 		$defaults = array(
 			'id'      => 'ggs_radiobox',
 			'label'   => array(
-				'true'  => '有効',
-				'false' => '無効',
+				'true'  => __( 'ON', 'wp-assistant' ),
+				'false' => __( 'OFF', 'wp-assistant' ),
 			),
 			'value'   => array(
 				'true'  => 1,

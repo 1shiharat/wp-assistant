@@ -2,17 +2,14 @@
 /**
  * =====================================================
  * 記事編集画面にナビゲーションを設置
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * @see https://github.com/wpverse/Advanced-Post-Navigation
  * =====================================================
  */
-namespace siteSupports\modules\adminPostNav;
-
-use siteSupports\config;
-use siteSupports\inc\helper;
+namespace WP_Assistant\modules\adminPostNav;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -20,25 +17,28 @@ if ( ! defined( 'WPINC' ) ) {
 
 class adminPostNav {
 
+	private static $instance = null;
+
 	private static $prev_text = '';
 	private static $next_text = '';
-	private static $post_statuses     = array( 'draft', 'future', 'pending', 'private', 'publish' ); // Filterable later
+	private static $post_statuses = array( 'draft', 'future', 'pending', 'private', 'publish' ); // Filterable later
 	private static $post_statuses_sql = '';
-
-	/**
-	 * Returns version of the plugin.
-	 *
-	 * @since 1.7
-	 */
-	public static function version() {
-		return '1.8';
-	}
 
 	/**
 	 * Class constructor: initializes class variables and adds actions and filters.
 	 */
 	public static function init() {
 		add_action( 'load-post.php', array( __CLASS__, 'register_post_page_hooks' ) );
+	}
+
+	public static function get_instance() {
+
+		if ( null == static::$instance ) {
+			static::$instance = new static;
+		}
+
+		return self::$instance;
+
 	}
 
 	/**
@@ -50,13 +50,13 @@ class adminPostNav {
 	public static function register_post_page_hooks() {
 
 		// Set translatable strings
-		self::$prev_text = __( '&larr; 前の記事へ', 'ggsupports' );
-		self::$next_text = __( '次の記事へ &rarr;', 'ggsupports' );
+		self::$prev_text = __( '&larr; Previous', 'wp-assistant' );
+		self::$next_text = __( 'Next &rarr;', 'wp-assistant' );
 
 		// Register hooks
-		add_action( 'admin_enqueue_scripts',      array( __CLASS__, 'add_css' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_css' ) );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'add_js' ) );
-		add_action( 'do_meta_boxes',              array( __CLASS__, 'do_meta_box' ), 10, 3 );
+		add_action( 'do_meta_boxes', array( __CLASS__, 'do_meta_box' ), 10, 3 );
 	}
 
 	/**
@@ -68,18 +68,28 @@ class adminPostNav {
 	 * @param string $post_type The post type
 	 * @param string $type The mode for the meta box (normal, advanced, or side)
 	 * @param WP_Post $post The post
+	 *
 	 * @return void
 	 */
 	public static function do_meta_box( $post_type, $type, $post ) {
-		$post_types = apply_filters( 'c2c_admin_post_navigation_post_types', get_post_types() );
-		if ( ! in_array( $post_type, $post_types ) )
+		$post_types = get_post_types();
+		if ( ! in_array( $post_type, $post_types ) ) {
 			return;
+		}
 
-		$post_statuses = apply_filters( 'c2c_admin_post_navigation_post_statuses', self::$post_statuses, $post_type, $post );
-		self::$post_statuses_sql = "'" . implode( "', '", array_map( 'esc_sql', $post_statuses ) ) . "'";
-		$label = self::_get_post_type_label( $post_type );
-		if ( in_array( $post->post_status, $post_statuses ) )
-			add_meta_box( 'adminpostnav', sprintf( __( '%s Navigation', 'ggsupports' ), ucfirst( $post_type ) ), array( __CLASS__, 'add_meta_box' ), $post_type, 'side', 'core' );
+		$post_statuses           = static::$post_statuses;
+		self::$post_statuses_sql = implode( ", ", array_map( 'static::esc_sql_comma', $post_statuses ) );
+		$label                   = self::_get_post_type_label( $post_type );
+		if ( in_array( $post->post_status, $post_statuses ) ) {
+			add_meta_box( 'adminpostnav', sprintf( __( '%s Navigation', 'wp-assistant' ), ucfirst( $post_type ) ), array(
+				__CLASS__,
+				'add_meta_box'
+			), $post_type, 'side', 'core' );
+		}
+	}
+
+	public static function esc_sql_comma( $value ) {
+		return "'" . esc_sql( $value ) . "'";
 	}
 
 	/**
@@ -87,6 +97,7 @@ class adminPostNav {
 	 *
 	 * @param object $object
 	 * @param array $box
+	 *
 	 * @return void (Text is echoed.)
 	 */
 	public static function add_meta_box( $object, $box ) {
@@ -99,18 +110,19 @@ class adminPostNav {
 		if ( $prev ) {
 			$post_title = strip_tags( get_the_title( $prev->ID ) ); /* If only the_title_attribute() accepted post ID as arg */
 			$display .= '<a href="' . get_edit_post_link( $prev->ID ) . '" id="admin-post-nav-prev" title="' .
-			            esc_attr( sprintf( __( '前の記事 %1$s: %2$s', 'ggsupports' ), $context, $post_title ) ) .
+			            esc_attr( sprintf( __( 'Previous %1$s: %2$s', 'wp-assistant' ), $context, $post_title ) ) .
 			            '" class="admin-post-nav-prev add-new-h2">' . self::$prev_text . '</a>';
 		}
 
 		$next = self::next_post();
 		if ( $next ) {
-			if ( ! empty( $display ) )
+			if ( ! empty( $display ) ) {
 				$display .= ' ';
+			}
 			$post_title = strip_tags( get_the_title( $next->ID ) );  /* If only the_title_attribute() accepted post ID as arg */
 			$display .= '<a href="' . get_edit_post_link( $next->ID ) .
 			            '" id="admin-post-nav-next" title="' .
-			            esc_attr( sprintf( __( '次の記事 %1$s: %2$s', 'ggsupports' ), $context, $post_title ) ).
+			            esc_attr( sprintf( __( 'Next %1$s: %2$s', 'wp-assistant' ), $context, $post_title ) ) .
 			            '" class="admin-post-nav-next add-new-h2">' . self::$next_text . '</a>';
 		}
 
@@ -125,13 +137,16 @@ class adminPostNav {
 	 * @since 1.7
 	 *
 	 * @param string $post_type The post_type
+	 *
 	 * @return string The label for the post_type
 	 */
 	public static function _get_post_type_label( $post_type ) {
-		$label = $post_type;
+		$label            = $post_type;
 		$post_type_object = get_post_type_object( $label );
-		if ( is_object( $post_type_object ) )
+		if ( is_object( $post_type_object ) ) {
 			$label = $post_type_object->labels->singular_name;
+		}
+
 		return strtolower( $label );
 	}
 
@@ -166,7 +181,6 @@ HTML;
 		$('#adminpostnav, label[for="adminpostnav-hide"]').hide();
 	});
 	</script>
-
 JS;
 	}
 
@@ -182,34 +196,35 @@ JS;
 	 * @param string $type (optional) Either '<' or '>', indicating previous or next post, respectively. Default is '<'.
 	 * @param int $offset (optional) Offset. Default is 0.
 	 * @param int $limit (optional) Limit. Default is 15.
+	 *
 	 * @return string
 	 */
 	public static function query( $type = '<', $offset = 0, $limit = 15 ) {
 		global $post_ID, $wpdb;
 
-		if ( $type != '<' )
+		if ( $type != '<' ) {
 			$type = '>';
+		}
 		$offset = (int) $offset;
 		$limit  = (int) $limit;
 
 		$post_type = esc_sql( get_post_type( $post_ID ) );
-		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type = '$post_type' AND post_status IN (" . self::$post_statuses_sql . ') ';
 
-		// Determine order
-		if ( function_exists( 'is_post_type_hierarchical' ) && is_post_type_hierarchical( $post_type ) )
+		if ( function_exists( 'is_post_type_hierarchical' )
+		     && is_post_type_hierarchical( $post_type )
+		) {
 			$orderby = 'post_title';
-		else
+		} else {
 			$orderby = 'ID';
-		$orderby = esc_sql( apply_filters( 'c2c_admin_post_navigation_orderby', $orderby, $post_type ) );
-		$post = get_post( $post_ID );
-		$sql .= "AND $orderby $type '{$post->$orderby}' ";
+		}
+		$orderby = esc_sql( $orderby, $post_type );
+		$post    = get_post( $post_ID );
 
-		$sort = $type == '<' ? 'DESC' : 'ASC';
-		$sql .= "ORDER BY $orderby $sort LIMIT $offset, $limit";
-
-		// Find the first one the user can actually edit
-		$posts = $wpdb->get_results( $sql );
-		$result = false;
+		$sort              = $type == '<' ? 'DESC' : 'ASC';
+		$post_statuses_sql = static::$post_statuses_sql;
+		$sql               = $wpdb->prepare( "SELECT ID, post_title FROM $wpdb->posts WHERE post_type = %s AND post_status IN ( $post_statuses_sql ) AND $orderby $type %s ORDER BY %s %s LIMIT %d, %d;", $post_type, $post->$orderby, $orderby, $sort, $offset, $limit );
+		$posts             = $wpdb->get_results( $sql );
+		$result            = false;
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
 				if ( current_user_can( 'edit_post', $post->ID ) ) {
@@ -217,15 +232,17 @@ JS;
 					break;
 				}
 			}
-			if ( ! $result ) { // The fetch did not yield a post editable by user, so query again.
+			if ( ! $result ) {
 				$offset += $limit;
-				// Double the limit each time (if haven't found a post yet, chances are we may not, so try to get through posts quicker)
 				$limit += $limit;
+
 				return self::query( $type, $offset, $limit );
 			}
 		}
+
 		return $result;
 	}
+
 
 	/**
 	 * Returns the next post relative to the current post.

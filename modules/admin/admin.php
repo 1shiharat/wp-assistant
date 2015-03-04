@@ -2,18 +2,20 @@
 /**
  * =====================================================
  * 管理画面設定ページを構築
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   gpl v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports\modules\admin;
+namespace WP_Assistant\modules\admin;
 
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 
 class admin {
+
+	private static $instance = null;
 
 	/** @var string 設定ページのスラッグ */
 	public $option_page_slug = '';
@@ -42,6 +44,13 @@ class admin {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
 		add_action( 'wp_ajax_update_ggsupports_option', array( $this, 'update_ggsupports_option' ) );
+	}
+
+	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+		return self::$instance;
 	}
 
 	/**
@@ -86,15 +95,16 @@ class admin {
 		/**
 		 * 1. サイト設定
 		 */
-		$this->add_section( 'general', '', __( 'サイトの設定', 'ggsupports' ) );
+		$this->add_section(
+			'general', '', __( 'General', 'wp-assistant' ) );
 		$this->add_field(
 			'feed_links',
-			__( 'フィードリンク (RSS)', 'ggsupports' ),
+			__( 'Feed link tags (rss)', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'feed_links',
 					'default' => 0,
-					'desc'    => __( 'wp_head に出力されるフィードリンクのオンオフを設定してください。', 'ggsupports' ),
+					'desc'    => __( 'Please set the on or off of the feed links that are output to wp_head.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -104,12 +114,12 @@ class admin {
 
 		$this->add_field(
 			'wp_generator',
-			__( 'ジェネレーターメタタグの出力 (バージョン情報の出力)', 'ggsupports' ),
+			__( 'WordPress generator meta tag', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'wp_generator',
 					'default' => 0,
-					'desc'    => __( 'wp_head にWordPressのバージョン情報を出力します。', 'ggsupports' ),
+					'desc'    => __( 'The output the WordPress version information to wp_head.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -119,12 +129,12 @@ class admin {
 
 		$this->add_field(
 			'wp_shortlink_wp_head',
-			__( 'ショートリンクの出力', 'ggsupports' ),
+			__( 'The output of the short link', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'wp_shortlink_wp_head',
 					'default' => 0,
-					'desc'    => __( 'wp_head にショートリンクを出力します。', 'ggsupports' ),
+					'desc'    => __( 'The output a short link to wp_head.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -134,12 +144,12 @@ class admin {
 
 		$this->add_field(
 			'wpautop',
-			__( '自動整形の停止', 'ggsupports' ),
+			__( 'Stop of automatic formatting', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'wpautop',
 					'default' => 0,
-					'desc'    => __( '自動整形を停止します。', 'ggsupports' ),
+					'desc'    => __( 'Please select whether to stop the automatic formatting.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -148,12 +158,12 @@ class admin {
 		);
 		$this->add_field(
 			'revision',
-			__( 'リビジョンコントロールの停止', 'ggsupports' ),
+			__( 'Stop of revision control', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'revision',
 					'default' => 0,
-					'desc'    => __( 'リビジョンコントロールを無効にすることができます。<br /> ※ 非表示にするのみです。データベースには蓄積されます。', 'ggsupports' ),
+					'desc'    => __( 'You can choose to disable the revision control. * I only want to hide. The database will be accumulated.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -163,12 +173,12 @@ class admin {
 
 		$this->add_field(
 			'jquery',
-			__( 'jQueryライブラリの読み込み', 'ggsupports' ),
+			__( 'Load of the jQuery', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'jquery',
 					'default' => 0,
-					'desc'    => __( 'WordPressに内包されているjQueryライブラリを読み込みます。', 'ggsupports' ),
+					'desc'    => __( 'Please specify whether load the jQuery library of cdnjs.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -178,12 +188,12 @@ class admin {
 
 		$this->add_field(
 			'bootstrap',
-			__( 'Bootstrap3フレームワークの読み込み', 'ggsupports' ),
+			__( 'Load of The Bootstrap3 framework', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'bootstrap',
 					'default' => 0,
-					'desc'    => __( 'Bootstrap フレームワークを自動的に読み込みます。', 'ggsupports' ),
+					'desc'    => __( 'Please specify whether to load the Bootstrap framework', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -193,12 +203,12 @@ class admin {
 
 		$this->add_field(
 			'xmlrpc',
-			__( 'xmlrpcの停止', 'ggsupports' ),
+			__( 'Stop of xmlrpc', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'xmlrpc',
 					'default' => 0,
-					'desc'    => __( 'セキュリティ対策としてxmlrpcを無効にします。', 'ggsupports' ),
+					'desc'    => __( 'Please specify whether to disable the xmlrpc as a security measure.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -208,12 +218,42 @@ class admin {
 
 		$this->add_field(
 			'author_archive',
-			__( '著者アーカイブの無効', 'ggsupports' ),
+			__( 'Disable the author page', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'author_archive',
 					'default' => 0,
-					'desc'    => __( 'セキュリティ対策として著者アーカイブを無効にします。', 'ggsupports' ),
+					'desc'    => __( 'Please specify whether to disable the author archive as a security measure.', 'wp-assistant' ),
+				);
+				helper::radiobox( $args );
+			},
+			'general',
+			1
+		);
+
+//		$this->add_field(
+//			'disable_update',
+//			__( 'Disable automatic updates', 'wp-assistant' ),
+//			function () {
+//				$args = array(
+//					'id'      => 'disable_update',
+//					'default' => 0,
+//					'desc'    => __( 'Please specify whether to hide stops updating the WordPress and plugins.', 'wp-assistant' ),
+//				);
+//				helper::radiobox( $args );
+//			},
+//			'general',
+//			0
+//		);
+
+		$this->add_field(
+			'show_current_template',
+			__( 'Show in the admin bar the current template name', 'wp-assistant' ),
+			function () {
+				$args = array(
+					'id'      => 'show_current_template',
+					'default' => 1,
+					'desc'    => __( 'To view the template name in the management bar, please to ON', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -222,41 +262,13 @@ class admin {
 		);
 
 		$this->add_field(
-			'disable_update',
-			__( '自動更新の無効化', 'ggsupports' ),
-			function () {
-				$args = array(
-					'id'      => 'disable_update',
-					'default' => 0,
-					'desc'    => __( 'WordPress本体、プラグインの更新を停止し非表示にします。', 'ggsupports' ),
-				);
-				helper::radiobox( $args );
-			},
-			'general',
-			0
-		);
-		$this->add_field(
-			'show_current_template',
-			__( '現在のテンプレート名を管理バーに表示', 'ggsupports' ),
-			function () {
-				$args = array(
-					'id'      => 'show_current_template',
-					'default' => 1,
-					'desc'    => __( 'サイトフロント画面にて、現在表示されているテンプレート名を出力します。', 'ggsupports' ),
-				);
-				helper::radiobox( $args );
-			},
-			'general',
-			1
-		);
-		$this->add_field(
 			'admin_page_nav',
-			__( '管理画面編集ナビの有効化', 'ggsupports' ),
+			__( 'Enabling Admin post Navigation', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'admin_page_nav',
 					'default' => 1,
-					'desc'    => __( '管理画面の記事編集画面で、次の記事、前の記事リンクを表示します。', 'ggsupports' ),
+					'desc'    => __( 'In an article edit screen of the management screen, enabling the next post, the previous post link.', 'wp-assistant' ),
 				);
 				helper::radiobox( $args );
 			},
@@ -267,12 +279,12 @@ class admin {
 		 * 2 ダッシュボードウィジェット
 		 */
 		$this->add_section( 'dashboard', function () {
-			echo __( 'ダッシュボードウィジェットに表示するコンテンツを入力してください。', 'ggsupports' );
-		}, __( 'ダッシュボードウィジェット', 'ggsupports' ) );
+			echo __( 'Please input the content to be displayed on the dashboard widget.', 'wp-assistant' );
+		}, __( 'Replace Welcome Panel', 'wp-assistant' ) );
 
 		$this->add_field(
 			'dashboard_disp',
-			__( 'ダッシュボードウィジェットの有効化', 'ggsupports' ),
+			__( 'Enabling original dashboard widget', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'dashboard_disp',
@@ -287,9 +299,9 @@ class admin {
 
 		$this->add_field(
 			'dashboard_contents',
-			__( '', 'ggsupports' ),
+			'',
 			function () {
-				_e( '<p>ダッシュボードに表示させるコンテンツを入力してください。</p>', 'ggsupports' );
+				_e( '<p>Please enter the content to be displayed on the dashboard.</p>', 'wp-assistant' );
 				$dashboard_contents = config::get_option( 'dashboard_contents' );
 				$editor_settings    = array(
 					'wpautop'             => false,
@@ -329,8 +341,8 @@ class admin {
 	public function add_admin_menu() {
 
 		add_menu_page(
-			__( '制作サポート', 'ggsupports' ),
-			__( '制作サポート', 'ggsupports' ),
+			__( 'Supports', 'wp-assistant' ),
+			__( 'Supports', 'wp-assistant' ),
 			'manage_options',
 			$this->option_page_slug,
 			array(
@@ -426,6 +438,9 @@ class admin {
 
 		$this->setting_field_names[] = $name;
 
+		/**
+		 * インストールされていない場合、デフォルトの設定を登録
+		 */
 		if ( ! config::get( 'install' ) ) {
 			$options          = get_option( config::get( 'prefix' ) . 'options' );
 			$options[ $name ] = $default;

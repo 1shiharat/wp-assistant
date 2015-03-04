@@ -3,7 +3,7 @@
  オリジナルCSS
  */
 body {
-  font-family: Helvetica, Arial,"Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN W3","游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ",sans-serif;
+  font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
 }
 
 #ggs_settings_form h1 {
@@ -19,6 +19,8 @@ body {
 
 #ggs_tabs {
   max-width: 1000px;
+  background: transparent;
+  border: none;
 }
 
 #ggs_tabs .pull-right {
@@ -56,20 +58,18 @@ div.ggs-message {
   float: right;
   padding: 3px 10px;
   color: #FFF;
-  box-shadow: inset 0px -1px 1px rgba(255, 255, 255, 0.8), 0px 1px 1px rgba(0, 0, 0, 0.05);
   font-size: 10px;
   border-radius: 3px;
 }
 
-#ggs_admin_menu_section h3,
-#ggs_optimize_section h3 {
-  border: 1px solid #dedede;
-  font-size: 16px;
-  padding: 10px;
-}
-
 #submit {
   font-weight: normal;
+  padding-left: 20px;
+  display: inline-block;
+  padding-right: 20px;
+  line-height: 2em;
+  height: 40px;
+  margin-top: -20px;
 }
 
 .ui-helper-hidden {
@@ -163,6 +163,7 @@ div.ggs-message {
   /* support: IE7 */
   font-size: 100%;
   padding: 12px;
+  margin-top: 10px;
 }
 
 .ui-accordion .ui-accordion-icons {
@@ -183,11 +184,11 @@ div.ggs-message {
 .ui-accordion .ui-accordion-content {
   padding: 1.0em 1.6em;
   border-top: 0;
-  /*height: auto !important;*/
-  /*min-height: 60px;*/
   overflow: auto;
   clear: both;
-  width: 95%;
+  margin-bottom: 1.0em;
+  margin-right: 0;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.02);
 }
 
 .ui-accordion .ui-accordion-content p {
@@ -213,6 +214,11 @@ div.ggs-message {
   text-align: center;
   overflow: visible;
   /* removes extra width in IE */
+  background: white;
+  background: -moz-linear-gradient(top, white 0%, white 40%, #f2f2f2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(40%, white), color-stop(100%, #f2f2f2));
+  background: -webkit-linear-gradient(top, white 0%, white 40%, #f2f2f2 100%);
+  background: linear-gradient(to bottom, white 0%, white 40%, #f2f2f2 100%);
 }
 
 .ui-button,
@@ -249,7 +255,7 @@ button.ui-button-icons-only {
 }
 
 .ui-button-text-only .ui-button-text {
-  padding: 0.2em 0.7em;
+  padding: 0.3em 0.7em;
 }
 
 .ui-button-icon-only .ui-button-text,
@@ -974,12 +980,14 @@ button.ui-button::-moz-focus-inner {
   position: relative;
   /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
   padding: .2em;
+  background: transparent;
 }
 
 .ui-tabs .ui-tabs-nav {
   margin: 0;
-  padding: .2em .2em 0;
-  /* overflow: hidden; */
+  padding: 0;
+  border: none;
+  background: transparent;
 }
 
 .ui-tabs .ui-tabs-nav li {
@@ -991,18 +999,19 @@ button.ui-button::-moz-focus-inner {
   border-bottom-width: 0;
   padding: 0;
   white-space: nowrap;
+  border-radius: 4px 4px 0 0;
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
   float: left;
-  padding: .5em 1em;
+  padding: .6em 1em;
   text-decoration: none;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
   margin-bottom: -1px;
   padding-bottom: 1px;
-  box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.05), -1px -1px 1px rgba(0, 0, 0, 0.05), 1px -1px 1px rgba(0, 0, 0, 0.05);
+  background: #FFF;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
@@ -1018,8 +1027,9 @@ button.ui-button::-moz-focus-inner {
 .ui-tabs .ui-tabs-panel {
   display: block;
   border-width: 0;
-  padding: 1em 1.4em;
-  background: none;
+  background: FFF;
+  padding: 1em;
+  border: 1px solid #ddd;
 }
 
 .ui-tooltip {
@@ -1049,7 +1059,7 @@ body .ui-tooltip {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Verdana, Arial, sans-serif;
   font-size: 1em;
 }
 
@@ -1080,8 +1090,6 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
   border: 1px solid #e5e5e5;
-  background: #fafafa;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   font-weight: normal;
   color: #222;
 }
@@ -1120,8 +1128,8 @@ body .ui-tooltip {
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-  border: 1px solid #aaaaaa;
-  background: #ffffff;
+  border: 1px solid #ddd;
+  background: #F7F7F7;
   font-weight: normal;
   color: #212121;
 }

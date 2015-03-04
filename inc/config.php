@@ -2,13 +2,13 @@
 /**
  * =====================================================
  * プラグインの設定をcacheで管理
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports;
+namespace WP_Assistant\inc;
 
 class config{
 

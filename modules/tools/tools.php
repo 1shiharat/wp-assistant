@@ -2,29 +2,39 @@
 /**
  * =====================================================
  * 設定のエクスポート・インポート
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * @todo インポートの動作を追加
  * =====================================================
  */
-namespace siteSupports\modules\tools;
+namespace WP_Assistant\modules\tools;
 
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 
 class tools {
+
+	private static $instance = null;
 
 	public function __construct(){
 		add_action( 'ggs_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
 		add_action( 'wp_ajax_ggs_option_import', array( $this, 'option_import' ) );
 	}
 
+	public static function get_instance() {
+
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+		return self::$instance;
+
+	}
 	/**
 	 * フィールドを追加
 	 *
-	 * @param $admin siteSupports\module\admin\admin クラスのインスタンス
+	 * @param $admin WP_Assistant\module\admin\admin クラスのインスタンス
 	 * @return void
 	 */
 	public function add_settings( $admin ) {
@@ -32,20 +42,20 @@ class tools {
 		$admin->add_section(
 			'tools',
 			function () {
-				echo 'ツール';
+				_e( 'Tools', 'wp-assistant' );
 			},
-			__( 'ツール', 'ggsupports' )
+			__( 'Tools', 'wp-assistant' )
 		);
 
 		$admin->add_field(
 			'tools_export',
-			__( '設定のエクスポート', 'ggsupports' ),
+			__( 'Export Settings', 'wp-assistant' ),
 			function () {
 				?>
 				<div>
-					<p><?php _e( '設定をテキストファイルとしてダウンロード', 'ggsupports' ); ?></p>
+					<p><?php _e( 'Download the set as a text file.', 'wp-assistant' ); ?></p>
 					<div class="tools-option-export">
-						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( config::get_option() ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( '設定をエクスポート', 'ggsupports' ); ?></a>
+						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( config::get_option() ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
 					</div>
 				</div>
 			<?php
@@ -56,7 +66,7 @@ class tools {
 
 		$admin->add_field(
 			'tools_export_text',
-			__( '設定をコピー', 'ggsupports' ) ,
+			__( 'Settings Copy', 'wp-assistant' ) ,
 			function () {
 				?>
 				<div>
@@ -71,7 +81,7 @@ class tools {
 
 		$admin->add_field(
 			'tools_import',
-			__( '設定をインポート', 'ggsupports' ),
+			__( 'Import Settings', 'wp-assistant' ),
 			function () {
 				$nonce = wp_create_nonce( __FILE__ );
 				?>
@@ -79,7 +89,7 @@ class tools {
 					<input id="tools_option_import_file" type="file" />
 					<p>
 						<input type="hidden" id="tools_option_import_nonce" name="tools_option_import_nonce" value="<?php echo $nonce ?>" />
-						<button id="tools_option_import" class="button-secondary">設定をインポート</button>
+						<button id="tools_option_import" class="button-secondary"><?php _e( 'Import', 'wp-assistant' ); ?></button>
 						<input type="hidden" name="tools_option_import_data" id="tools_option_import_data" value="" />
 						<span class="spinner"></span>
 					</p>

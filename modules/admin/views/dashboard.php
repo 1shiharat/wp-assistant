@@ -1,6 +1,6 @@
 <?php
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 ?>
 <div id="ggsdashboard" class="welcome-panel">
 	<div class="welcome-panel-content">

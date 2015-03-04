@@ -2,19 +2,21 @@
 /**
  * =====================================================
  * 管理画面での設定を出力
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports\modules\cleanup;
+namespace WP_Assistant\modules\cleanup;
 
-use siteSupports\modules\adminPostNav;
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\modules\adminPostNav;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 
 class cleanup {
+
+	private static $instance = null;
 
 	public $templates = array();
 
@@ -22,17 +24,6 @@ class cleanup {
 	 * 初期化
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'init' ), 1 );
-		add_action( 'load_template', array( $this, 'log_template_load' ), 10, 1 );
-		add_action( 'template_include', array( $this, 'log_template_load' ), 10, 1 );
-		add_action( 'locate_template', array( $this, 'log_template_load' ), 10, 1 );
-
-		// load_template にフィルターを追加
-		$this->check_was_upgraded();
-	}
-
-
-	public function init() {
 
 		if ( ! get_option( config::get( 'prefix' ) . 'install' ) ){
 			$options = get_option( config::get( 'prefix' ) . 'options' );
@@ -52,7 +43,24 @@ class cleanup {
 
 			}
 		}
+
+		add_action( 'load_template', array( $this, 'log_template_load' ), 10, 1 );
+		add_action( 'template_include', array( $this, 'log_template_load' ), 10, 1 );
+		add_action( 'locate_template', array( $this, 'log_template_load' ), 10, 1 );
+		// load_template にフィルターを追加
+		$this->check_was_upgraded();
 	}
+
+	public static function get_instance() {
+
+		if ( null == static::$instance ) {
+			static::$instance = new static;
+		}
+
+		return self::$instance;
+
+	}
+
 
 	/**
 	 * wp_headから余計な記述を削除
@@ -352,7 +360,7 @@ class cleanup {
 			array(
 				'id'    => 'admin_bar_template',
 				'meta'  => array(),
-				'title' => __( '<span class="ab-icon"></span> テンプレート名 : ', 'ggsupports' ) . basename( $template ),
+				'title' => __( '<span class="ab-icon"></span> Template : ', 'wp-assistant' ) . basename( $template ),
 				'href'  => admin_url( '/theme-editor.php?file=' . basename( $template ) . '&theme=' . get_template() )
 			)
 		);

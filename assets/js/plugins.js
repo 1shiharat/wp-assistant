@@ -30,7 +30,7 @@
     var timer;
     var ggsMessage = function (type, message) {
         var messageContainer = $('.ggs-message-' + type);
-        if (message) {
+        if ( message ) {
             messageContainer.html(message);
         }
         var already = 'message-aleady';
@@ -38,7 +38,7 @@
         clearTimeout(timer);
         if ( ! messageContainer.hasClass(already)) {
             timer = setTimeout(function () {
-                messageContainer.fadeOut();
+                messageContainer.fadeOut('500');
             }, 800);
         }
     };
@@ -139,34 +139,36 @@
             },
             'success': function (data) {
                 $('.run_optimize').find('.spinner').hide();
-                if (data.status == 'faild') {
+                if ( data.status == 'faild') {
 
                     ggsMessage('faild', '<h3>' + data.html + '</h3>');
                     //return false;
+                } else {
+
+                    //var message = '';
+                    var message = document.createElement('div');
+                    var heading = document.createElement('h3');
+                    if ( data.optimize_revision ) {
+                        $(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
+                        countReset('revision');
+                    }
+
+                    if (data.optimize_auto_draft) {
+                        $(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
+                        countReset('auto_draft');
+                    }
+
+                    if (data.optimize_trash) {
+                        $(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
+                        countReset('trash');
+                    }
+
+                    if ( $(message).length > 0 ){
+                        ggsMessage( 'optimize', $(message) );
+                    }
+
+                    optimize_flag = true;
                 }
-
-                var message;
-
-                if (data.optimize_revision) {
-                    message = '<h3>' + data.optimize_revision + '</h3>';
-                    countReset('revision');
-                }
-
-                if (data.optimize_auto_draft) {
-                    message += '<h3>' + data.optimize_auto_draft + '</h3>';
-                    countReset('auto_draft');
-                }
-
-                if (data.optimize_trash) {
-                    message += '<h3>' + data.optimize_trash + '</h3>';
-                    countReset('trash');
-
-                }
-                if ( message ){
-                    ggsMessage('success', message );
-                }
-
-                optimize_flag = true;
             }
         });
 

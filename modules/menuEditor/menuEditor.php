@@ -2,16 +2,16 @@
 /**
  * =====================================================
  * 管理画面サイドメニューを管理
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports\modules\menuEditor;
+namespace WP_Assistant\modules\menuEditor;
 
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -19,6 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class menuEditor{
+
+	private static $instance = null;
 
 	/**
 	 * 初期化
@@ -64,6 +66,15 @@ class menuEditor{
 
 	} // construct
 
+	public static function get_instance() {
+
+		if ( null == static::$instance ) {
+			static::$instance = new static;
+		}
+		return self::$instance;
+
+	}
+
 	/**
 	 * フィールドを追加
 	 * @param $admin
@@ -71,17 +82,17 @@ class menuEditor{
 	public function add_fields( $admin ){
 
 		$admin->add_section( 'admin_menu', function () {
-			_e( '管理メニューの設定', 'ggsupports' );
-		}, __( '管理メニューの設定', 'ggsupports' ) );
+			_e( 'Admin Menu', 'wp-assistant' );
+		}, __( 'Admin Menu Settings', 'wp-assistant' ) );
 
 		$admin->add_field(
 			'admin_menu_user',
-			__( 'アカウントの選択', 'ggsupports' ),
+			__( 'Select User', 'wp-assistant' ),
 			function () {
 				?>
 				<div>
 				<?php
-				_e( '管理メニュー変更を適用させるアカウントを選択して下さい。<br />shiftキーを押しながら選択することで複数選択できます。', 'ggsupports' );
+				_e( 'Please select the account to apply the Admin menu change. <br /> * You can select more than one by selecting while holding down the  shift key.', 'wp-assistant' );
 				echo '<br />';
 				$selected = config::get_option( 'admin_menu_user' );
 				helper::dropdown_users( array(
@@ -98,12 +109,12 @@ class menuEditor{
 
 		$admin->add_field(
 			'admin_menu',
-			__( 'サイドメニュー一覧', 'ggsupports' ),
+			__( 'Select Admin Menu', 'wp-assistant' ),
 			function () { ?>
 				<div>
 				<?php
 				$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
-				<p><?php _e( '非表示にする管理メニューを選択をしてください。', 'ggsupports' ); ?></p>
+				<p><?php _e( 'Please refer to the select the management menu you want to hide.', 'wp-assistant' ); ?></p>
 				<div id="ggs_admin_menus"></div>
 
 				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>

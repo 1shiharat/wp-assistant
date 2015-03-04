@@ -44,8 +44,7 @@ gulp.task('scripts', function () {
 
 // styles
 gulp.task('styles', function() {
-    return sass('./modules/admin/assets/css/',{ style: 'expanded' })
-        .pipe($.plumber())
+    return $.plumber().pipe(sass('./modules/admin/assets/css/',{ style: 'expanded' }))
         .pipe($.concat('plugins.css'))
         .pipe(gulp.dest('./assets/css'))
         .pipe($.rename({ suffix: '.min' }))

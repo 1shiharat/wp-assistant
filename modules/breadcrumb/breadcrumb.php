@@ -2,17 +2,17 @@
 /**
  * =====================================================
  * パンくずを出力
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * @see https://github.com/wpverse/Advanced-Post-Navigation
  * =====================================================
  */
-namespace siteSupports\modules\breadcrumb;
+namespace WP_Assistant\modules\breadcrumb;
 
-use siteSupports\inc;
-use siteSupports\config;
+use WP_Assistant\inc;
+use WP_Assistant\inc\config;
 
 class breadcrumb {
 
@@ -43,6 +43,12 @@ class breadcrumb {
 	 */
 	public $options;
 
+	private static $instance = null;
+
+	public function __construct(){
+		add_shortcode( 'ggs_breadcrumb', array( $this, 'shortcode' ) );
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -53,11 +59,18 @@ class breadcrumb {
 	 *
 	 * @return string
 	 */
-	public function __construct( $templates = array(), $options = array(), $strings = array(), $autorun = true ) {
-		add_shortcode( 'ggs_breadcrumb', array( $this, 'shortcode' ) );
+
+	public static function get_instance() {
+
+		if ( null == static::$instance ) {
+			static::$instance = new static;
+		}
+		return self::$instance;
+
 	}
 
 	public function init( $templates = array(), $options = array(), $strings = array(), $autorun = true  ){
+
 		/**
 		 * Set for HTML of breadcrumbs.
 		 */
@@ -86,13 +99,13 @@ class breadcrumb {
 		 * @var [type]
 		 */
 		$this->strings = wp_parse_args( $strings, array(
-			'home'      => __( 'ホーム', 'ggsupports' ),
+			'home'      => __( 'HOME', 'wp-assistant' ),
 			'search'    => array(
-				'singular' => __( '<em>%s</em> の検索結果', 'ggsupports' ),
-				'plural'   => __( '%s Search results for <em>%s</em>', 'ggsupports' ),
+				'singular' => __( 'Search results for<em>%s</em>', 'wp-assistant' ),
+				'plural'   => __( '%s Search results for <em>%s</em>', 'wp-assistant' ),
 			),
-			'paged'     => __( '%d ページ', 'ggsupports' ),
-			'404_error' => __( 'エラー: ページが見つかりませんでした。', 'ggsupports' ),
+			'paged'     => __( 'Pages: %d ', 'wp-assistant' ),
+			'404_error' => __( 'Error: Not Found 404', 'wp-assistant' ),
 		) );
 
 		// Generate breadcrumb
@@ -100,6 +113,9 @@ class breadcrumb {
 			echo $this->output();
 			return true;
 		}
+
+
+
 		return $this->output();
 	}
 
@@ -355,7 +371,7 @@ class breadcrumb {
 	}
 
 	public function shortcode( $content = '', $attr = array() ){
-		$breadcrumbs = new \siteSupports\modules\breadcrumb\breadcrumb();
+		$breadcrumbs = new \WP_Assistant\modules\breadcrumb\breadcrumb();
 		return $this->init( $templates = array(), $options = array(), $strings = array(), $autorun = false  );
 	}
 }

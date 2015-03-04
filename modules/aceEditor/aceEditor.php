@@ -2,26 +2,35 @@
 /**
  * =====================================================
  * プラグイン・テーマ編集エディターを構築
- * @package   siteSupports
+ * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
  * @link      http://grow-group.jp
  * =====================================================
  */
-namespace siteSupports\modules\aceEditor;
+namespace WP_Assistant\modules\aceEditor;
 
-use siteSupports\config;
-use siteSupports\inc\helper;
+use WP_Assistant\inc\config;
+use WP_Assistant\inc\helper;
 /**
  * Class Ace_editor
  */
 class aceEditor {
 
+	private static $instance = null;
+
 	/**
 	 * 初期化
 	 */
-	public function __construct() {
+	public function init() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+		return self::$instance;
 	}
 
 	/**
