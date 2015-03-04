@@ -29,7 +29,7 @@
         $('#newcontent').closest( 'div').append('<div id="aceeditor"></div>');
         var aceEditor = $('#aceeditor');
         aceEditor.width(textarea.width());
-        aceEditor.height(textarea.height());
+        aceEditor.height(textarea.height()+200);
         aceEditorInit();
     });
 

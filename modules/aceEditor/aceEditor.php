@@ -22,7 +22,7 @@ class aceEditor {
 	/**
 	 * 初期化
 	 */
-	public function init() {
+	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
