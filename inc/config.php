@@ -12,7 +12,7 @@ namespace WP_Assistant\inc;
 
 class config{
 
-	public static $prefix = 'ggs';
+	public static $prefix = 'wpa';
 
 	/**
 	 * キャッシュを取得

@@ -18,7 +18,7 @@ class optimize {
 	private static $instance = null;
 
 	public function __construct() {
-		add_action( 'ggs_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
+		add_action( 'wpa_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
 		add_action( 'wp_ajax_run_optimize', array( $this, 'run_optimize' ), 10, 1 );
 	}
 
@@ -148,7 +148,7 @@ class optimize {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
-//					wp_delete_post_revision( intval( $id ) );
+					wp_delete_post_revision( intval( $id ) );
 				}
 				$message['optimize_revision'] = __( 'Deleted successfully revision.', 'wp-assistant' );
 				$message['status'] = 'success';
@@ -162,7 +162,7 @@ class optimize {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
-//					wp_delete_post( intval( $id ), true );
+					wp_delete_post( intval( $id ), true );
 				}
 				$message['optimize_auto_draft'] = __( 'Deleted successfully automatic draft.', 'wp-assistant' );
 				$message['status'] = 'success';
@@ -176,7 +176,7 @@ class optimize {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
-//					wp_delete_post( intval( $id ), true );
+					wp_delete_post( intval( $id ), true );
 				}
 				$message['optimize_trash'] = __( 'Deleted successfully trash in the article', 'wp-assistant' );
 				$message['status'] = 'success';

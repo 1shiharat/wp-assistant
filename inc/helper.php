@@ -38,7 +38,7 @@ class helper {
 	public static function radiobox( $args = array() ) {
 
 		$defaults = array(
-			'id'      => 'ggs_radiobox',
+			'id'      => 'wpa_radiobox',
 			'label'   => array(
 				'true'  => __( 'ON', 'wp-assistant' ),
 				'false' => __( 'OFF', 'wp-assistant' ),

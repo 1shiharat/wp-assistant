@@ -46,7 +46,7 @@ class breadcrumb {
 	private static $instance = null;
 
 	public function __construct(){
-		add_shortcode( 'ggs_breadcrumb', array( $this, 'shortcode' ) );
+		add_shortcode( 'wpa_breadcrumb', array( $this, 'shortcode' ) );
 	}
 
 	/**

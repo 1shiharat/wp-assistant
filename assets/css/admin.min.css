@@ -2,7 +2,7 @@
 /**
  オリジナルCSS
  */
-#ggs_settings_form h1 {
+#wpa_settings_form h1 {
   font-size: 2em;
   margin: .67em 0;
   display: inline-block;
@@ -13,15 +13,15 @@
   box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.03);
 }
 
-#ggs_tabs {
+#wpa_tabs {
   max-width: 1000px;
 }
 
-#ggs_tabs .pull-right {
+#wpa_tabs .pull-right {
   float: right;
 }
 
-div.ggs-message {
+div.wpa-message {
   display: none;
   position: fixed;
   top: 0px;
@@ -31,15 +31,15 @@ div.ggs-message {
   z-index: 100000;
 }
 
-.ggs-message .ggs-message-success {
+.wpa-message .wpa-message-success {
   background: rgba(29, 173, 6, 0.7);
   color: #FFF;
 }
 
-#ggs_tabs a:focus,
-#ggs_tabs a:active,
-#ggs_tabs .ui-accordion-header:focus,
-#ggs_tabs .ui-accordion-header:active {
+#wpa_tabs a:focus,
+#wpa_tabs a:active,
+#wpa_tabs .ui-accordion-header:focus,
+#wpa_tabs .ui-accordion-header:active {
   outline: none !important;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -61,8 +61,8 @@ body {
   border-radius: 3px;
 }
 
-#ggs_admin_menu_section h3,
-#ggs_optimize_section h3 {
+#wpa_admin_menu_section h3,
+#wpa_optimize_section h3 {
   border: 1px solid #dedede;
   font-size: 16px;
   padding: 10px;

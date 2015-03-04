@@ -1,32 +1,64 @@
 /**
  オリジナルCSS
  */
-body {
-  font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
-}
 
-#ggs_settings_form h1 {
-  font-size: 2em;
+#wpa_settings_form h1 {
+  font-size: 1.7em;
+  font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
   margin: .67em 0;
   display: inline-block;
   background: #FFF;
   line-height: 2em;
-  padding: 5px 15px;
+  padding: 5px 25px 5px 10px;
   border-radius: 4px;
   box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.03);
+  .dashicons{
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    line-height: 1.3em;
+    color: #298CBA;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
 }
 
-#ggs_tabs {
+#wpa_tabs {
   max-width: 1000px;
   background: transparent;
   border: none;
+  font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
+  .pull-right {
+    float: right;
+  }
+  .label {
+    background: #DD514C;
+    display: inline-block;
+    float: right;
+    padding: 3px 10px;
+    color: #FFF;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  #submit {
+    font-weight: normal;
+    padding-left: 20px;
+    display: inline-block;
+    padding-right: 20px;
+    line-height: 2em;
+    height: 40px;
+    margin-top: -20px;
+  }
+  *:focus,
+  *:active {
+    outline: none !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
 }
 
-#ggs_tabs .pull-right {
-  float: right;
-}
 
-div.ggs-message {
+.wpa-message {
   display: none;
   position: fixed;
   top: 0px;
@@ -34,39 +66,10 @@ div.ggs-message {
   left: 0px;
   margin: 0;
   z-index: 100000;
+  .wpa-message-success {
+    background: rgba(29, 173, 6, 0.7);
+    color: #FFF;
+  }
 }
 
-.ggs-message .ggs-message-success {
-  background: rgba(29, 173, 6, 0.7);
-  color: #FFF;
-}
 
-#ggs_tabs a:focus,
-#ggs_tabs a:active,
-#ggs_tabs .ui-accordion-header:focus,
-#ggs_tabs .ui-accordion-header:active {
-  outline: none !important;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-.label {
-  background: #DD514C;
-  display: inline-block;
-  float: right;
-  padding: 3px 10px;
-  color: #FFF;
-  font-size: 10px;
-  border-radius: 3px;
-}
-
-#submit {
-  font-weight: normal;
-  padding-left: 20px;
-  display: inline-block;
-  padding-right: 20px;
-  line-height: 2em;
-  height: 40px;
-  margin-top: -20px;
-}

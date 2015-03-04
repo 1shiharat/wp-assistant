@@ -28,8 +28,8 @@
      * @param type メッセージの種類
      */
     var timer;
-    var ggsMessage = function (type, message) {
-        var messageContainer = $('.ggs-message-' + type);
+    var wpaMessage = function (type, message) {
+        var messageContainer = $('.wpa-message-' + type);
         if ( message ) {
             messageContainer.html(message);
         }
@@ -46,11 +46,11 @@
     function changeOnHash() {
         var tab_id = location.hash;
         var tabIndexs = {
-            '#ggs-basic-setting': 0,
-            '#ggs-dashboard-setting': 1,
-            '#ggs-admin-menu-setting': 2
+            '#wpa-basic-setting': 0,
+            '#wpa-dashboard-setting': 1,
+            '#wpa-admin-menu-setting': 2
         };
-        $('#ggs_tabs').tabs(
+        $('#wpa_tabs').tabs(
             'enable', tab_id
         );
     }
@@ -62,8 +62,8 @@
             autoHeight: false,
             heightStyle: "content"
         });
-        $('#ggs_tabs').tabs();
-        $('#ggs_tabs ul li a').on('click', function () {
+        $('#wpa_tabs').tabs();
+        $('#wpa_tabs ul li a').on('click', function () {
             location.hash = $(this).attr('href');
             window.scrollTo(0, 0);
         });
@@ -72,7 +72,7 @@
 
     });
 
-    $(document).change('#ggs_settings_form *', function () {
+    $(document).change('#wpa_settings_form *', function () {
         $('#submit').removeAttr('disabled');
     });
 
@@ -88,23 +88,23 @@
             return false;
         }
         submit_flag = false;
-        $('#ggs_tabs ul').find('.spinner').show();
+        $('#wpa_tabs ul').find('.spinner').show();
         $.ajax({
             'type': 'post',
             'url': ajaxurl,
             'data': {
-                'action': GGSSETTINGS.action,
-                '_wp_nonce': GGSSETTINGS._wp_nonce,
-                'form': $('#ggs_settings_form').serialize(),
+                'action': wpaSETTINGS.action,
+                '_wp_nonce': wpaSETTINGS._wp_nonce,
+                'form': $('#wpa_settings_form').serialize(),
             },
             'success': function (data) {
                 if (1 == data) {
-                    $('#ggs_tabs ul').find('.spinner').hide();
-                    ggsMessage('success');
+                    $('#wpa_tabs ul').find('.spinner').hide();
+                    wpaMessage('success');
                     $('#submit').attr('disabled', 'disabled');
                 } else {
-                    $('#ggs_tabs ul').find('.spinner').hide();
-                    ggsMessage('faild');
+                    $('#wpa_tabs ul').find('.spinner').hide();
+                    wpaMessage('faild');
                 }
                 submit_flag = true;
             }
@@ -141,7 +141,7 @@
                 $('.run_optimize').find('.spinner').hide();
                 if ( data.status == 'faild') {
 
-                    ggsMessage('faild', '<h3>' + data.html + '</h3>');
+                    wpaMessage('faild', '<h3>' + data.html + '</h3>');
                     //return false;
                 } else {
 
@@ -164,7 +164,7 @@
                     }
 
                     if ( $(message).length > 0 ){
-                        ggsMessage( 'optimize', $(message) );
+                        wpaMessage( 'optimize', $(message) );
                     }
 
                     optimize_flag = true;

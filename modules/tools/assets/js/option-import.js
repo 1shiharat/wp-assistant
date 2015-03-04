@@ -31,7 +31,7 @@
             type : 'post',
             url: ajaxurl,
             data : {
-                action : 'ggs_option_import',
+                action : 'wpa_option_import',
                 wp_import_nonce : wp_import_nonce,
                 import_data: import_data_text
             },

@@ -27,7 +27,7 @@
      * チェックされているidを更新する
      */
     function changeCheckedInput() {
-        var checkedMenus = $('#ggs_admin_menus input'),
+        var checkedMenus = $('#wpa_admin_menus input'),
             checkedMenuID = [];
         $.each(checkedMenus, function (key, checkedMenu) {
             if ($(this).attr('checked') == 'checked') {
@@ -40,10 +40,10 @@
 
     // ロード時のイベント
     $(function () {
-        var menuInputRender = $('#ggs_admin_menus'),
+        var menuInputRender = $('#wpa_admin_menus'),
             adminMenu = $('#adminmenu > li'),
             menus = getMenuArray(adminMenu),
-            savedMenus = GGS_ADMIN_MENU.menus.split(',');
+            savedMenus = wpa_ADMIN_MENU.menus.split(',');
 
         $.each(menus, function () {
             if (this.menuID && this.menuName) {
@@ -51,14 +51,14 @@
                 if ( $.inArray(this.menuID, savedMenus) >= 0) {
                     checked = ' checked="checked"';
                 }
-                menuInputRender.append('<p><input type="checkbox" name="ggsupports_checkobox[]" value="' + this.menuID + '" ' + checked + '/>' + this.menuName + '</p>');
+                menuInputRender.append('<p><input type="checkbox" name="wpaupports_checkobox[]" value="' + this.menuID + '" ' + checked + '/>' + this.menuName + '</p>');
             }
         });
         changeCheckedInput();
     });
 
     // チェックボックスのクリック時イベント
-    $(document).on('click', '#ggs_admin_menus input', function () {
+    $(document).on('click', '#wpa_admin_menus input', function () {
         changeCheckedInput();
     });
 })(jQuery);

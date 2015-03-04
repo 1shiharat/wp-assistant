@@ -36,14 +36,14 @@ class admin {
 	 * 初期化
 	 */
 	public function __construct() {
-		$this->option_setting_slug = config::get( 'prefix' ) . 'ggs_settings';
+		$this->option_setting_slug = config::get( 'prefix' ) . 'wpa_settings';
 		$this->option_page_slug    = config::get( 'prefix' ) . 'options_page';
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'load-index.php', array( $this, 'hide_welcome_panel' ) );
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
-		add_action( 'wp_ajax_update_ggsupports_option', array( $this, 'update_ggsupports_option' ) );
+		add_action( 'wp_ajax_update_wpaupports_option', array( $this, 'update_wpaupports_option' ) );
 	}
 
 	public static function get_instance() {
@@ -58,13 +58,13 @@ class admin {
 	 */
 	public function add_dashboard_widgets() {
 		if ( config::get_option( 'dashboard_disp' ) ) {
-			wp_add_dashboard_widget( 'ggs_dashboard_widget', get_bloginfo( 'title' ), function () {
+			wp_add_dashboard_widget( 'wpa_dashboard_widget', get_bloginfo( 'title' ), function () {
 				include( 'views/dashboard.php' );
 			} );
 			global $wp_meta_boxes;
 			$normal_dashboard      = $wp_meta_boxes['dashboard']['normal']['core'];
-			$example_widget_backup = array( 'ggs_dashboard_widget' => $normal_dashboard['ggs_dashboard_widget'] );
-			unset( $normal_dashboard['ggs_dashboard_widget'] );
+			$example_widget_backup = array( 'wpa_dashboard_widget' => $normal_dashboard['wpa_dashboard_widget'] );
+			unset( $normal_dashboard['wpa_dashboard_widget'] );
 			$sorted_dashboard                             = array_merge( $example_widget_backup, $normal_dashboard );
 			$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
 		}
@@ -329,7 +329,7 @@ class admin {
 		/**
 		 * 他のモジュールから拡張可能なようにアクションフックを仕掛ける
 		 */
-		do_action( 'ggs_settings_fields_after', $this );
+		do_action( 'wpa_settings_fields_after', $this );
 
 
 	}
@@ -381,8 +381,8 @@ class admin {
 					'jquery-ui-accordion',
 				), config::get( 'version' ) );
 
-				wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'GGSSETTINGS', array(
-					'action'    => 'update_ggsupports_option',
+				wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpaSETTINGS', array(
+					'action'    => 'update_wpaupports_option',
 					'_wp_nonce' => wp_create_nonce( __FILE__ )
 				) );
 				break;
@@ -453,7 +453,7 @@ class admin {
 	 * Ajax で受けた情報を保存
 	 * @return void
 	 */
-	public function update_ggsupports_option() {
+	public function update_wpaupports_option() {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wp_nonce'], __FILE__ ) ) {
 			echo 0;

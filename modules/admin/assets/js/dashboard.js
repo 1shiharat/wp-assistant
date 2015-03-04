@@ -1,9 +1,9 @@
 ;(function($){
     "use strict";
     $(function () {
-        var welcomeDashboard = $( '#ggsdashboard' );
+        var welcomeDashboard = $( '#wpadashboard' );
         $( '#dashboard-widgets-wrap' ).prepend( welcomeDashboard );
-        $( '#ggs_dashboard_widget' ).remove();
+        $( '#wpa_dashboard_widget' ).remove();
     });
 })(jQuery);
 

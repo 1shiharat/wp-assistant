@@ -19,8 +19,8 @@ class tools {
 	private static $instance = null;
 
 	public function __construct(){
-		add_action( 'ggs_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
-		add_action( 'wp_ajax_ggs_option_import', array( $this, 'option_import' ) );
+		add_action( 'wpa_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
+		add_action( 'wp_ajax_wpa_option_import', array( $this, 'option_import' ) );
 	}
 
 	public static function get_instance() {

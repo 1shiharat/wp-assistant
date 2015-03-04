@@ -1,6 +1,6 @@
 {
   "name": "site-supports",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Support plugins in order to produce a WordPress site.",
   "main": "gulpfile.js",
   "scripts": {

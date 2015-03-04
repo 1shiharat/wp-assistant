@@ -29,7 +29,7 @@ class menuEditor{
 
 		add_action( 'admin_print_scripts', function(){
 			$admin_menus = config::get_option( 'admin_menu' );
-			wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'GGS_ADMIN_MENU', array( 'menus' => $admin_menus ) );
+			wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array( 'menus' => $admin_menus ) );
 		}, 10 );
 
 		add_action( 'admin_menu', function(){
@@ -62,7 +62,7 @@ class menuEditor{
 			echo '</style>';
 		}, 999 );
 
-		add_action( 'ggs_settings_fields_after', array( $this, 'add_fields' ), 10, 1 );
+		add_action( 'wpa_settings_fields_after', array( $this, 'add_fields' ), 10, 1 );
 
 	} // construct
 
@@ -115,7 +115,7 @@ class menuEditor{
 				<?php
 				$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
 				<p><?php _e( 'Please refer to the select the management menu you want to hide.', 'wp-assistant' ); ?></p>
-				<div id="ggs_admin_menus"></div>
+				<div id="wpa_admin_menus"></div>
 
 				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
 				</div>

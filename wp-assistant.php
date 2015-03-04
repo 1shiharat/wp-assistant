@@ -13,7 +13,7 @@ Plugin Name: WP Assistant
 Plugin URI: http://grow-group.jp/
 Description: WordPress assistant plugin.
 Author: 1shiharaT
-Version: 0.0.9
+Version: 0.1.0
 Author URI: http://grow-group.jp/
 Text Domain: wp-assistant
 Domain Path: /languages/
@@ -45,7 +45,7 @@ $GLOBALS['WP_Assistant'] = new WP_Assistant();
 register_activation_hook( __FILE__, array( new WP_Assistant, 'activate' ) );
 
 /**
- * Class GGSupports
+ * Class wpaupports
  * プラグインのメインクラス
  */
 class WP_Assistant {
@@ -86,7 +86,7 @@ class WP_Assistant {
 	 */
 	private static function set_cache() {
 		config::set( 'version', static::get_version() );
-		config::set( 'prefix', 'ggs_' );
+		config::set( 'prefix', 'wpa_' );
 		config::set( 'plugin_dir', plugin_dir_path( __FILE__ ) );
 		config::set( 'plugin_url', plugins_url( '/', __FILE__ ) );
 		config::set( 'options', get_option( config::get( 'prefix' ) . 'options' ) );

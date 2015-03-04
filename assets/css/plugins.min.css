@@ -2,57 +2,36 @@
 /**
  オリジナルCSS
  */
-body {
+#wpa_settings_form h1 {
+  font-size: 1.7em;
   font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
-}
-
-#ggs_settings_form h1 {
-  font-size: 2em;
   margin: .67em 0;
   display: inline-block;
   background: #FFF;
   line-height: 2em;
-  padding: 5px 15px;
+  padding: 5px 25px 5px 10px;
   border-radius: 4px;
   box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.03);
 }
+#wpa_settings_form h1 .dashicons {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  line-height: 1.3em;
+  color: #298CBA;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
 
-#ggs_tabs {
+#wpa_tabs {
   max-width: 1000px;
   background: transparent;
   border: none;
+  font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
 }
-
-#ggs_tabs .pull-right {
+#wpa_tabs .pull-right {
   float: right;
 }
-
-div.ggs-message {
-  display: none;
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  left: 0px;
-  margin: 0;
-  z-index: 100000;
-}
-
-.ggs-message .ggs-message-success {
-  background: rgba(29, 173, 6, 0.7);
-  color: #FFF;
-}
-
-#ggs_tabs a:focus,
-#ggs_tabs a:active,
-#ggs_tabs .ui-accordion-header:focus,
-#ggs_tabs .ui-accordion-header:active {
-  outline: none !important;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-.label {
+#wpa_tabs .label {
   background: #DD514C;
   display: inline-block;
   float: right;
@@ -61,8 +40,7 @@ div.ggs-message {
   font-size: 10px;
   border-radius: 3px;
 }
-
-#submit {
+#wpa_tabs #submit {
   font-weight: normal;
   padding-left: 20px;
   display: inline-block;
@@ -70,6 +48,27 @@ div.ggs-message {
   line-height: 2em;
   height: 40px;
   margin-top: -20px;
+}
+#wpa_tabs *:focus,
+#wpa_tabs *:active {
+  outline: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.wpa-message {
+  display: none;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  left: 0px;
+  margin: 0;
+  z-index: 100000;
+}
+.wpa-message .wpa-message-success {
+  background: rgba(29, 173, 6, 0.7);
+  color: #FFF;
 }
 
 .ui-helper-hidden {

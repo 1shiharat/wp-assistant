@@ -6,18 +6,18 @@ use WP_Assistant\inc\config;
 
 ?>
 <?php settings_fields( config::get( 'prefix' ) . 'settings' ); ?>
-<form id="ggs_settings_form" action='options.php' method='post'>
-	<div class="ggs-message-wrap">
-		<div class="ggs-message ggs-message-success updated">
+<form id="wpa_settings_form" method='post'>
+	<div class="wpa-message-wrap">
+		<div class="wpa-message wpa-message-success updated">
 			<h3><span class="dashicons dashicons-update"></span> <?php _e( 'Saved successfully', 'wp-assistant' ) ?></h3>
 		</div>
-		<div class="ggs-message ggs-message-optimize updated"></div>
-		<div class="ggs-message ggs-message-faild error">
+		<div class="wpa-message wpa-message-optimize updated"></div>
+		<div class="wpa-message wpa-message-faild error">
 			<h3><span class="dashicons dashicons-dismiss"></span> <?php _e( 'Failed to save', 'wp-assistant' ) ?></h3>
 		</div>
 	</div>
-	<!--/.ggs-message-wrap-->
-	<h1><?php bloginfo( 'title' ); ?> <?php _e( 'Supports ', 'wp-assistant' ) ?></h1>
+	<!--/.wpa-message-wrap-->
+	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Supports ', 'wp-assistant' ) ?></h1>
 
 	<div id="<?php echo config::get( 'prefix' ); ?>tabs">
 		<ul>
