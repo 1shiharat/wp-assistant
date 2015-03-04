@@ -55,7 +55,7 @@ class tools {
 				<div>
 					<p><?php _e( 'Download the set as a text file.', 'wp-assistant' ); ?></p>
 					<div class="tools-option-export">
-						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( config::get_option() ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
+						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( get_option( config::get( 'prefix' ).'options' ) ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
 					</div>
 				</div>
 			<?php

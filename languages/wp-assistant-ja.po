@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-assistant\n"
-"POT-Creation-Date: 2015-03-04 17:35+0900\n"
-"PO-Revision-Date: 2015-03-04 17:35+0900\n"
+"POT-Creation-Date: 2015-03-04 18:54+0900\n"
+"PO-Revision-Date: 2015-03-04 18:55+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
 "Language-Team: ishihara takashi <ishihara@grow-group.jp>\n"
 "Language: ja\n"
@@ -148,8 +148,8 @@ msgstr ""
 "</p>"
 
 #: ../modules/admin/admin.php:344 ../modules/admin/admin.php:345
-msgid "Supports"
-msgstr "サポート"
+msgid "WP Assistant"
+msgstr "WP Assistant"
 
 #: ../modules/admin/views/options.php:12
 msgid "Saved successfully"
@@ -160,8 +160,8 @@ msgid "Failed to save"
 msgstr "設定の保存に失敗しました。"
 
 #: ../modules/admin/views/options.php:20
-msgid "Supports "
-msgstr "制作支援ツール - 設定画面"
+msgid "Setting"
+msgstr "設定画面"
 
 #: ../modules/admin/views/options.php:30
 msgid "Save"
@@ -324,6 +324,12 @@ msgstr "インポートの設定"
 #: ../modules/tools/tools.php:92
 msgid "Import"
 msgstr "設定をインポート"
+
+#~ msgid "Supports"
+#~ msgstr "サポート"
+
+#~ msgid "Supports "
+#~ msgstr "制作支援ツール - 設定画面"
 
 #~ msgid "WordPress assistant plugin."
 #~ msgstr "WordPressのアシスタントプラグイン"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-assistant\n"
-"POT-Creation-Date: 2015-03-04 14:22+0900\n"
-"PO-Revision-Date: 2015-03-04 14:39+0900\n"
+"POT-Creation-Date: 2015-03-04 18:54+0900\n"
+"PO-Revision-Date: 2015-03-04 18:54+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
 "Language-Team: ishihara takashi <ishihara@grow-group.jp>\n"
 "Language: ja\n"
@@ -14,300 +14,300 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../inc/helper.php:44
+#: ../inc/helper.php:43
 msgid "ON"
 msgstr ""
 
-#: ../inc/helper.php:45
+#: ../inc/helper.php:44
 msgid "OFF"
 msgstr ""
 
-#: ../modules/admin/admin.php:90
+#: ../modules/admin/admin.php:99
 msgid "General"
 msgstr ""
 
-#: ../modules/admin/admin.php:93
+#: ../modules/admin/admin.php:102
 msgid "Feed link tags (rss)"
 msgstr ""
 
-#: ../modules/admin/admin.php:98
+#: ../modules/admin/admin.php:107
 msgid "Please set the on or off of the feed links that are output to wp_head."
 msgstr ""
 
-#: ../modules/admin/admin.php:108
+#: ../modules/admin/admin.php:117
 msgid "WordPress generator meta tag"
 msgstr ""
 
-#: ../modules/admin/admin.php:113
+#: ../modules/admin/admin.php:122
 msgid "The output the WordPress version information to wp_head."
 msgstr ""
 
-#: ../modules/admin/admin.php:123
+#: ../modules/admin/admin.php:132
 msgid "The output of the short link"
 msgstr ""
 
-#: ../modules/admin/admin.php:128
+#: ../modules/admin/admin.php:137
 msgid "The output a short link to wp_head."
 msgstr ""
 
-#: ../modules/admin/admin.php:138
+#: ../modules/admin/admin.php:147
 msgid "Stop of automatic formatting"
 msgstr ""
 
-#: ../modules/admin/admin.php:143
+#: ../modules/admin/admin.php:152
 msgid "Please select whether to stop the automatic formatting."
 msgstr ""
 
-#: ../modules/admin/admin.php:152
+#: ../modules/admin/admin.php:161
 msgid "Stop of revision control"
 msgstr ""
 
-#: ../modules/admin/admin.php:157
+#: ../modules/admin/admin.php:166
 msgid ""
 "You can choose to disable the revision control. * I only want to hide. The "
 "database will be accumulated."
 msgstr ""
 
-#: ../modules/admin/admin.php:167
+#: ../modules/admin/admin.php:176
 msgid "Load of the jQuery"
 msgstr ""
 
-#: ../modules/admin/admin.php:172
+#: ../modules/admin/admin.php:181
 msgid "Please specify whether load the jQuery library of cdnjs."
 msgstr ""
 
-#: ../modules/admin/admin.php:182
+#: ../modules/admin/admin.php:191
 msgid "Load of The Bootstrap3 framework"
 msgstr ""
 
-#: ../modules/admin/admin.php:187
+#: ../modules/admin/admin.php:196
 msgid "Please specify whether to load the Bootstrap framework"
 msgstr ""
 
-#: ../modules/admin/admin.php:197
+#: ../modules/admin/admin.php:206
 msgid "Stop of xmlrpc"
 msgstr ""
 
-#: ../modules/admin/admin.php:202
+#: ../modules/admin/admin.php:211
 msgid "Please specify whether to disable the xmlrpc as a security measure."
 msgstr ""
 
-#: ../modules/admin/admin.php:212
+#: ../modules/admin/admin.php:221
 msgid "Disable the author page"
 msgstr ""
 
-#: ../modules/admin/admin.php:217
+#: ../modules/admin/admin.php:226
 msgid ""
 "Please specify whether to disable the author archive as a security measure."
 msgstr ""
 
-#: ../modules/admin/admin.php:242
+#: ../modules/admin/admin.php:251
 msgid "Show in the admin bar the current template name"
 msgstr ""
 
-#: ../modules/admin/admin.php:247
+#: ../modules/admin/admin.php:256
 msgid "To view the template name in the management bar, please to ON"
 msgstr ""
 
-#: ../modules/admin/admin.php:257
+#: ../modules/admin/admin.php:266
 msgid "Enabling Admin post Navigation"
 msgstr ""
 
-#: ../modules/admin/admin.php:262
+#: ../modules/admin/admin.php:271
 msgid ""
 "In an article edit screen of the management screen, enabling the next post, "
 "the previous post link."
 msgstr ""
 
-#: ../modules/admin/admin.php:273
+#: ../modules/admin/admin.php:282
 msgid "Please input the content to be displayed on the dashboard widget."
 msgstr ""
 
-#: ../modules/admin/admin.php:274
+#: ../modules/admin/admin.php:283
 msgid "Replace Welcome Panel"
 msgstr ""
 
-#: ../modules/admin/admin.php:278
+#: ../modules/admin/admin.php:287
 msgid "Enabling original dashboard widget"
 msgstr ""
 
-#: ../modules/admin/admin.php:295
+#: ../modules/admin/admin.php:304
 msgid "<p>Please enter the content to be displayed on the dashboard.</p>"
 msgstr ""
 
-#: ../modules/admin/admin.php:335 ../modules/admin/admin.php:336
-msgid "Supports"
+#: ../modules/admin/admin.php:344 ../modules/admin/admin.php:345
+msgid "WP Assistant"
 msgstr ""
 
 #: ../modules/admin/views/options.php:12
 msgid "Saved successfully"
 msgstr ""
 
-#: ../modules/admin/views/options.php:15
+#: ../modules/admin/views/options.php:16
 msgid "Failed to save"
 msgstr ""
 
-#: ../modules/admin/views/options.php:19
-msgid "Supports "
+#: ../modules/admin/views/options.php:20
+msgid "Setting"
 msgstr ""
 
-#: ../modules/admin/views/options.php:29
+#: ../modules/admin/views/options.php:30
 msgid "Save"
 msgstr ""
 
-#: ../modules/adminPostNav/adminPostNav.php:41
+#: ../modules/adminPostNav/adminPostNav.php:53
 msgid "&larr; Previous"
 msgstr ""
 
-#: ../modules/adminPostNav/adminPostNav.php:42
+#: ../modules/adminPostNav/adminPostNav.php:54
 msgid "Next &rarr;"
 msgstr ""
 
-#: ../modules/adminPostNav/adminPostNav.php:72
+#: ../modules/adminPostNav/adminPostNav.php:84
 #, php-format
 msgid "%s Navigation"
 msgstr ""
 
-#: ../modules/adminPostNav/adminPostNav.php:101
+#: ../modules/adminPostNav/adminPostNav.php:113
 #, php-format
 msgid "Previous %1$s: %2$s"
 msgstr ""
 
-#: ../modules/adminPostNav/adminPostNav.php:113
+#: ../modules/adminPostNav/adminPostNav.php:125
 #, php-format
 msgid "Next %1$s: %2$s"
 msgstr ""
 
-#: ../modules/breadcrumb/breadcrumb.php:89
+#: ../modules/breadcrumb/breadcrumb.php:102
 msgid "HOME"
 msgstr ""
 
-#: ../modules/breadcrumb/breadcrumb.php:91
+#: ../modules/breadcrumb/breadcrumb.php:104
 #, php-format
 msgid "Search results for<em>%s</em>"
 msgstr ""
 
-#: ../modules/breadcrumb/breadcrumb.php:92
+#: ../modules/breadcrumb/breadcrumb.php:105
 #, php-format
 msgid "%s Search results for <em>%s</em>"
 msgstr ""
 
-#: ../modules/breadcrumb/breadcrumb.php:94
+#: ../modules/breadcrumb/breadcrumb.php:107
 #, php-format
 msgid "Pages: %d "
 msgstr ""
 
-#: ../modules/breadcrumb/breadcrumb.php:95
+#: ../modules/breadcrumb/breadcrumb.php:108
 msgid "Error: Not Found 404"
 msgstr ""
 
-#: ../modules/cleanup/cleanup.php:355
+#: ../modules/cleanup/cleanup.php:363
 msgid "<span class=\"ab-icon\"></span> Template : "
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:74
+#: ../modules/menuEditor/menuEditor.php:85
 msgid "Admin Menu"
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:75
+#: ../modules/menuEditor/menuEditor.php:86
 msgid "Admin Menu Settings"
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:79
+#: ../modules/menuEditor/menuEditor.php:90
 msgid "Select User"
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:84
+#: ../modules/menuEditor/menuEditor.php:95
 msgid ""
 "Please select the account to apply the Admin menu change. <br /> * You can "
 "select more than one by selecting while holding down the  shift key."
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:101
+#: ../modules/menuEditor/menuEditor.php:112
 msgid "Select Admin Menu"
 msgstr ""
 
-#: ../modules/menuEditor/menuEditor.php:106
+#: ../modules/menuEditor/menuEditor.php:117
 msgid "Please refer to the select the management menu you want to hide."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:36
+#: ../modules/optimize/optimize.php:45 ../modules/optimize/optimize.php:47
 msgid "Database Optimization"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:44
+#: ../modules/optimize/optimize.php:55
 msgid "Delete all revisions"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:52
+#: ../modules/optimize/optimize.php:63
 msgid "Please specify to enable revision of the deletion."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:66
+#: ../modules/optimize/optimize.php:77
 msgid "Delete all of the auto draft"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:71
+#: ../modules/optimize/optimize.php:82
 msgid "Please specify to enable auto-draft of the deletion."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:82
+#: ../modules/optimize/optimize.php:93
 msgid "Delete trash in the post of all post type"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:87
+#: ../modules/optimize/optimize.php:98
 msgid "Please specify to enable trash of the deletion."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:98 ../modules/optimize/optimize.php:104
+#: ../modules/optimize/optimize.php:109 ../modules/optimize/optimize.php:115
 msgid "Run Optimize"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:101
+#: ../modules/optimize/optimize.php:114
 msgid "To apply the above settings, please save once."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:142
+#: ../modules/optimize/optimize.php:153
 msgid "Deleted successfully revision."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:156
+#: ../modules/optimize/optimize.php:167
 msgid "Deleted successfully automatic draft."
 msgstr ""
 
-#: ../modules/optimize/optimize.php:170
+#: ../modules/optimize/optimize.php:181
 msgid "Deleted successfully trash in the article"
 msgstr ""
 
-#: ../modules/optimize/optimize.php:182
+#: ../modules/optimize/optimize.php:193
 msgid "Failed to delete."
 msgstr ""
 
-#: ../modules/tools/tools.php:35 ../modules/tools/tools.php:37
+#: ../modules/tools/tools.php:45 ../modules/tools/tools.php:47
 msgid "Tools"
 msgstr ""
 
-#: ../modules/tools/tools.php:42
+#: ../modules/tools/tools.php:52
 msgid "Export Settings"
 msgstr ""
 
-#: ../modules/tools/tools.php:46
+#: ../modules/tools/tools.php:56
 msgid "Download the set as a text file."
 msgstr ""
 
-#: ../modules/tools/tools.php:48
+#: ../modules/tools/tools.php:58
 msgid "Export"
 msgstr ""
 
-#: ../modules/tools/tools.php:59
+#: ../modules/tools/tools.php:69
 msgid "Settings Copy"
 msgstr ""
 
-#: ../modules/tools/tools.php:74
+#: ../modules/tools/tools.php:84
 msgid "Import Settings"
 msgstr ""
 
-#: ../modules/tools/tools.php:82
+#: ../modules/tools/tools.php:92
 msgid "Import"
 msgstr ""
 

@@ -341,8 +341,8 @@ class admin {
 	public function add_admin_menu() {
 
 		add_menu_page(
-			__( 'Supports', 'wp-assistant' ),
-			__( 'Supports', 'wp-assistant' ),
+			__( 'WP Assistant', 'wp-assistant' ),
+			__( 'WP Assistant', 'wp-assistant' ),
 			'manage_options',
 			$this->option_page_slug,
 			array(
@@ -478,7 +478,7 @@ class admin {
 				}
 			}
 
-			$settings['dashboard_contents'] = $form_array['dashboard_contents'];
+			$settings['dashboard_contents'] = esc_html( $form_array['dashboard_contents'] );
 			echo update_option( config::get( 'prefix' ) . 'options', $settings );
 			exit();
 		}

@@ -17,7 +17,7 @@ use WP_Assistant\inc\config;
 		</div>
 	</div>
 	<!--/.wpa-message-wrap-->
-	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Supports ', 'wp-assistant' ) ?></h1>
+	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Setting', 'wp-assistant' ) ?></h1>
 
 	<div id="<?php echo config::get( 'prefix' ); ?>tabs">
 		<ul>
