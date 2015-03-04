@@ -13,7 +13,7 @@ Plugin Name: WP Assistant
 Plugin URI: http://grow-group.jp/
 Description: WordPress assistant plugin.
 Author: 1shiharaT
-Version: 0.1.0
+Version: 0.1.1
 Author URI: http://grow-group.jp/
 Text Domain: wp-assistant
 Domain Path: /languages/
