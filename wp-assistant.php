@@ -32,6 +32,7 @@ use WP_Assistant\modules\cf7AjaxZip\cf7AjaxZip;
 use WP_Assistant\modules\menuEditor\menuEditor;
 use WP_Assistant\modules\optimize\optimize;
 use WP_Assistant\modules\tools\tools;
+use WP_Assistant\modules\cache\cache;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -63,7 +64,7 @@ class WP_Assistant {
 		// キャッシュをセット
 		static::set_cache();
 
-		// 各モジュールを登録
+		// 各モジュールを実行
 		cleanup::get_instance();
 		admin::get_instance();
 		aceEditor::get_instance();
@@ -72,6 +73,7 @@ class WP_Assistant {
 		tools::get_instance();
 		cf7AjaxZip::get_instance();
 		breadcrumb::get_instance();
+		cache::get_instance();
 	}
 
 	/**
@@ -101,6 +103,7 @@ class WP_Assistant {
 	 */
 	public static function activate() {
 		static::set_cache();
+		cache::activate();
 		return update_option( config::get( 'prefix' ) . 'install', true );
 	}
 

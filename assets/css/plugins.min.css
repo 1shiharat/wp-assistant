@@ -23,7 +23,7 @@
 }
 
 #wpa_tabs {
-  max-width: 1000px;
+  max-width: 1215px;
   background: transparent;
   border: none;
   font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
@@ -47,7 +47,7 @@
   padding-right: 20px;
   line-height: 2em;
   height: 40px;
-  margin-top: -20px;
+  margin-top: 10px;
 }
 #wpa_tabs *:focus,
 #wpa_tabs *:active {
@@ -2580,13 +2580,15 @@ button.ui-button::-moz-focus-inner {
   border-bottom-width: 0;
   padding: 0;
   white-space: nowrap;
-  border-radius: 4px 4px 0 0;
+  border-radius: 0px 0px 0 0;
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
   float: left;
   padding: .6em 1em;
   text-decoration: none;
+  word-wrap: normal;
+  white-space: normal;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
@@ -2838,4 +2840,39 @@ body .ui-tooltip {
   border-color: #2c7091;
   color: #FFF;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.ui-tabs-vertical {
+  width: 100%;
+  max-width: 1300px;
+}
+
+.ui-tabs-vertical .ui-tabs-nav {
+  padding: .2em .1em .2em .2em;
+  float: left;
+  width: 280px;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li {
+  clear: left;
+  width: 100%;
+  border-bottom-width: 1px !important;
+  border-right-width: 0 !important;
+  margin: 0 -1px .2em 0;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li a {
+  display: block;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
+  padding-bottom: 0;
+  padding-right: .1em;
+  border-right-width: 1px;
+}
+
+.ui-tabs-vertical .ui-tabs-panel {
+  padding: 1em;
+  float: right;
+  width: 900px;
 }
