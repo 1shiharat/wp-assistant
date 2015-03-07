@@ -1,24 +1,21 @@
 <?php
-/**
- * =====================================================
- * ContactForm7にajaxzip3を利用できるように
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * =====================================================
- */
+/*
+Plugin Name: AjaxZip3 for Contact Form 7
+Description: 郵便番号に"zip"、県名に"pref"、住所に"address"を使用することで自動入力が実装可能です。
+Text Domain: wp-assistant
+*/
 namespace WP_Assistant\modules\cf7AjaxZip;
 
+use \WP_Assistant\modules\module;
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 
-class cf7AjaxZip {
-	private static $instance = null;
+class cf7AjaxZip extends module{
+
 	/**
 	 * contact-form-7にajaxzip3.jsを追加
 	 * 自動的に郵便番号から住所が入力
-	 * @return bool
+	 *
 	 */
 	public function __construct() {
 		global $post;
@@ -56,12 +53,4 @@ class cf7AjaxZip {
 		}, 99 );
 	}
 
-	public static function get_instance() {
-
-		if ( null == static::$instance ) {
-			static::$instance = new static;
-		}
-		return self::$instance;
-
-	}
 }

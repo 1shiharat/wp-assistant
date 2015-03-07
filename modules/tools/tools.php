@@ -1,45 +1,34 @@
 <?php
-/**
- * =====================================================
- * 設定のエクスポート・インポート
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * @todo インポートの動作を追加
- * =====================================================
- */
+/*
+Plugin Name: Tools
+Description: Export & import of this plugin setting.
+Text Domain: wp-assistant
+Domain Path: /languages/
+*/
 namespace WP_Assistant\modules\tools;
 
+use \WP_Assistant\modules\module;
+use \WP_Assistant\modules\settings;
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 
-class tools {
+class tools extends module {
 
-	private static $instance = null;
 
-	public function __construct(){
-		add_action( 'wpa_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
+	public function __construct( $parent ){
+		$this->parent = $parent;
+		add_action('admin_init', array( $this, 'add_settings' ) );
 		add_action( 'wp_ajax_wpa_option_import', array( $this, 'option_import' ) );
 	}
 
-	public static function get_instance() {
-
-		if ( null == self::$instance ) {
-			self::$instance = new self;
-		}
-		return self::$instance;
-
-	}
 	/**
 	 * フィールドを追加
 	 *
-	 * @param $admin WP_Assistant\module\admin\admin クラスのインスタンス
+	 * @param $this->parent->settings->P_Assistant\module\admin\admin クラスのインスタンス
 	 * @return void
 	 */
-	public function add_settings( $admin ) {
-
-		$admin->add_section(
+	public function add_settings() {
+		$this->parent->settings->add_section(
 			'tools',
 			function () {
 				_e( 'Tools', 'wp-assistant' );
@@ -47,7 +36,7 @@ class tools {
 			__( 'Tools', 'wp-assistant' )
 		);
 
-		$admin->add_field(
+		$this->parent->settings->add_field(
 			'tools_export',
 			__( 'Export Settings', 'wp-assistant' ),
 			function () {
@@ -58,13 +47,15 @@ class tools {
 						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( get_option( config::get( 'prefix' ).'options' ) ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
 					</div>
 				</div>
+						</div>
+
 			<?php
 			},
 			'tools',
 			0
 		);
 
-		$admin->add_field(
+		$this->parent->settings->add_field(
 			'tools_export_text',
 			__( 'Settings Copy', 'wp-assistant' ) ,
 			function () {
@@ -73,13 +64,15 @@ class tools {
 					<p></p>
 					<textarea id="" cols="30" rows="10"><?php echo serialize( config::get_option() ); ?></textarea>
 				</div>
+						</div>
+
 				<?php
 			},
 			'tools',
 			0
 		);
 
-		$admin->add_field(
+		$this->parent->settings->add_field(
 			'tools_import',
 			__( 'Import Settings', 'wp-assistant' ),
 			function () {
@@ -94,6 +87,8 @@ class tools {
 						<span class="spinner"></span>
 					</p>
 				</div>
+			</div>
+
 				<?php
 			},
 			'tools',

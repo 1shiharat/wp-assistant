@@ -1,23 +1,20 @@
 <?php
-/**
- * =====================================================
- * 記事編集画面にナビゲーションを設置
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * @see https://github.com/wpverse/Advanced-Post-Navigation
- * =====================================================
- */
+/*
+Plugin Name: Admin Post Nav
+Description: In an article edit screen of the admin screen, enabling the next post, the previous post link.
+Text Domain: wp-assistant
+*/
 namespace WP_Assistant\modules\adminPostNav;
+
+use \WP_Assistant\modules\module;
+use \WP_Assistant\inc\config;
+use \WP_Assistant\inc\helper;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class adminPostNav {
-
-	private static $instance = null;
+class adminPostNav extends module {
 
 	private static $prev_text = '';
 	private static $next_text = '';
@@ -27,19 +24,10 @@ class adminPostNav {
 	/**
 	 * Class constructor: initializes class variables and adds actions and filters.
 	 */
-	public static function init() {
+	public function __construct() {
 		add_action( 'load-post.php', array( __CLASS__, 'register_post_page_hooks' ) );
 	}
 
-	public static function get_instance() {
-
-		if ( null == static::$instance ) {
-			static::$instance = new static;
-		}
-
-		return self::$instance;
-
-	}
 
 	/**
 	 * Filters/actions to hook on the admin post.php page.

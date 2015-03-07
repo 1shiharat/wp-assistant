@@ -926,15 +926,16 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  float: left;
+//  float: left;
   padding: .6em 1em;
   text-decoration: none;
   word-wrap: normal;
   white-space: normal;
+  display: block;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
-  margin-bottom: -1px;
+  margin-bottom: 3px;
   padding-bottom: 1px;
   background: #FFF;
 }
@@ -1201,7 +1202,7 @@ body .ui-tooltip {
 .ui-tabs-vertical .ui-tabs-nav {
   padding: .2em .1em .2em .2em;
   float: left;
-  width: 280px;
+  width: 18%;
 }
 
 .ui-tabs-vertical .ui-tabs-nav li {
@@ -1210,6 +1211,10 @@ body .ui-tooltip {
   border-bottom-width: 1px !important;
   border-right-width: 0 !important;
   margin: 0 -1px .2em 0;
+}
+.ui-tabs-nav,
+.ui-tabs-panel{
+  box-sizing: border-box;
 }
 
 .ui-tabs-vertical .ui-tabs-nav li a {
@@ -1225,5 +1230,18 @@ body .ui-tooltip {
 .ui-tabs-vertical .ui-tabs-panel {
   padding: 1em;
   float: right;
-  width: 900px;
+  width: 82%;
+}
+
+@media screen and ( max-width: 640px){
+  .ui-tabs-vertical .ui-tabs-panel {
+    width: 100%;
+    float: none;
+  }
+  .ui-tabs-vertical .ui-tabs-nav {
+    padding: .2em .1em .2em .2em;
+    float: none;
+    width: 100%;
+  }
+
 }

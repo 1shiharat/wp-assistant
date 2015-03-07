@@ -31,6 +31,7 @@ class autoload{
 		spl_autoload_register( array( '\\' . __NAMESPACE__ . '\autoload', 'autoload' ) );
 	}
 
+
 	public function autoload( $cls ) {
 
 		$cls = ltrim( $cls, '\\');

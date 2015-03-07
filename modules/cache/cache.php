@@ -1,18 +1,24 @@
 <?php
-
+/*
+Plugin Name: Cache
+Description: The cache module which I can easily implement.
+Text Domain: wp-assistant
+*/
 namespace WP_Assistant\modules\cache;
+
+use \WP_Assistant\modules\module;
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 
-class cache {
+class cache extends module{
 
 	private $active;
-	public $settings;
+
 	public $timer;
-	private static $instance = null;
 	public static $table_name = '';
 
-	public function __construct() {
+	public function __construct( $parent ) {
+		$this->parent = $parent;
 
 		$this->timer  = microtime( true );
 		$this->active = true;
@@ -35,14 +41,14 @@ class cache {
 		}
 	}
 
-	public function add_settings( $admin ){
+	public function add_settings() {
 
-		$admin->add_section( 'page_cache', function () {
+		$this->parent->settings->add_section( 'page_cache', function () {
 			_e( 'Page Cache', 'wp-assistant' );
 		}, __( 'Page Cache Settings', 'wp-assistant' ) );
 
 		// ログインしていないユーザーのみキャッシュを有効
-		$admin->add_field(
+		$this->parent->settings->add_field(
 			'anonymous',
 			__( 'Only Anonymous User.', 'wp-assistant' ),
 			function () {
@@ -57,14 +63,14 @@ class cache {
 			1
 		);
 
-		$admin->add_field(
+		$this->parent->settings->add_field(
 			'avoid_urls',
 			__( 'Regular expression of deny URL cache', 'wp-assistant' ),
 			function () {
 				$args = array(
 					'id'      => 'avoid_urls',
 					'default' => 0,
-					'value' => config::get_option( 'avoid_urls' ),
+					'value'   => config::get_option( 'avoid_urls' ),
 					'desc'    => __( 'Please enter a regular expression of deny URL cache.', 'wp-assistant' ),
 				);
 				helper::textarea( $args );
@@ -72,16 +78,6 @@ class cache {
 			'page_cache',
 			''
 		);
-
-//		return $admin;
-
-	}
-
-	public static function get_instance() {
-		if ( null == self::$instance ) {
-			self::$instance = new self;
-		}
-		return self::$instance;
 	}
 
 	/**
@@ -144,7 +140,15 @@ class cache {
 		global $user_ID, $user_login;
 		$uri = $_SERVER['REQUEST_URI'];
 
-		$u = explode( "\n", $this->settings['avoid_urls'] );
+		/**
+		 * 管理画面では何もしない
+		 */
+		if ( is_admin() ){
+			return;
+		}
+
+		$u = explode( "\n", config::get_option( 'avoid_urls' ) );
+
 		foreach ( $u as $v ) {
 			$v = trim( $v );
 			if ( $v && preg_match( "#{$v}#is", $uri, $m ) ) {
@@ -153,28 +157,23 @@ class cache {
 			}
 		}
 
-		if ( $this->active &&
-		     ! config::get_option('anonymous' ) && $user_ID > 0 ) {
+		if ( $this->active
+		     &&
+		     0 == intval( config::get_option('anonymous' ) )
+		     && $user_ID > 0 ) {
 			$this->active = false;
 		}
 
-		if ( $this->active && ! empty( $user_login ) ) {
-			$u = split( "[\s]*,[\s]*", $this->settings['users_nocache'] );
-			if ( in_array( $user_login, $u ) ) {
-				$this->active = false;
-			}
-		}
-
+		/**
+		 * メソッドがpostの時はキャッシュをオフに
+		 */
 		if ( $this->active ) {
-
 			if ( $this->active && ! empty( $_POST ) && ! empty( $this->settings['post_method'] ) ) {
 				$this->active = false;
 			}
 		}
 
-
 		if ( $this->active ) {
-
 			if ( ( $data = $this->get_cache( $uri ) ) !== false ) {
 				$this->update_cache_settings();
 				global $wpdb;
@@ -198,7 +197,7 @@ class cache {
 	 * @return mixed
 	 */
 	public function call_back_ob($data) {
-		$this->set_cache($_SERVER['REQUEST_URI'], $data);
+		$this->set_cache( $_SERVER['REQUEST_URI'], $data );
 		return $data;
 	}
 
@@ -307,23 +306,25 @@ class cache {
 	/**
 	 * プラグイン有効化時のアクション
 	 */
-	static function activate() {
+	public static function activate() {
 		global $wpdb;
 
 		//create cache table
 		$table_name = $wpdb->prefix . 'assistant_cache';
-		$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %s", $table_name ) );
-		$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %s", $table_name ) );
+		$wpdb->init_charset();
+		$charset = $wpdb->charset;
+		$collate = ( $wpdb->collate ) ? $wpdb->collate : 'utf8_general_ci';
+		$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS `%s`", $table_name ) );
 		$wpdb->query( $wpdb->prepare( "
-CREATE TABLE IF NOT EXISTS %s (
-  `data_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+CREATE TABLE IF NOT EXISTS `$table_name` (
+  `data_key` varchar(32) CHARACTER SET %s COLLATE %s NOT NULL,
   `user_id` int(11) NOT NULL,
-  `data` mediumtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `data` mediumtext CHARACTER SET $charset COLLATE $collate NOT NULL,
   `expiretime` int(11) NOT NULL,
-  `debug` varchar(250) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `debug` varchar(250) CHARACTER SET $charset COLLATE $collate NOT NULL,
   PRIMARY KEY (`data_key`,`user_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;", $table_name ) );
+) ENGINE=MyISAM DEFAULT CHARSET=$charset;", $charset, $collate ) );
 
 		add_option( 'assistant_cache_settings', static::default_settings() );
 	}

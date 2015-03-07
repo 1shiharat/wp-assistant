@@ -64,6 +64,7 @@ class helper {
 				<?php echo $settings['label']['false'] ?>
 			</label>
 		</div>
+		</div>
 	<?php
 	}
 
@@ -78,7 +79,8 @@ class helper {
 		?>
 		<div class="form-group form-group-radiobox">
 			<p><?php echo $settings['desc'] ?></p>
-			<textarea name="<?php echo $settings['id'] ?>" id="<?php echo $settings['id'] ?>" cols="30" rows="10"><?php echo $settings['value'] ?></textarea>
+			<textarea name="<?php echo $settings['id'] ?>" id="<?php echo $settings['id'] ?>" cols="30" rows="10"><?php echo esc_html( $settings['value'] ) ?></textarea>
+		</div>
 		</div>
 		<?php
 	}

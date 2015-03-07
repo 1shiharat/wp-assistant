@@ -1,4 +1,19 @@
 ;(function($){
+    var timer;
+    var wpaMessage = function (type, message) {
+        var messageContainer = $('.wpa-message-' + type);
+        if ( message ) {
+            messageContainer.html(message);
+        }
+        var already = 'message-aleady';
+        messageContainer.fadeIn();
+        clearTimeout(timer);
+        if ( ! messageContainer.hasClass(already)) {
+            timer = setTimeout(function () {
+                messageContainer.fadeOut('500');
+            }, 800);
+        }
+    };
 
 
     /**

@@ -1,56 +1,50 @@
 <?php
-/**
- * =====================================================
- * データベースの最適化
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * =====================================================
- */
+/*
+Plugin Name: Database Optimization
+Description: Database Optimization module.
+Text Domain: wp-assistant
+Domain Path: /languages/
+*/
 namespace WP_Assistant\modules\optimize;
 
+use WP_Assistant\modules\module;
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 
-class optimize {
+class optimize extends module {
 
-	private static $instance = null;
-
-	public function __construct() {
-		add_action( 'wpa_settings_fields_after', array( $this, 'add_settings' ), 10, 1 );
+	/**
+	 * 初期化
+	 * @param $parent module classのインスタンス
+	 *
+	 * @todo 適当すぎるので実装を考える
+	 *
+	 */
+	public function __construct( $parent ) {
+		$this->parent = $parent;
+		add_action( 'admin_init',           array( $this, 'add_settings' ) );
 		add_action( 'wp_ajax_run_optimize', array( $this, 'run_optimize' ), 10, 1 );
-	}
-
-	public static function get_instance() {
-
-		if ( null == static::$instance ) {
-			static::$instance = new static;
-		}
-		return self::$instance;
 
 	}
 
 	/**
-	 * フィールドを追加
-	 *
-	 * @param $admin
+	 * データベースの最適化に必要な設定の追加
 	 */
-	public function add_settings( $admin ) {
+	public function add_settings() {
 		global $wpdb;
 
-		$admin->add_section(
+		$revision_posts_count = wp_count_posts( 'revision' );
+		$draft_results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
+		$trash_results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'trash' ));
+
+		$this->parent->settings->add_section(
 			'optimize',
 			function () {
 				_e( 'Database Optimization', 'wp-assistant' );
 			},
 			__( 'Database Optimization', 'wp-assistant' )
-		);
-
-		$revision_posts_count = wp_count_posts( 'revision' );
-
-//		$title = __( 'すべての%sの削除<label class="label">%s数 : <span class="post-count post-count-%s">%d</span></label>', 'wp-assistant' );
-		$admin->add_field(
+		)
+		->add_field(
 			'optimize_revision',
 			__( 'Delete all revisions', 'wp-assistant' ) . ' <label class="label">Revision  : <span class="post-count post-count-revision">' . esc_attr( $revision_posts_count->inherit  ). '</label> ',
 			function () {
@@ -69,10 +63,8 @@ class optimize {
 			},
 			'optimize',
 			1
-		);
-
-		$draft_results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
-		$admin->add_field(
+		)
+		->add_field(
 			'optimize_auto_draft',
 			__( 'Delete all of the auto draft', 'wp-assistant' ). ' <label class="label"> Auto Draft post : <span class="post-count post-count-auto_draft">'. $draft_results .'</span></label>',
 			function () {
@@ -85,10 +77,8 @@ class optimize {
 			},
 			'optimize',
 			1
-		);
-
-		$trash_results = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'trash' ));
-		$admin->add_field(
+		)
+		->add_field(
 			'optimize_trash',
 			__( 'Delete trash in the post of all post type', 'wp-assistant' ) . '<label class="label">In Trash : <span class="post-count post-count-trash">'.$trash_results.'</span></label>',
 			function () {
@@ -101,14 +91,12 @@ class optimize {
 			},
 			'optimize',
 			1
-		);
-
-
-		$admin->add_field(
+		)
+		->add_field(
 			'optimize_submit',
 			__( 'Run Optimize', 'wp-assistant' ),
 			function () {
-				$nonce = wp_create_nonce(__FILE__);
+				$nonce = wp_create_nonce( __FILE__ );
 				?>
 				<div class="run_optimize">
 					<?php _e( 'To apply the above settings, please save once.', 'wp-assistant' ); ?>
@@ -116,10 +104,11 @@ class optimize {
 					<input type="hidden" id="optimize_nonce" name="_wp_optimize_nonce" value="<?php echo $nonce ?>" />
 					<span class="spinner"></span>
 				</div>
+				</div>
+
 			<?php
 			},
 			'optimize'
-
 		);
 	}
 
@@ -136,6 +125,7 @@ class optimize {
 
 		$wp_nonce = $_REQUEST['_wp_optimize_nonce'];
 		$verify = wp_verify_nonce( $wp_nonce, __FILE__ );
+
 		if( ! $verify ){
 			echo 'nonce is not defined.';
 			exit();
@@ -182,8 +172,6 @@ class optimize {
 				$message['status'] = 'success';
 			}
 		}
-
-
 		if ( is_array( $message ) && $message ){
 			echo wp_send_json( $message );
 			exit();
