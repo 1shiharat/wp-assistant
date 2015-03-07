@@ -1,7 +1,7 @@
 /**
  オリジナルCSS
  */
-
+$admin-panel-width: 1215px;
 
 #wpa_settings_form h1 {
   font-size: 1.7em;
@@ -24,7 +24,7 @@
 }
 
 #wpa_tabs {
-  max-width: 1000px;
+  max-width: $admin-panel-width;
   background: transparent;
   border: none;
   font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
@@ -47,7 +47,9 @@
     padding-right: 20px;
     line-height: 2em;
     height: 40px;
-    margin-top: -20px;
+    margin-top: 10px;
+    width: 95%;
+    margin-right: 10px;
   }
   *:focus,
   *:active {
@@ -57,7 +59,6 @@
     box-shadow: none;
   }
 }
-
 
 .wpa-message {
   display: none;
@@ -75,6 +76,20 @@
 
 #template #aceeditor div{
   margin-right: 0;
+}
+
+#wpa_modules_section{
+  .acoordion .acoordion{
+    width: 300px;
+    display: inline-block;
+    vertical-align: top;
+    .module-block{
+      min-height: 100px;
+      p{
+        min-height: 70px;
+      }
+    }
+  }
 }
 
 /*!

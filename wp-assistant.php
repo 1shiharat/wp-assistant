@@ -1,4 +1,14 @@
 <?php
+/*
+Plugin Name: WP Assistant
+Plugin URI: http://grow-group.jp/
+Description: This plugin to provide a convenient function when build WordPress site.
+Author: 1shiharaT
+Version: 0.1.2
+Author URI: http://grow-group.jp/
+Text Domain: wp-assistant
+Domain Path: /languages/
+*/
 /**
  * =====================================================
  * サイト制作サポートプラグイン
@@ -8,30 +18,13 @@
  * @link      http://grow-group.jp
  * =====================================================
  */
-/*
-Plugin Name: WP Assistant
-Plugin URI: http://grow-group.jp/
-Description: WordPress assistant plugin.
-Author: 1shiharaT
-Version: 0.1.2
-Author URI: http://grow-group.jp/
-Text Domain: wp-assistant
-Domain Path: /languages/
-*/
-
 namespace WP_Assistant;
 
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\autoload;
 
-use WP_Assistant\modules\cleanup\cleanup;
-use WP_Assistant\modules\aceEditor\aceEditor;
-use WP_Assistant\modules\admin\admin;
-use WP_Assistant\modules\breadcrumb\breadcrumb;
-use WP_Assistant\modules\cf7AjaxZip\cf7AjaxZip;
-use WP_Assistant\modules\menuEditor\menuEditor;
-use WP_Assistant\modules\optimize\optimize;
-use WP_Assistant\modules\tools\tools;
+use WP_Assistant\modules\module;
+use WP_Assistant\modules\register;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -40,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 require 'inc/config.php';
 require 'inc/autoload.php';
 
-$GLOBALS['WP_Assistant'] = new WP_Assistant();
+//$GLOBALS['WP_Assistant'] = new WP_Assistant();
 
 register_activation_hook( __FILE__, array( new WP_Assistant, 'activate' ) );
 
@@ -63,15 +56,11 @@ class WP_Assistant {
 		// キャッシュをセット
 		static::set_cache();
 
-		// 各モジュールを登録
-		cleanup::get_instance();
-		admin::get_instance();
-		aceEditor::get_instance();
-		menuEditor::get_instance();
-		optimize::get_instance();
-		tools::get_instance();
-		cf7AjaxZip::get_instance();
-		breadcrumb::get_instance();
+		add_action( 'plugins_loaded', array( $this, 'action' ) );
+	}
+
+	public function action(){
+		$modules = new module();
 	}
 
 	/**
@@ -110,7 +99,17 @@ class WP_Assistant {
 	 */
 	public static function get_version() {
 		$filedata = get_file_data( __FILE__, array( 'version' => 'version' ) );
-
 		return $filedata['version'];
 	}
+
+	public static function get_module_name() {
+		$filedata = get_file_data( __FILE__, array( 'Name' => 'Plugin Name' ) );
+		return $filedata['name'];
+	}
+
+	public static function get_module_desc() {
+		$filedata = get_file_data( __FILE__, array( 'Description' => 'Description', ) );
+		return $filedata['description'];
+	}
+
 }

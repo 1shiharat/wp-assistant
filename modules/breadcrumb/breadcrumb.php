@@ -1,20 +1,16 @@
 <?php
-/**
- * =====================================================
- * パンくずを出力
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * @see https://github.com/wpverse/Advanced-Post-Navigation
- * =====================================================
- */
+/*
+Plugin Name: Breadcrumbs
+Description: breadcrumbs for this site.
+Text Domain: wp-assistant
+*/
 namespace WP_Assistant\modules\breadcrumb;
 
+use \WP_Assistant\modules\module;
 use WP_Assistant\inc;
 use WP_Assistant\inc\config;
 
-class breadcrumb {
+class breadcrumb extends module {
 
 	/**
 	 * The list of breadcrumb items.
@@ -43,30 +39,9 @@ class breadcrumb {
 	 */
 	public $options;
 
-	private static $instance = null;
 
 	public function __construct(){
 		add_shortcode( 'wpa_breadcrumb', array( $this, 'shortcode' ) );
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param array $templates An array with templates for link, current/standard state and before/after.
-	 * @param array $options An array with options.
-	 * @param array $strings An array with strings.
-	 * @param bool $autorun Autorun or not.
-	 *
-	 * @return string
-	 */
-
-	public static function get_instance() {
-
-		if ( null == static::$instance ) {
-			static::$instance = new static;
-		}
-		return self::$instance;
-
 	}
 
 	public function init( $templates = array(), $options = array(), $strings = array(), $autorun = true  ){

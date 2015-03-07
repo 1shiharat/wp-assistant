@@ -25,10 +25,9 @@ gulp.task('browserSync', function () {
 // js
 gulp.task('scripts', function () {
     return gulp.src([
-            'modules/aceEditor/assets/js/*.js',
-            'modules/admin/assets/js/*.js',
-            'modules/menuEditor/assets/js/*.js',
-            'modules/tools/assets/js/*.js',
+            'modules/**/**/*.js',
+            '!modules/**/**/aceinit.js',
+            '!modules/**/**/ajazip3.js'
         ])
         .pipe($.plumber())
         .pipe($.jshint())

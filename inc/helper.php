@@ -64,8 +64,27 @@ class helper {
 				<?php echo $settings['label']['false'] ?>
 			</label>
 		</div>
+		</div>
 	<?php
 	}
+
+	public static function textarea( $args = array() ){
+		$defaults = array(
+			'id'      => 'wpa_textarea',
+			'value'   => '',
+			'default' => '',
+			'desc'    => '',
+		);
+		$settings = wp_parse_args( $args, $defaults );
+		?>
+		<div class="form-group form-group-radiobox">
+			<p><?php echo $settings['desc'] ?></p>
+			<textarea name="<?php echo $settings['id'] ?>" id="<?php echo $settings['id'] ?>" cols="30" rows="10"><?php echo esc_html( $settings['value'] ) ?></textarea>
+		</div>
+		</div>
+		<?php
+	}
+
 
 	/**
 	 * ユーザードロップダウンの出力

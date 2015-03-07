@@ -17,13 +17,14 @@ use WP_Assistant\inc\config;
 		</div>
 	</div>
 	<!--/.wpa-message-wrap-->
+
 	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Setting', 'wp-assistant' ) ?></h1>
 
 	<div id="<?php echo config::get( 'prefix' ); ?>tabs">
 		<ul>
 			<?php
-			foreach( $this->setting_section_names as $section_name => $section_title ) : ?>
-				<li><a href="#<?php echo config::get( 'prefix' ) . $section_name; ?>"><?php echo $section_title ?></a></li>
+			foreach( $this->settings as $section_name => $section ) : ?>
+				<li><a href="#<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>"><?php echo $section['section']['tabs_name'] ?></a></li>
 			<?php
 			endforeach; ?>
 			<li class="pull-right">
@@ -31,20 +32,16 @@ use WP_Assistant\inc\config;
 				<span class="spinner"></span>
 			</li>
 		</ul>
-
 		<?php
-
-		foreach( $this->setting_section_names as $section_name => $section_title ) : ?>
-			<div id="<?php echo config::get( 'prefix' ) . $section_name; ?>">
+		foreach( $this->settings  as $section_name => $section ) : ?>
+			<div id="<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>">
 				<div class="acoordion">
 					<?php
-					do_settings_fields( config::get( 'prefix' ) . 'options_page', $section_name ); ?>
+					do_settings_fields( config::get( 'prefix' ) . 'options_page', $section['section']['section_name'] ); ?>
 				</div>
 			</div>
 		<?php
 		endforeach; ?>
-
-
 	</div>
 	<div class="panel-footer">
 

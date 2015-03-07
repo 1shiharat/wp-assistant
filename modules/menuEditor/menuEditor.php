@@ -1,15 +1,13 @@
 <?php
-/**
- * =====================================================
- * 管理画面サイドメニューを管理
- * @package   WP_Assistant
- * @author    Grow Group
- * @license   GPL v2 or later
- * @link      http://grow-group.jp
- * =====================================================
- */
+/*
+Plugin Name: Admin Menu Editor
+Description: Set display, non-display of the admin menu item every user.
+Text Domain: wp-assistant
+Domain Path: /languages/
+*/
 namespace WP_Assistant\modules\menuEditor;
 
+use WP_Assistant\modules\module;
 use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 
@@ -18,14 +16,15 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class menuEditor{
-
-	private static $instance = null;
+class menuEditor extends module {
 
 	/**
 	 * 初期化
 	 */
-	public function __construct(){
+	public function __construct( $parent ){
+		$this->parent = $parent;
+
+		add_action('admin_init', array( $this, 'add_settings' ) );
 
 		add_action( 'admin_print_scripts', function(){
 			$admin_menus = config::get_option( 'admin_menu' );
@@ -62,30 +61,22 @@ class menuEditor{
 			echo '</style>';
 		}, 999 );
 
-		add_action( 'wpa_settings_fields_after', array( $this, 'add_fields' ), 10, 1 );
 
 	} // construct
 
-	public static function get_instance() {
-
-		if ( null == static::$instance ) {
-			static::$instance = new static;
-		}
-		return self::$instance;
-
-	}
 
 	/**
 	 * フィールドを追加
-	 * @param $admin
 	 */
-	public function add_fields( $admin ){
+	public function add_settings(){
 
-		$admin->add_section( 'admin_menu', function () {
-			_e( 'Admin Menu', 'wp-assistant' );
-		}, __( 'Admin Menu Settings', 'wp-assistant' ) );
-
-		$admin->add_field(
+		$this->parent->settings->add_section(
+			'admin_menu', function () {
+				_e( 'Admin Menu', 'wp-assistant' );
+			},
+			__( 'Admin Menu Settings', 'wp-assistant' )
+		)
+		->add_field(
 			'admin_menu_user',
 			__( 'Select User', 'wp-assistant' ),
 			function () {
@@ -101,13 +92,14 @@ class menuEditor{
 					'selected' => $selected
 				) ); ?>
 				</div>
+				</div>
+
 			<?php
 			},
 			'admin_menu',
 			''
-		);
-
-		$admin->add_field(
+		)
+		->add_field(
 			'admin_menu',
 			__( 'Select Admin Menu', 'wp-assistant' ),
 			function () { ?>
@@ -119,6 +111,8 @@ class menuEditor{
 
 				<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
 				</div>
+				</div>
+
 			<?php
 			},
 			'admin_menu',

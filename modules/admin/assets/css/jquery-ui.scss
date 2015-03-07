@@ -114,7 +114,7 @@
   clear: both;
   margin-bottom: 1.0em;
   margin-right: 0;
-  box-shadow: 0 1px 1px 1px rgba(0,0,0,.02);
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .02);
 }
 
 .ui-accordion .ui-accordion-content p {
@@ -139,11 +139,11 @@
   vertical-align: middle;
   text-align: center;
   overflow: visible; /* removes extra width in IE */
-  background: rgb(255,255,255);
-  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(242,242,242,1) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(40%,rgba(255,255,255,1)), color-stop(100%,rgba(242,242,242,1)));
-  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 40%,rgba(242,242,242,1) 100%);
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 40%,rgba(242,242,242,1) 100%);
+  background: rgb(255, 255, 255);
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 40%, rgba(242, 242, 242, 1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(40%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(242, 242, 242, 1)));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 40%, rgba(242, 242, 242, 1) 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 40%, rgba(242, 242, 242, 1) 100%);
 }
 
 .ui-button,
@@ -922,17 +922,20 @@ button.ui-button::-moz-focus-inner {
   border-bottom-width: 0;
   padding: 0;
   white-space: nowrap;
-  border-radius: 4px 4px 0 0;
+  border-radius: 0px 0px 0 0;
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  float: left;
+//  float: left;
   padding: .6em 1em;
   text-decoration: none;
+  word-wrap: normal;
+  white-space: normal;
+  display: block;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
-  margin-bottom: -1px;
+  margin-bottom: 3px;
   padding-bottom: 1px;
   background: #FFF;
 }
@@ -941,6 +944,7 @@ button.ui-button::-moz-focus-inner {
 .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
 .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
   cursor: text;
+
 }
 
 .ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
@@ -1013,8 +1017,8 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
   border: 1px solid #e5e5e5;
-//  background: #fafafa;
-//  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+  //  background: #fafafa;
+  //  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
   font-weight: normal;
   color: #222;
 
@@ -1188,4 +1192,56 @@ body .ui-tooltip {
   border-color: #2c7091;
   color: #FFF;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.ui-tabs-vertical {
+  width: 100%;
+  max-width: 1300px;
+}
+
+.ui-tabs-vertical .ui-tabs-nav {
+  padding: .2em .1em .2em .2em;
+  float: left;
+  width: 18%;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li {
+  clear: left;
+  width: 100%;
+  border-bottom-width: 1px !important;
+  border-right-width: 0 !important;
+  margin: 0 -1px .2em 0;
+}
+.ui-tabs-nav,
+.ui-tabs-panel{
+  box-sizing: border-box;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li a {
+  display: block;
+}
+
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
+  padding-bottom: 0;
+  padding-right: .1em;
+  border-right-width: 1px;
+}
+
+.ui-tabs-vertical .ui-tabs-panel {
+  padding: 1em;
+  float: right;
+  width: 82%;
+}
+
+@media screen and ( max-width: 640px){
+  .ui-tabs-vertical .ui-tabs-panel {
+    width: 100%;
+    float: none;
+  }
+  .ui-tabs-vertical .ui-tabs-nav {
+    padding: .2em .1em .2em .2em;
+    float: none;
+    width: 100%;
+  }
+
 }

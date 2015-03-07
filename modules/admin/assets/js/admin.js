@@ -1,5 +1,8 @@
 (function ($) {
     "use strict";
+    /**
+     * アコーディオンをすべて開く
+     */
     $.fn.multiAccordion = function() {
         $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
             .find("h3")
@@ -52,7 +55,7 @@
         };
         $('#wpa_tabs').tabs(
             'enable', tab_id
-        );
+        ).addClass( "ui-tabs-vertical ui-helper-clearfix" );
     }
 
     $(function () {
@@ -62,7 +65,7 @@
             autoHeight: false,
             heightStyle: "content"
         });
-        $('#wpa_tabs').tabs();
+        $('#wpa_tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
         $('#wpa_tabs ul li a').on('click', function () {
             location.hash = $(this).attr('href');
             window.scrollTo(0, 0);
@@ -109,69 +112,6 @@
                 submit_flag = true;
             }
         });
-    });
-    function countReset( target ){
-        if ( ! target ){
-            return false;
-        }
-        target = $('.post-count-' + target);
-        target.text('0');
-    }
-
-    var optimize_flag = true;
-    /**
-     * 最適化の実行
-     */
-    $(document).on('click', '#optimize_submit', function (e) {
-        e.preventDefault();
-        if ( false === optimize_flag) {
-            return false;
-        }
-        optimize_flag = false;
-        $('.run_optimize').find('.spinner').show();
-        var nonce = $('#optimize_nonce').val();
-        $.ajax({
-            'type': 'post',
-            'url': ajaxurl,
-            'data': {
-                'action': 'run_optimize',
-                '_wp_optimize_nonce': nonce
-            },
-            'success': function (data) {
-                $('.run_optimize').find('.spinner').hide();
-                if ( data.status == 'faild') {
-
-                    wpaMessage('faild', '<h3>' + data.html + '</h3>');
-                    //return false;
-                } else {
-
-                    //var message = '';
-                    var message = document.createElement('div');
-                    var heading = document.createElement('h3');
-                    if ( data.optimize_revision ) {
-                        $(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
-                        countReset('revision');
-                    }
-
-                    if (data.optimize_auto_draft) {
-                        $(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
-                        countReset('auto_draft');
-                    }
-
-                    if (data.optimize_trash) {
-                        $(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
-                        countReset('trash');
-                    }
-
-                    if ( $(message).length > 0 ){
-                        wpaMessage( 'optimize', $(message) );
-                    }
-
-                    optimize_flag = true;
-                }
-            }
-        });
-
     });
 
 })(jQuery);

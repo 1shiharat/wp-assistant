@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-assistant\n"
-"POT-Creation-Date: 2015-03-04 18:54+0900\n"
-"PO-Revision-Date: 2015-03-04 18:55+0900\n"
+"POT-Creation-Date: 2015-03-07 23:04+0900\n"
+"PO-Revision-Date: 2015-03-07 23:11+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
 "Language-Team: ishihara takashi <ishihara@grow-group.jp>\n"
 "Language: ja\n"
@@ -22,214 +22,313 @@ msgstr "有効"
 msgid "OFF"
 msgstr "無効"
 
-#: ../modules/admin/admin.php:99
+#: ../inc/settings.php:60 ../inc/settings.php:61
+msgid "WP Assistant"
+msgstr "WP Assistant"
+
+#: ../inc/views/options.php:12
+msgid "Saved successfully"
+msgstr "設定を保存しました。"
+
+#: ../inc/views/options.php:16
+msgid "Failed to save"
+msgstr "設定の保存に失敗しました。"
+
+#: ../inc/views/options.php:21
+msgid "Setting"
+msgstr "設定画面"
+
+#: ../inc/views/options.php:31
+msgid "Save"
+msgstr "設定を保存"
+
+#: ../modules/module.php:68 ../modules/admin/admin.php:60
 msgid "General"
 msgstr "サイトの設定"
 
-#: ../modules/admin/admin.php:102
+#: ../modules/module.php:69
+msgid "General setting for this site."
+msgstr "サイトの基本的な設定が変更可能となります"
+
+#: ../modules/module.php:72
+msgid "Original Dashboard Widget"
+msgstr "オリジナルダッシュボードパネル"
+
+#: ../modules/module.php:73
+msgid "Original dashboard widget module."
+msgstr ""
+"ダッシュボードの「ようこそ」パネルをオリジナルのウィジェットに置換します。"
+
+#: ../modules/module.php:76
+msgid "Breadcrumbs"
+msgstr "パンくず"
+
+#: ../modules/module.php:77
+msgid "breadcrumbs for this site."
+msgstr "パンくずをショートコードで表示します。<code>[wpa_breadcrumb]</code>"
+
+#: ../modules/module.php:80
+msgid "AjaxZip3 for Contact Form 7"
+msgstr "AjaxZip3 for Contact Form 7"
+
+#: ../modules/module.php:81
+msgid ""
+"\"zip\", a name of a prefecture can implement automatic input to a zip code "
+"by using \"address\" for \"pref\", the address."
+msgstr ""
+"郵便番号に\"zip\"、県名に\"pref\"、住所に\"address\"というIDをつけることで、"
+"ajazip3を有効化します。"
+
+#: ../modules/module.php:84
+msgid "Admin Menu Editor"
+msgstr "管理メニューエディター"
+
+#: ../modules/module.php:85
+msgid "Set display, non-display of the admin menu item every user."
+msgstr ""
+"ユーザーごとに管理画面サイドメニューの表示・非表示を選択することができます。"
+
+#: ../modules/module.php:88 ../modules/optimize/optimize.php:43
+#: ../modules/optimize/optimize.php:45
+msgid "Database Optimization"
+msgstr "データベースの最適化"
+
+#: ../modules/module.php:89
+msgid "Database Optimization module."
+msgstr ""
+"リビジョン、ゴミ箱内の記事、自動下書き記事をデータベースから一括削除します。"
+
+#: ../modules/module.php:92 ../modules/tools/tools.php:34
+#: ../modules/tools/tools.php:36
+msgid "Tools"
+msgstr "ツール"
+
+#: ../modules/module.php:93
+msgid "Export & import of this plugin setting."
+msgstr "プラグインの設定をエクスポート・インポートすることができます。"
+
+#: ../modules/module.php:96
+msgid "Ace Editor"
+msgstr "Ace Editor"
+
+#: ../modules/module.php:97
+msgid "Introduced Ace in file editor."
+msgstr ""
+"テーマの編集、プラグインの編集画面でAce Editorが利用できるようになります。"
+"Emmet を利用してHTMLを展開することも可能です。"
+
+#: ../modules/activation/activation.php:33
+msgid "Modules Activation"
+msgstr "モジュールの有効化"
+
+#: ../modules/admin/admin.php:63
 msgid "Feed link tags (rss)"
 msgstr "フィードリンクの出力 (RSS)"
 
-#: ../modules/admin/admin.php:107
+#: ../modules/admin/admin.php:68
 msgid "Please set the on or off of the feed links that are output to wp_head."
 msgstr "フィードリンクを出力したくない時は無効を選択してください。"
 
-#: ../modules/admin/admin.php:117
+#: ../modules/admin/admin.php:76
 msgid "WordPress generator meta tag"
 msgstr "WordPressジェネレーターメタタグの出力"
 
-#: ../modules/admin/admin.php:122
+#: ../modules/admin/admin.php:81
 msgid "The output the WordPress version information to wp_head."
 msgstr ""
 "WordPressのバージョン情報を出力するジェネレータータグをコントロールします。出"
 "力したくない時は無効を選択して下さい。"
 
-#: ../modules/admin/admin.php:132
+#: ../modules/admin/admin.php:89
 msgid "The output of the short link"
 msgstr "ショートリンクタグの出力"
 
-#: ../modules/admin/admin.php:137
+#: ../modules/admin/admin.php:94
 msgid "The output a short link to wp_head."
 msgstr ""
 "ショートリンクタグをwp_headに出力します。出力したくない時には無効を選択して下"
 "さい。"
 
-#: ../modules/admin/admin.php:147
+#: ../modules/admin/admin.php:102
 msgid "Stop of automatic formatting"
 msgstr "自動整形の停止"
 
-#: ../modules/admin/admin.php:152
+#: ../modules/admin/admin.php:107
 msgid "Please select whether to stop the automatic formatting."
 msgstr "自動整形を停止するためには有効を選択してください。"
 
-#: ../modules/admin/admin.php:161
+#: ../modules/admin/admin.php:115
 msgid "Stop of revision control"
 msgstr "リビジョンコントロールの無効化"
 
-#: ../modules/admin/admin.php:166
+#: ../modules/admin/admin.php:120
 msgid ""
 "You can choose to disable the revision control. * I only want to hide. The "
 "database will be accumulated."
 msgstr ""
 "リビジョンを隠すことができます。※ ただし、データベースには蓄積されます。"
 
-#: ../modules/admin/admin.php:176
+#: ../modules/admin/admin.php:128
 msgid "Load of the jQuery"
 msgstr "外部 jQuery ライブラリの読み込み"
 
-#: ../modules/admin/admin.php:181
+#: ../modules/admin/admin.php:133
 msgid "Please specify whether load the jQuery library of cdnjs."
 msgstr "cdnjs からjQueryライブラリを読み込みには有効にしてください。"
 
-#: ../modules/admin/admin.php:191
+#: ../modules/admin/admin.php:141
 msgid "Load of The Bootstrap3 framework"
 msgstr "Bootstrap 3 フレームワークの自動ロード"
 
-#: ../modules/admin/admin.php:196
+#: ../modules/admin/admin.php:146
 msgid "Please specify whether to load the Bootstrap framework"
 msgstr "Bootstrap フレームワークを自動的に読み込みためには有効にしてください。"
 
-#: ../modules/admin/admin.php:206
+#: ../modules/admin/admin.php:154
 msgid "Stop of xmlrpc"
 msgstr "XMLRPC の停止"
 
-#: ../modules/admin/admin.php:211
+#: ../modules/admin/admin.php:159
 msgid "Please specify whether to disable the xmlrpc as a security measure."
 msgstr "XMLRPC を無効化するには有効を選択してください。"
 
-#: ../modules/admin/admin.php:221
+#: ../modules/admin/admin.php:167
 msgid "Disable the author page"
 msgstr "著者情報出力の停止"
 
-#: ../modules/admin/admin.php:226
+#: ../modules/admin/admin.php:172
 msgid ""
 "Please specify whether to disable the author archive as a security measure."
 msgstr ""
 "著者アーカイブ、著者ページへのリンクを無効化する場合は有効を選択してくださ"
 "い。"
 
-#: ../modules/admin/admin.php:251
+#: ../modules/admin/admin.php:180
 msgid "Show in the admin bar the current template name"
 msgstr "アドミンバーに現在のテンプレート名を表示"
 
-#: ../modules/admin/admin.php:256
+#: ../modules/admin/admin.php:185
 msgid "To view the template name in the management bar, please to ON"
 msgstr "有効化するとアドミンバーにテンプレート名を表示します"
 
-#: ../modules/admin/admin.php:266
+#: ../modules/admin/admin.php:193
 msgid "Enabling Admin post Navigation"
 msgstr "記事編集画面ナビゲーションの有効化"
 
-#: ../modules/admin/admin.php:271
+#: ../modules/admin/admin.php:198
 msgid ""
 "In an article edit screen of the management screen, enabling the next post, "
 "the previous post link."
 msgstr ""
 "有効にすると記事編集画面で次の記事へ、前の記事へナビゲーションを表示します。"
 
-#: ../modules/admin/admin.php:282
+#: ../modules/admin/admin.php:504
+msgid "<span class=\"ab-icon\"></span> Template : "
+msgstr "<span class=\"ab-icon\"></span> テンプレート :"
+
+#: ../modules/adminPostNav/adminPostNav.php:41
+msgid "&larr; Previous"
+msgstr "&larr; 前の記事へ"
+
+#: ../modules/adminPostNav/adminPostNav.php:42
+msgid "Next &rarr;"
+msgstr "次の記事へ &rarr;"
+
+#: ../modules/adminPostNav/adminPostNav.php:72
+#, php-format
+msgid "%s Navigation"
+msgstr "%s ナビゲーション"
+
+#: ../modules/adminPostNav/adminPostNav.php:101
+#, php-format
+msgid "Previous %1$s: %2$s"
+msgstr "前の記事 %1$s: %2$s"
+
+#: ../modules/adminPostNav/adminPostNav.php:113
+#, php-format
+msgid "Next %1$s: %2$s"
+msgstr "次の記事 %1$s: %2$s"
+
+#: ../modules/breadcrumb/breadcrumb.php:77
+msgid "HOME"
+msgstr "ホーム"
+
+#: ../modules/breadcrumb/breadcrumb.php:79
+#, php-format
+msgid "Search results for<em>%s</em>"
+msgstr "<em>%s</em>の検索結果"
+
+#: ../modules/breadcrumb/breadcrumb.php:80
+#, php-format
+msgid "%s Search results for <em>%s</em>"
+msgstr "%s 検索結果 <em>%s</em>"
+
+#: ../modules/breadcrumb/breadcrumb.php:82
+#, php-format
+msgid "Pages: %d "
+msgstr "%d  ページ"
+
+#: ../modules/breadcrumb/breadcrumb.php:83
+msgid "Error: Not Found 404"
+msgstr "エラー: ページが見つかりませんでした"
+
+#: ../modules/cache/cache.php:47
+msgid "Page Cache"
+msgstr "ページキャッシュ"
+
+#: ../modules/cache/cache.php:48
+msgid "Page Cache Settings"
+msgstr "ページキャッシュ設定"
+
+#: ../modules/cache/cache.php:53
+msgid "Only Anonymous User."
+msgstr "未ログイン時のみキャッシュを有効化"
+
+#: ../modules/cache/cache.php:58
+msgid "anonymous user only or enable the cache."
+msgstr ""
+
+#: ../modules/cache/cache.php:68
+msgid "Regular expression of deny URL cache"
+msgstr ""
+
+#: ../modules/cache/cache.php:74
+msgid "Please enter a regular expression of deny URL cache."
+msgstr ""
+
+#: ../modules/dashboard/dashboard.php:35
 msgid "Please input the content to be displayed on the dashboard widget."
 msgstr ""
 "<p>オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
 "</p>"
 
-#: ../modules/admin/admin.php:283
+#: ../modules/dashboard/dashboard.php:37
 msgid "Replace Welcome Panel"
 msgstr "オリジナルダッシュボードウィジェット"
 
-#: ../modules/admin/admin.php:287
+#: ../modules/dashboard/dashboard.php:41
 msgid "Enabling original dashboard widget"
 msgstr "オリジナルダッシュボードウィジェットを有効化"
 
-#: ../modules/admin/admin.php:304
+#: ../modules/dashboard/dashboard.php:58
 msgid "<p>Please enter the content to be displayed on the dashboard.</p>"
 msgstr ""
 "<p>オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
 "</p>"
 
-#: ../modules/admin/admin.php:344 ../modules/admin/admin.php:345
-msgid "WP Assistant"
-msgstr "WP Assistant"
-
-#: ../modules/admin/views/options.php:12
-msgid "Saved successfully"
-msgstr "設定を保存しました。"
-
-#: ../modules/admin/views/options.php:16
-msgid "Failed to save"
-msgstr "設定の保存に失敗しました。"
-
-#: ../modules/admin/views/options.php:20
-msgid "Setting"
-msgstr "設定画面"
-
-#: ../modules/admin/views/options.php:30
-msgid "Save"
-msgstr "設定を保存"
-
-#: ../modules/adminPostNav/adminPostNav.php:53
-msgid "&larr; Previous"
-msgstr "&larr; 前の記事へ"
-
-#: ../modules/adminPostNav/adminPostNav.php:54
-msgid "Next &rarr;"
-msgstr "次の記事へ &rarr;"
-
-#: ../modules/adminPostNav/adminPostNav.php:84
-#, php-format
-msgid "%s Navigation"
-msgstr "%s ナビゲーション"
-
-#: ../modules/adminPostNav/adminPostNav.php:113
-#, php-format
-msgid "Previous %1$s: %2$s"
-msgstr "前の記事 %1$s: %2$s"
-
-#: ../modules/adminPostNav/adminPostNav.php:125
-#, php-format
-msgid "Next %1$s: %2$s"
-msgstr "次の記事 %1$s: %2$s"
-
-#: ../modules/breadcrumb/breadcrumb.php:102
-msgid "HOME"
-msgstr "ホーム"
-
-#: ../modules/breadcrumb/breadcrumb.php:104
-#, php-format
-msgid "Search results for<em>%s</em>"
-msgstr "<em>%s</em>の検索結果"
-
-#: ../modules/breadcrumb/breadcrumb.php:105
-#, php-format
-msgid "%s Search results for <em>%s</em>"
-msgstr "%s 検索結果 <em>%s</em>"
-
-#: ../modules/breadcrumb/breadcrumb.php:107
-#, php-format
-msgid "Pages: %d "
-msgstr "%d  ページ"
-
-#: ../modules/breadcrumb/breadcrumb.php:108
-msgid "Error: Not Found 404"
-msgstr "エラー: ページが見つかりませんでした"
-
-#: ../modules/cleanup/cleanup.php:363
-msgid "<span class=\"ab-icon\"></span> Template : "
-msgstr "<span class=\"ab-icon\"></span> テンプレート :"
-
-#: ../modules/menuEditor/menuEditor.php:85
+#: ../modules/menuEditor/menuEditor.php:75
 msgid "Admin Menu"
 msgstr "管理メニュー"
 
-#: ../modules/menuEditor/menuEditor.php:86
+#: ../modules/menuEditor/menuEditor.php:77
 msgid "Admin Menu Settings"
 msgstr "管理メニューの設定"
 
-#: ../modules/menuEditor/menuEditor.php:90
+#: ../modules/menuEditor/menuEditor.php:81
 msgid "Select User"
 msgstr "ユーザーを選択"
 
-#: ../modules/menuEditor/menuEditor.php:95
+#: ../modules/menuEditor/menuEditor.php:86
 msgid ""
 "Please select the account to apply the Admin menu change. <br /> * You can "
 "select more than one by selecting while holding down the  shift key."
@@ -237,102 +336,89 @@ msgstr ""
 "有効にしたいユーザーを選択してください。 <br /> ※ shift キーを押しながら選択"
 "することで、複数のユーザーを選択することができます。"
 
-#: ../modules/menuEditor/menuEditor.php:112
+#: ../modules/menuEditor/menuEditor.php:104
 msgid "Select Admin Menu"
 msgstr "非表示にする管理メニューを選択"
 
-#: ../modules/menuEditor/menuEditor.php:117
+#: ../modules/menuEditor/menuEditor.php:109
 msgid "Please refer to the select the management menu you want to hide."
 msgstr "非表示にしたい管理メニューを選択してください."
 
-#: ../modules/optimize/optimize.php:45 ../modules/optimize/optimize.php:47
-msgid "Database Optimization"
-msgstr "データベースの最適化"
-
-#: ../modules/optimize/optimize.php:55
+#: ../modules/optimize/optimize.php:49
 msgid "Delete all revisions"
 msgstr "すべてのリビジョンの削除"
 
-#: ../modules/optimize/optimize.php:63
+#: ../modules/optimize/optimize.php:57
 msgid "Please specify to enable revision of the deletion."
 msgstr "すべてのリビジョンを一括削除した場合には、有効にしてください。"
 
-#: ../modules/optimize/optimize.php:77
+#: ../modules/optimize/optimize.php:69
 msgid "Delete all of the auto draft"
 msgstr "すべての自動下書きを削除"
 
-#: ../modules/optimize/optimize.php:82
+#: ../modules/optimize/optimize.php:74
 msgid "Please specify to enable auto-draft of the deletion."
 msgstr "自動下書き記事を一括削除した場合には、有効にしてください。"
 
-#: ../modules/optimize/optimize.php:93
+#: ../modules/optimize/optimize.php:83
 msgid "Delete trash in the post of all post type"
 msgstr "すべての投稿タイプのゴミ箱内の記事を削除"
 
-#: ../modules/optimize/optimize.php:98
+#: ../modules/optimize/optimize.php:88
 msgid "Please specify to enable trash of the deletion."
 msgstr "ゴミ箱内の記事を一括削除した場合には、有効にしてください。"
 
-#: ../modules/optimize/optimize.php:109 ../modules/optimize/optimize.php:115
+#: ../modules/optimize/optimize.php:97 ../modules/optimize/optimize.php:103
 msgid "Run Optimize"
 msgstr "最適化を実行"
 
-#: ../modules/optimize/optimize.php:114
+#: ../modules/optimize/optimize.php:102
 msgid "To apply the above settings, please save once."
 msgstr "上記の最適化に関する設定を有効にするには、一度設定を保存してください。"
 
-#: ../modules/optimize/optimize.php:153
+#: ../modules/optimize/optimize.php:143
 msgid "Deleted successfully revision."
 msgstr "リビジョンの削除に成功しました。"
 
-#: ../modules/optimize/optimize.php:167
+#: ../modules/optimize/optimize.php:157
 msgid "Deleted successfully automatic draft."
 msgstr "自動下書きの削除に成功しました。"
 
-#: ../modules/optimize/optimize.php:181
+#: ../modules/optimize/optimize.php:171
 msgid "Deleted successfully trash in the article"
 msgstr "ゴミ箱内記事の削除に成功しました。"
 
-#: ../modules/optimize/optimize.php:193
+#: ../modules/optimize/optimize.php:181
 msgid "Failed to delete."
 msgstr "削除に失敗しました。"
 
-#: ../modules/tools/tools.php:45 ../modules/tools/tools.php:47
-msgid "Tools"
-msgstr "ツール"
-
-#: ../modules/tools/tools.php:52
+#: ../modules/tools/tools.php:41
 msgid "Export Settings"
 msgstr "設定をエクスポート"
 
-#: ../modules/tools/tools.php:56
+#: ../modules/tools/tools.php:45
 msgid "Download the set as a text file."
 msgstr "設定をテキストファイルとしてダウンロードします。"
 
-#: ../modules/tools/tools.php:58
+#: ../modules/tools/tools.php:47
 msgid "Export"
 msgstr "設定のエクスポート"
 
-#: ../modules/tools/tools.php:69
+#: ../modules/tools/tools.php:60
 msgid "Settings Copy"
 msgstr "設定をコピー"
 
-#: ../modules/tools/tools.php:84
+#: ../modules/tools/tools.php:77
 msgid "Import Settings"
 msgstr "インポートの設定"
 
-#: ../modules/tools/tools.php:92
+#: ../modules/tools/tools.php:85
 msgid "Import"
 msgstr "設定をインポート"
 
-#~ msgid "Supports"
-#~ msgstr "サポート"
-
-#~ msgid "Supports "
-#~ msgstr "制作支援ツール - 設定画面"
-
-#~ msgid "WordPress assistant plugin."
-#~ msgstr "WordPressのアシスタントプラグイン"
+#~ msgid ""
+#~ "This plugin to provide a convenient function when build WordPress site."
+#~ msgstr "サイト制作を助けるアシスタントプラグイン"
 
 #~ msgid "Select Acount"
 #~ msgstr "ユーザーを選択"
