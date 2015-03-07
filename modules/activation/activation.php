@@ -49,8 +49,8 @@ class activation extends module {
 						helper::radiobox(
 							array(
 								'id'      => 'modules_list_' . $module,
-								'default' => 0,
 								'desc'    => esc_html( $module_info['desc'] ),
+								'default' => $module_info['default'],
 							)
 						); ?>
 					</div>
@@ -62,7 +62,7 @@ class activation extends module {
 					$module_info['name'],
 					$module_setting,
 					'modules',
-					1
+					$module_info['default']
 				);
 			}
 		}

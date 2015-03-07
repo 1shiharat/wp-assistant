@@ -49,6 +49,7 @@ class module{
 					unset( $modules_list[$key] );
 				}
 			}
+
 			/** @var modules 有効なモジュールの配列 */
 			$this->modules = apply_filters( 'wp_assistant_modules', $modules_list );
 		}
@@ -67,34 +68,42 @@ class module{
 			'admin' => array(
 				'name' => __( 'General', 'wp-assistant' ),
 				'desc' => __( 'General setting for this site.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'dashboard' => array(
 				'name' => __( 'Original Dashboard Widget', 'wp-assistant' ),
 				'desc' => __( 'Original dashboard widget module.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'breadcrumb' => array(
 				'name' => __( 'Breadcrumbs', 'wp-assistant' ),
 				'desc' => __( 'breadcrumbs for this site.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'cf7AjaxZip' => array(
 				'name' => __( 'AjaxZip3 for Contact Form 7', 'wp-assistant' ),
 				'desc' => __( '"zip", a name of a prefecture can implement automatic input to a zip code by using "address" for "pref", the address.', 'wp-assistant' ),
+				'default' => 0,
 			),
 			'menuEditor' => array(
 				'name' => __( 'Admin Menu Editor', 'wp-assistant' ),
 				'desc' => __( 'Set display, non-display of the admin menu item every user.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'optimize' => array(
 				'name' => __( 'Database Optimization', 'wp-assistant' ),
 				'desc' => __( 'Database Optimization module.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'tools' => array(
 				'name' => __( 'Tools', 'wp-assistant' ),
 				'desc' => __( 'Export & import of this plugin setting.', 'wp-assistant' ),
+				'default' => 1,
 			),
 			'aceEditor' => array(
 				'name' => __( 'Ace Editor', 'wp-assistant' ),
 				'desc' => __( 'Introduced Ace in file editor.', 'wp-assistant' ),
+				'default' => 1,
 			),
 		);
 	}

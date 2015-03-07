@@ -24,7 +24,7 @@ use WP_Assistant\inc\config;
 		<ul>
 			<?php
 			foreach( $this->settings as $section_name => $section ) : ?>
-				<li><a href="#<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>"><?php echo $section['section']['tabs_name'] ?></a></li>
+				<li><a href="#<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>"><span class="dashicons dashicons-menu"></span> <?php echo $section['section']['tabs_name'] ?></a></li>
 			<?php
 			endforeach; ?>
 			<li class="pull-right">
