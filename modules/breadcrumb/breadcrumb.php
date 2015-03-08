@@ -345,8 +345,15 @@ class breadcrumb extends module {
 		}
 	}
 
+	/**
+	 * ショートコード
+	 * @param string $content
+	 * @param array $attr
+	 *
+	 * @return bool|string
+	 */
 	public function shortcode( $content = '', $attr = array() ){
-		$breadcrumbs = new \WP_Assistant\modules\breadcrumb\breadcrumb();
+		$breadcrumbs = new breadcrumb();
 		return $this->init( $templates = array(), $options = array(), $strings = array(), $autorun = false  );
 	}
 }

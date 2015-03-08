@@ -16,13 +16,21 @@ if ( ! defined( 'WPINC' ) ) {
 
 class adminPostNav extends module {
 
+	/** @var string 前の記事へテキスト */
 	private static $prev_text = '';
+
+	/** @var string 次の記事へテキスト */
 	private static $next_text = '';
+
+	/** @var array 有効な記事ステータス */
 	private static $post_statuses = array( 'draft', 'future', 'pending', 'private', 'publish' ); // Filterable later
+
+	/** @var string 記事ステータスのSQL文 */
 	private static $post_statuses_sql = '';
 
 	/**
-	 * Class constructor: initializes class variables and adds actions and filters.
+	 * 初期化
+	 * 投稿編集画面にフックをかける
 	 */
 	public function __construct() {
 		add_action( 'load-post.php', array( __CLASS__, 'register_post_page_hooks' ) );
@@ -30,34 +38,25 @@ class adminPostNav extends module {
 
 
 	/**
-	 * Filters/actions to hook on the admin post.php page.
-	 *
-	 * @since 1.7
-	 *
+	 * 記事編集画面に追加するアクションフック
 	 */
 	public static function register_post_page_hooks() {
 
-		// Set translatable strings
+		/** 各ナビゲーションの初期値を設定*/
 		self::$prev_text = __( '&larr; Previous', 'wp-assistant' );
 		self::$next_text = __( 'Next &rarr;', 'wp-assistant' );
 
-		// Register hooks
+		/** アクションフックを登録 */
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_css' ) );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'add_js' ) );
 		add_action( 'do_meta_boxes', array( __CLASS__, 'do_meta_box' ), 10, 3 );
 	}
 
 	/**
-	 * Register meta box
-	 *
-	 * By default, the navigation is present for all post types.  Filter
-	 * 'c2c_admin_post_navigation_post_types' to limit its use.
-	 *
-	 * @param string $post_type The post type
-	 * @param string $type The mode for the meta box (normal, advanced, or side)
-	 * @param WP_Post $post The post
-	 *
-	 * @return void
+	 * 投稿メタボックスとしてナビゲーションを登録する
+	 * @param $post_type
+	 * @param $type
+	 * @param $post
 	 */
 	public static function do_meta_box( $post_type, $type, $post ) {
 		$post_types = get_post_types();
@@ -76,6 +75,12 @@ class adminPostNav extends module {
 		}
 	}
 
+	/**
+	 * sqlのサニタイズ
+	 * @param $value
+	 *
+	 * @return string
+	 */
 	public static function esc_sql_comma( $value ) {
 		return "'" . esc_sql( $value ) . "'";
 	}
@@ -107,7 +112,7 @@ class adminPostNav extends module {
 			if ( ! empty( $display ) ) {
 				$display .= ' ';
 			}
-			$post_title = strip_tags( get_the_title( $next->ID ) );  /* If only the_title_attribute() accepted post ID as arg */
+			$post_title = strip_tags( get_the_title( $next->ID ) );
 			$display .= '<a href="' . get_edit_post_link( $next->ID ) .
 			            '" id="admin-post-nav-next" title="' .
 			            esc_attr( sprintf( __( 'Next %1$s: %2$s', 'wp-assistant' ), $context, $post_title ) ) .
@@ -115,18 +120,15 @@ class adminPostNav extends module {
 		}
 
 		$display = '<span id="admin-post-nav">' . $display . '</span>';
-		$display = apply_filters( 'admin_post_nav', $display ); /* Deprecated as of v1.5 */
-		echo apply_filters( 'c2c_admin_post_navigation_display', $display );
+		$display = apply_filters( 'admin_post_nav', $display );
+		echo $display;
 	}
 
 	/**
-	 * Gets label for post type.
+	 * 投稿タイプのラベルを取得
+	 * @param $post_type
 	 *
-	 * @since 1.7
-	 *
-	 * @param string $post_type The post_type
-	 *
-	 * @return string The label for the post_type
+	 * @return string
 	 */
 	public static function _get_post_type_label( $post_type ) {
 		$label            = $post_type;
@@ -134,36 +136,31 @@ class adminPostNav extends module {
 		if ( is_object( $post_type_object ) ) {
 			$label = $post_type_object->labels->singular_name;
 		}
-
 		return strtolower( $label );
 	}
 
 	/**
-	 * Outputs CSS within style tags
+	 * CSSを出力
 	 */
 	public static function add_css() {
-		echo <<<HTML
+		echo <<<'HTML'
 	<style type="text/css">
 	#admin-post-nav {margin-left:20px;}
 	#adminpostnav #admin-post-nav {margin-left:0;}
 	h2 #admin-post-nav {font-size:0.6em;}
 	.inside #admin-post-nav a {top:0;margin-top:4px;display:inline-block;}
 	</style>
-
 HTML;
 	}
 
 	/**
-	 * Outputs the JavaScript used by the plugin.
-	 *
-	 * For those with JS enabled, the navigation links are moved next to the
-	 * "Edit Post" header and the plugin's meta_box is hidden.  The fallback
-	 * for non-JS people is that the plugin's meta_box is shown and the
-	 * navigation links can be found there.
+	 * jsを出力
+	 * メタボックスで追加したナビゲーションを、
+	 * 上部にもっていく
 	 */
 	public static function add_js() {
-		echo <<<JS
-	<script type="text/javascript">
+		echo <<<'JS'
+<script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$('#admin-post-nav').appendTo($('h2'));
 		$('#adminpostnav, label[for="adminpostnav-hide"]').hide();
@@ -173,19 +170,13 @@ JS;
 	}
 
 	/**
-	 * Returns the previous or next post relative to the current post.
+	 * メインクエリ
+	 * 次の記事、前の記事を取得する
+	 * @param string $type
+	 * @param int $offset
+	 * @param int $limit
 	 *
-	 * Currently, a previous/next post is determined by the next lower/higher
-	 * valid post based on relative sequential post ID and which the user can
-	 * edit.  Other post criteria such as post type (draft, pending, etc),
-	 * publish date, post author, category, etc, are not taken into
-	 * consideration when determining the previous or next post.
-	 *
-	 * @param string $type (optional) Either '<' or '>', indicating previous or next post, respectively. Default is '<'.
-	 * @param int $offset (optional) Offset. Default is 0.
-	 * @param int $limit (optional) Limit. Default is 15.
-	 *
-	 * @return string
+	 * @return bool
 	 */
 	public static function query( $type = '<', $offset = 0, $limit = 15 ) {
 		global $post_ID, $wpdb;
@@ -233,22 +224,16 @@ JS;
 
 
 	/**
-	 * Returns the next post relative to the current post.
-	 *
-	 * A convenience function that calls query().
-	 *
-	 * @return object The next post object.
+	 * 次の記事を取得する
+	 * @return bool
 	 */
 	public static function next_post() {
 		return self::query( '>' );
 	}
 
 	/**
-	 * Returns the previous post relative to the current post.
-	 *
-	 * A convenience function that calls query().
-	 *
-	 * @return object The previous post object.
+	 * 前の記事を取得する
+	 * @return bool
 	 */
 	public static function previous_post() {
 		return self::query( '<' );

@@ -91,7 +91,10 @@ $admin-panel-width: 1215px;
     }
   }
 }
-
+#admin-post-nav {margin-left:20px;}
+#adminpostnav #admin-post-nav {margin-left:0;}
+h2 #admin-post-nav {font-size:0.6em;}
+.inside #admin-post-nav a {top:0;margin-top:4px;display:inline-block;}
 /*!
 * Bootstrap v3.3.2 (http://getbootstrap.com)
 * Copyright 2011-2015 Twitter, Inc.
