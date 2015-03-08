@@ -22,6 +22,13 @@ This plugin functionality itself is not much, minimum required features are stuf
 **Features:**
 
 * Basic settings
+  * Disable xml-rpc.
+  * Disable author page.
+  * Disable wp generator tag.
+  * Enhance feed links.
+  * Enhance short link.
+  * Disable wpautop.
+
 
 * Original Dashboard Widget
 
