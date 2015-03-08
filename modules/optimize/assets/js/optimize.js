@@ -57,30 +57,26 @@
                     //return false;
                 } else {
 
-                    //var message = '';
                     var message = document.createElement('div');
                     var heading = document.createElement('h3');
                     if ( data.optimize_revision ) {
                         $(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
                         countReset('revision');
                     }
-
                     if (data.optimize_auto_draft) {
                         $(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
                         countReset('auto_draft');
                     }
-
                     if (data.optimize_trash) {
                         $(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
                         countReset('trash');
                     }
-
                     if ( $(message).length > 0 ){
                         wpaMessage( 'optimize', $(message) );
                     }
 
-                    optimize_flag = true;
                 }
+                optimize_flag = true;
             }
         });
 

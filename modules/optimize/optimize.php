@@ -124,9 +124,8 @@ class optimize extends module {
 		config::set( 'options', get_option( config::get( 'prefix' ) . 'options' ) );
 
 		$wp_nonce = $_REQUEST['_wp_optimize_nonce'];
-		$verify = wp_verify_nonce( $wp_nonce, __FILE__ );
 
-		if( ! $verify ){
+		if( ! wp_verify_nonce( $wp_nonce, __FILE__ ) ){
 			echo 'nonce is not defined.';
 			exit();
 		}
@@ -134,7 +133,7 @@ class optimize extends module {
 		/**
 		 * リビジョンの削除
 		 */
-		if ( '1' === config::get_option('optimize_revision') ){
+		if ( 1 === config::get_option('optimize_revision') ){
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
@@ -148,7 +147,7 @@ class optimize extends module {
 		/**
 		 * 自動下書きの削除
 		 */
-		if ( '1' === config::get_option('optimize_auto_draft') ){
+		if ( 1 === config::get_option('optimize_auto_draft') ){
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
@@ -162,7 +161,7 @@ class optimize extends module {
 		/**
 		 * ゴミ箱内の記事の削除
 		 */
-		if ( '1' === config::get_option('optimize_trash') ){
+		if ( 1 === config::get_option('optimize_trash') ){
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
 			if( $query ) {
 				foreach ( $query as $id ) {
