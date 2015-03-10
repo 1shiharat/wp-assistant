@@ -56,6 +56,7 @@ class admin extends module {
 		/**
 		 * 1. サイト設定
 		 */
+
 		$this->parent->settings->add_section(
 			'general', '', __( 'General', 'wp-assistant' )
 		)->add_field(
@@ -71,7 +72,23 @@ class admin extends module {
 			},
 			'general',
 			0
-		)->add_field(
+		);
+
+		$this->parent->settings->add_field(
+			array(
+				'id' => 'test_media',
+				'title' => __( 'Feed link tags (rss)', 'wp-assistant' ),
+				'type' => 'media',
+				'section' => 'general',
+				'default' => '',
+				'desc' => 'テストメディア',
+				'size' => '',
+				'options' => '',
+				'sanitize_callback' => '',
+			)
+		);
+
+		$this->parent->settings->add_field(
 			'wp_generator',
 			__( 'WordPress generator meta tag', 'wp-assistant' ),
 			function () {
