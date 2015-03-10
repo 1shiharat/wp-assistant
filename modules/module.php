@@ -46,7 +46,7 @@ class module{
 				if ( 'activation' == $key ){
 					continue;
 				}
-				$enhanced = config::get_option( 'modules_list_' . $key, $module['default']);
+				$enhanced = config::get_option( 'modules_list_' . $key, $module['default'] );
 
 				if ( $enhanced == "0" ){
 					unset( $modules_list[$key] );

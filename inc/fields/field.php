@@ -18,14 +18,8 @@ abstract class field{
 	public function init(){}
 
 	/**
-	 * デフォルトの値を指定
-	 */
-	public function defaults_settings(){}
-
-	/**
 	 * 出力する
 	 */
-	public function output(){}
-
+	public function render(){}
 
 }

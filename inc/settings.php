@@ -113,20 +113,18 @@ class settings {
 	/**
 	 * $settings プロパティにフィールド情報を追加する
 	 *
-	 * @param $name フィールドID
-	 * @param $title フィールドのタイトル
-	 * @param $callback フィールドが呼び出された時に実行するコールバック
-	 * @param $section フィールドが属するセクション
-	 * @param int $default デフォルトの値
+	 * @param array $args
+	 *
+	 * @return $this
+	 * @internal param フィールドID $name
+	 * @internal param フィールドのタイトル $title
+	 * @internal param フィールドが呼び出された時に実行するコールバック $callback
+	 * @internal param フィールドが属するセクション $section
+	 * @internal param int $default デフォルトの値
 	 *
 	 * @internal param string $desc
-	 * @return $this
 	 */
 	public function add_field( $args = array() ) {
-
-		if ( $title ) {
-			$title = '<div class="acoordion"><h3><span class="dashicons dashicons-arrow-right-alt2"></span> ' . $title . '</h3>';
-		}
 
 		/** @var array $defaults デフォルトの設定 */
 		$defaults = array(
@@ -143,25 +141,13 @@ class settings {
 
 		$section_name = $section . '_section';
 
-		$fields = wp_parse_args( array(
-			'name'         => $name,
-			'title'        => $title,
-			'callback'     => $callback,
-			'section_name' => $section_name,
-			'default'      => $default,
-		), $defaults );
+		$fields = wp_parse_args( $args, $defaults );
 
 		/** デバッグ用にフィールドのみのプロパティに保存 */
-		$this->fields[] = $name;
+		$this->fields[] = $fields['id'];
 
 		/** settings プロパティにフィールドの設定を保存 */
 		$this->settings[ $section_name ]['fields'][] = $fields;
-
-		if ( ! config::get( 'install' ) ) {
-			$options          = get_option( config::get( 'prefix' ) . 'options' );
-			$options[ $name ] = $default;
-			update_option( config::get( 'prefix' ) . 'options', $options );
-		}
 
 		return $this;
 
@@ -188,12 +174,28 @@ class settings {
 	 */
 	public function set_fields( $field ) {
 		add_settings_field(
-			$field['name'],
+			$field['id'],
 			$field['title'],
-			$field['callback'],
+			$this->callback( $field['type'], $field ),
 			$field['page_slug'],
 			$field['section_name']
 		);
+	}
+
+	/**
+	 * フィールドのコールバック
+	 * @param $type
+	 * @param $field
+	 */
+	public function callback( $type, $field ){
+		/** 指定されたタイプのフィールドがあり、クラスが存在する時発火 */
+		if ( file_exists( __DIR__ . '/fields/' . $type . '.php' ) ){
+			$classname = __NAMESPACE__ . '\fields\\' . $type;
+			if ( class_exists( $classname ) ){
+				$type_instance = new $type( $field );
+				$type_instance->render();
+			}
+		}
 	}
 
 	/**
