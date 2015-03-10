@@ -19,6 +19,8 @@ class module{
 	/** @var null モジュールキーの配列 */
 	public $modules = null;
 
+	public $modules_instance = null;
+
 	/**
 	 * Constructer
 	 * 各モジュールのインスタンスを登録
@@ -28,7 +30,7 @@ class module{
 		$this->settings = settings::get_instance();
 		$this->set_modules();
 
-		$modules_instance = $this->register_modules( $this->modules );
+		$this->modules_instance = $this->register_modules( $this->modules );
 
 	}
 
@@ -44,7 +46,8 @@ class module{
 				if ( 'activation' == $key ){
 					continue;
 				}
-				$enhanced = config::get_option( 'modules_list_' . $key );
+				$enhanced = config::get_option( 'modules_list_' . $key, $module['default']);
+
 				if ( $enhanced == "0" ){
 					unset( $modules_list[$key] );
 				}

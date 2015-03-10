@@ -41,12 +41,19 @@ class config{
 
 	/**
 	 * オプションを取得
+	 *
+	 * @param string $option_key
+	 * @param string $default
+	 *
+	 * @return bool|string
 	 */
-	public static function get_option( $option_key = '' ){
+	public static function get_option( $option_key = '', $default = '' ){
 		$options = static::get( 'options' );
 		if ( $option_key ){
 			if ( isset( $options[$option_key] )  ){
 				return $options[$option_key];
+			} else if ( $default ){
+				return $default;
 			}
 		} else {
 			return $options;
