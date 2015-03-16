@@ -26,6 +26,7 @@
 
 (function ($) {
     "use strict";
+
     /**
      * メッセージを表示
      * @param type メッセージの種類
@@ -72,6 +73,32 @@
         });
         $('.form-group-radiobox').buttonset();
         $('#submit').attr('disabled', 'disabled');
+
+
+        var file_frame = null;
+        $('.wpa-browse').on('click', function (event) {
+            event.preventDefault();
+            var self = $(this);
+            // If the media frame already exists, reopen it.
+            if ( file_frame ) {
+                file_frame.open();
+                return false;
+            }
+            // Create the media frame.
+            file_frame = wp.media.frames.file_frame = wp.media({
+                title: self.data('uploader_title'),
+                button: {
+                    text: self.data('uploader_button_text'),
+                },
+                multiple: false
+            });
+            file_frame.on('select', function () {
+                var attachment = file_frame.state().get('selection').first().toJSON();
+                self.prev('.wpa-url').val(attachment.url);
+            });
+            // Finally, open the modal
+            file_frame.open();
+        });
 
     });
 

@@ -20,11 +20,11 @@ use WP_Assistant\inc\config;
 
 	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Setting', 'wp-assistant' ) ?></h1>
 
-	<div id="<?php echo config::get( 'prefix' ); ?>tabs">
-		<ul>
+	<div id="<?php echo config::get( 'prefix' ); ?>tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix">
+		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 			<?php
 			foreach( $this->settings as $section_name => $section ) : ?>
-				<li><a href="#<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>"><span class="dashicons dashicons-menu"></span> <?php echo $section['section']['tabs_name'] ?></a></li>
+				<li class="ui-state-default ui-corner-top "><a href="#<?php echo config::get( 'prefix' ) . $section['section']['id']; ?>"><span class="dashicons dashicons-menu"></span> <?php echo $section['section']['tabs_name'] ?></a></li>
 			<?php
 			endforeach; ?>
 			<li class="pull-right">
@@ -34,11 +34,9 @@ use WP_Assistant\inc\config;
 		</ul>
 		<?php
 		foreach( $this->settings  as $section_name => $section ) : ?>
-			<div id="<?php echo config::get( 'prefix' ) . $section['section']['section_name']; ?>">
-				<div class="acoordion">
-					<?php
-					do_settings_fields( config::get( 'prefix' ) . 'options_page', $section['section']['section_name'] ); ?>
-				</div>
+			<div id="<?php echo config::get( 'prefix' ) . $section['section']['id']; ?>" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+				<?php
+				$this->do_settings_fields( config::get( 'prefix' ) . 'options_page', $section['section']['id'] ); ?>
 			</div>
 		<?php
 		endforeach; ?>

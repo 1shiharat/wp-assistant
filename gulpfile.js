@@ -27,7 +27,7 @@ gulp.task('scripts', function () {
     return gulp.src([
             'modules/**/**/*.js',
             '!modules/**/**/aceinit.js',
-            '!modules/**/**/ajazip3.js'
+            '!modules/**/**/ajaxzip3.js'
         ])
         .pipe($.plumber())
         .pipe($.jshint())

@@ -11,7 +11,6 @@ Domain Path: /languages/
 */
 /**
  * =====================================================
- * サイト制作サポートプラグイン
  * @package   WP_Assistant
  * @author    Grow Group
  * @license   GPL v2 or later
@@ -33,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 require 'inc/config.php';
 require 'inc/autoload.php';
 
-//$GLOBALS['WP_Assistant'] = new WP_Assistant();
+$GLOBALS['WP_Assistant'] = new WP_Assistant();
 
 register_activation_hook( __FILE__, array( new WP_Assistant, 'activate' ) );
 

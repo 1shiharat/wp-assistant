@@ -80,32 +80,28 @@ class settings {
 	/**
 	 * $settings プロパティにセクション情報を追加
 	 *
-	 * @param $name
-	 * @param $title
-	 * @param $tabs_name
+	 * @param array $args セクションに必要な設定を配列として記述します。
+	 *                      'id' : フィールド固有のID
+	 *                      'titile' : フィールド名
+	 *                      'desc' : フィールドの説明文
+	 *                      'tabs_name' : タブのラベル
+	 *                      'page_slug' : 設定を表示するページのスラッグ
+	 *
 	 *
 	 * @return object このクラスインスタンス
 	 */
-	public function add_section( $name, $title, $tabs_name ) {
-
-		$section_name = $name . '_section';
+	public function add_section( $args = array() ) {
 
 		$defaults = array(
-			'section_name' => '',
-			'title'        => '',
-			'description'  => '',
-			'page_slug'    => $this->page_slug,
-			'tabs_name'    => '',
+			'id'        => '',
+			'title'     => '',
+			'desc'      => '',
+			'tabs_name' => '',
+			'page_slug' => $this->page_slug,
 		);
 
-		$section = wp_parse_args( array(
-			'section_name' => $section_name,
-			'title'        => $title,
-			'description'  => '',
-			'tabs_name'    => $tabs_name,
-		), $defaults );
-
-		$this->settings[ $section_name ]['section'] = $section;
+		$section                                     = wp_parse_args( $args, $defaults );
+		$this->settings[ $section['id'] ]['section'] = $section;
 
 		return $this;
 	}
@@ -128,18 +124,18 @@ class settings {
 
 		/** @var array $defaults デフォルトの設定 */
 		$defaults = array(
-			'id' => '',
-			'title' => __( '', 'wp-assistant' ),
-			'type' => 'text',
-			'section' => '',
-			'default' => '',
-			'desc' => '',
-			'size' => '',
-			'options' => '',
+			'id'                => '',
+			'title'             => __( '', 'wp-assistant' ),
+			'type'              => 'text',
+			'section'           => '',
+			'default'           => '',
+			'desc'              => '',
+			'size'              => '',
+			'options'           => '',
 			'sanitize_callback' => '',
+			'page_slug'         => $this->page_slug,
 		);
 
-		$section_name = $section . '_section';
 
 		$fields = wp_parse_args( $args, $defaults );
 
@@ -147,7 +143,7 @@ class settings {
 		$this->fields[] = $fields['id'];
 
 		/** settings プロパティにフィールドの設定を保存 */
-		$this->settings[ $section_name ]['fields'][] = $fields;
+		$this->settings[ $fields['section'] ]['fields'][] = $fields;
 
 		return $this;
 
@@ -160,9 +156,9 @@ class settings {
 	 */
 	public function set_section( $section ) {
 		add_settings_section(
-			$section['section_name'],
+			$section['id'],
 			$section['title'],
-			$section['description'],
+			$section['desc'],
 			$section['page_slug']
 		);
 	}
@@ -173,27 +169,39 @@ class settings {
 	 * @param $field
 	 */
 	public function set_fields( $field ) {
+		/** type をコールバックで呼び出す */
 		add_settings_field(
 			$field['id'],
 			$field['title'],
 			$this->callback( $field['type'], $field ),
 			$field['page_slug'],
-			$field['section_name']
+			$field['section'],
+			array(
+				'desc' => $field['desc']
+			)
 		);
 	}
 
 	/**
 	 * フィールドのコールバック
+	 *
 	 * @param $type
 	 * @param $field
 	 */
-	public function callback( $type, $field ){
+	public function callback( $type, $field ) {
 		/** 指定されたタイプのフィールドがあり、クラスが存在する時発火 */
-		if ( file_exists( __DIR__ . '/fields/' . $type . '.php' ) ){
-			$classname = __NAMESPACE__ . '\fields\\' . $type;
-			if ( class_exists( $classname ) ){
-				$type_instance = new $type( $field );
-				$type_instance->render();
+		if ( is_callable( $type ) ) {
+			return $type;
+		} else if ( file_exists( __DIR__ . '/fields/' . $type . '.php' ) ) {
+			$classname = '\\' . __NAMESPACE__ . '\fields\\' . $type;
+			if ( class_exists( $classname ) ) {
+				$instance = function () use ( $type, $field, $classname ) {
+					$type_instance = new $classname( $field );
+
+					return $type_instance;
+				};
+
+				return $instance;
 			}
 		}
 	}
@@ -208,9 +216,11 @@ class settings {
 			return void;
 		}
 		foreach ( $this->settings as $section_name => $section ) {
-			$this->set_section( $section['section'] );
+			if ( isset( $section['section'] ) ) {
+				$this->set_section( $section['section'] );
+			}
 			if ( empty( $section['fields'] ) || ! $section['fields'] ) {
-				countinue;
+				continue;
 			}
 			foreach ( $section['fields'] as $field ) {
 				if ( $field ) {
@@ -303,6 +313,34 @@ class settings {
 				break;
 		}
 		wp_enqueue_style( 'jquery-ui-smoothness', config::get( 'plugin_url' ) . 'assets/css/plugins.min.css', config::get( 'version' ), config::get( 'version' ) );
+	}
+
+	/**
+	 * Settings API のフィールドを出力
+	 * @param $page
+	 * @param $section
+	 */
+	public function do_settings_fields( $page, $section ) {
+		global $wp_settings_fields;
+
+		if ( ! isset( $wp_settings_fields[ $page ][ $section ] ) ) {
+			return;
+		}
+
+		echo '<div class="acoordion ui-accordion ui-accordion-icons ui-widget ui-helper-reset">';
+		foreach ( (array) $wp_settings_fields[ $page ][ $section ] as $field ) {
+			if ( ! empty( $field['args']['label_for'] ) ) {
+				echo '<h3 class="ui-accordion-header ui-helper-reset ui-corner-top"><label for="' . esc_attr( $field['args']['label_for'] ) . '">' . $field['title'] . '</label></h3>';
+			} else {
+				echo '<h3 class="ui-accordion-header ui-helper-reset ui-corner-top">' . $field['title'] . '</h3>';
+			}
+			echo '<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active">';
+			echo '<p>'. $field['args']['desc'] .'</p>';
+			call_user_func( $field['callback'], $field['args'] );
+			echo '</div>';
+		}
+
+		echo '</div>';
 	}
 
 }

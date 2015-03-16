@@ -8,7 +8,6 @@ Domain Path: /languages/
 namespace WP_Assistant\modules\dashboard;
 
 use WP_Assistant\inc\config;
-use WP_Assistant\inc\helper;
 use WP_Assistant\modules\module;
 
 class dashboard extends module {
@@ -30,55 +29,21 @@ class dashboard extends module {
 	public function add_settings() {
 
 		$this->parent->settings->add_section(
-			'dashboard',
-			function () {
-				echo __( 'Please input the content to be displayed on the dashboard widget.', 'wp-assistant' );
-			},
-			__( 'Replace Welcome Panel', 'wp-assistant' )
+			array(
+				'id'        => 'dashboard',
+				'desc'      => __( 'Please input the content to be displayed on the dashboard widget.', 'wp-assistant' ),
+				'tabs_name' => __( 'Replace Welcome Panel', 'wp-assistant' )
+			)
 		)
-		->add_field(
-		   'dashboard_disp',
-		   __( 'Enabling original dashboard widget', 'wp-assistant' ),
-		   function () {
-			   $args = array(
-				   'id'      => 'dashboard_disp',
-				   'default' => 0,
-				   'desc'    => '',
-			   );
-			   helper::radiobox( $args );
-		   },
-		   'dashboard',
-		   0
-	   )
 	   ->add_field(
-		   'dashboard_contents',
-		   '',
-		   function () {
-			   echo '<div class="acoordion"';
-			   _e( '<p>Please enter the content to be displayed on the dashboard.</p>', 'wp-assistant' );
-			   $dashboard_contents = config::get_option( 'dashboard_contents' );
-			   $editor_settings    = array(
-				   'wpautop'             => false,
-				   'media_buttons'       => true,
-				   'default_editor'      => '',
-				   'drag_drop_upload'    => true,
-				   'textarea_name'       => 'dashboard_contents',
-				   'textarea_rows'       => 50,
-				   'tabindex'            => '',
-				   'tabfocus_elements'   => ':prev,:next',
-				   'editor_css'          => '',
-				   'editor_class'        => '',
-				   'teeny'               => false,
-				   'dfw'                 => false,
-				   '_content_editor_dfw' => false,
-				   'tinymce'             => false,
-				   'quicktags'           => true
-			   );
-			   wp_editor( $dashboard_contents, 'dashboard_contents', $editor_settings );
-			   echo '</div>';
-		   },
-		   'dashboard',
-		   ''
+	       array(
+	           'id'      => 'dashboard_contents',
+	           'title'   => '',
+	           'type'    => 'editor',
+	           'default' => '',
+	           'section' => 'dashboard',
+	           'desc'    => __( '<p>Please enter the content to be displayed on the dashboard.</p>', 'wp-assistant' )
+	       )
 	   );
 	}
 
@@ -86,7 +51,6 @@ class dashboard extends module {
 	 * ダッシュボードに登録
 	 */
 	public function add_dashboard_widgets() {
-		if ( config::get_option( 'dashboard_disp' ) ) {
 			wp_add_dashboard_widget( 'wpa_dashboard_widget', get_bloginfo( 'title' ), function () {
 				?>
 				<div id="wpadashboard" class="original-panel">
@@ -104,7 +68,6 @@ class dashboard extends module {
 			unset( $normal_dashboard['wpa_dashboard_widget'] );
 			$sorted_dashboard                             = array_merge( $example_widget_backup, $normal_dashboard );
 			$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
-		}
 	}
 
 	/**
