@@ -13,13 +13,40 @@ $admin-panel-width: 1215px;
   padding: 5px 25px 5px 10px;
   border-radius: 4px;
   box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.03);
-  .dashicons{
+  .dashicons {
     width: 30px;
     height: 30px;
     font-size: 30px;
     line-height: 1.3em;
     color: #298CBA;
     -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+#wpa_settings_form {
+  input[type=text],
+  input[type=search] {
+    min-width: 60%;
+    line-height: 2em;
+  }
+  .wpa-browse {
+    line-height: 2.3em;
+    height: 37px;
+
+  }
+  .button-small {
+    max-height: 26px;
+    line-height: 1.7em;
+    margin-bottom: 10px;
+  }
+}
+
+#wpa_modules {
+  h3,
+  h3 + div {
+    width: 50%;
+    display: inline-block;
+    box-sizing: border-box;
   }
 }
 
@@ -40,7 +67,7 @@ $admin-panel-width: 1215px;
     font-size: 10px;
     border-radius: 3px;
   }
-  #submit {
+  #wpa-submit {
     font-weight: normal;
     padding-left: 20px;
     display: inline-block;
@@ -74,27 +101,42 @@ $admin-panel-width: 1215px;
   }
 }
 
-#template #aceeditor div{
+#template #aceeditor div {
   margin-right: 0;
 }
 
-#wpa_modules_section{
-  .acoordion .acoordion{
+#wpa_modules_section {
+  .acoordion .acoordion {
     width: 300px;
     display: inline-block;
     vertical-align: top;
-    .module-block{
+    .module-block {
       min-height: 100px;
-      p{
+      p {
         min-height: 70px;
       }
     }
   }
 }
-#admin-post-nav {margin-left:20px;}
-#adminpostnav #admin-post-nav {margin-left:0;}
-h2 #admin-post-nav {font-size:0.6em;}
-.inside #admin-post-nav a {top:0;margin-top:4px;display:inline-block;}
+
+#admin-post-nav {
+  margin-left: 20px;
+}
+
+#adminpostnav #admin-post-nav {
+  margin-left: 0;
+}
+
+h2 #admin-post-nav {
+  font-size: 0.6em;
+}
+
+.inside #admin-post-nav a {
+  top: 0;
+  margin-top: 4px;
+  display: inline-block;
+}
+
 /*!
 * Bootstrap v3.3.2 (http://getbootstrap.com)
 * Copyright 2011-2015 Twitter, Inc.
@@ -106,7 +148,7 @@ h2 #admin-post-nav {font-size:0.6em;}
  */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
-.original-panel{
+.original-panel {
   background: #FFF;
   padding: 1.5em;
   margin-left: 10px;

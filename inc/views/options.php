@@ -28,7 +28,7 @@ use WP_Assistant\inc\config;
 			<?php
 			endforeach; ?>
 			<li class="pull-right">
-				<button type="submit" name="submit" id="submit" class="button button-primary"><?php _e( 'Save', 'wp-assistant' ); ?></button>
+				<button type="submit" name="submit" id="wpa-submit" class="button button-primary"><?php _e( 'Save', 'wp-assistant' ); ?></button>
 				<span class="spinner"></span>
 			</li>
 		</ul>

@@ -79,7 +79,7 @@ class admin extends module {
 			array(
 				'id'                => 'test_media',
 				'title'             => __( 'Feed link tags (rss)', 'wp-assistant' ),
-				'type'              => 'selectbox',
+				'type'              => 'media',
 				'section'           => 'general',
 				'default'           => '',
 				'desc'              => 'テストメディア',
@@ -359,14 +359,8 @@ class admin extends module {
 		if ( ! intval( $option ) ) {
 			// リビジョンの停止
 			if ( ! defined( 'WP_POST_REVISIONS' ) ) {
-				define( 'WP_POST_REVISIONS', false );
+				define( 'WP_POST_REVISIONS', 0 );
 			}
-			// 自動保存の停止
-			add_action( 'wp_print_scripts', function () {
-				wp_deregister_script( 'autosave' );
-			} );
-
-			return false;
 		}
 	}
 

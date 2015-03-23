@@ -35,10 +35,10 @@ class editor extends field {
 			'tabfocus_elements'   => ':prev,:next',
 			'editor_css'          => '',
 			'editor_class'        => '',
-			'teeny'               => true,
-			'dfw'                 => true,
-			'_content_editor_dfw' => true,
-			'tinymce'             => true,
+			'teeny'               => false,
+			'dfw'                 => false,
+			'_content_editor_dfw' => false,
+			'tinymce'             => false,
 			'quicktags'           => true
 		);
 		echo wp_editor( $this->value, $this->get( 'id' ), $editor_settings );

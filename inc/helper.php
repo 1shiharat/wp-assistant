@@ -14,7 +14,9 @@ class helper {
 	 *
 	 * @param $option_key
 	 * @param $option_value
-	 * @param bool $output
+	 * @param bool $default
+	 *
+	 * @internal param bool $output
 	 */
 	public static function checked( $option_key, $option_value, $default = false ) {
 		$value = config::get_option( $option_key );

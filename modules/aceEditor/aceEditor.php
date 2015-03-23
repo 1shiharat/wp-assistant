@@ -26,7 +26,8 @@ class aceEditor extends module {
 	public function enqueue_scripts( $hook ) {
 
 		if ( 'plugin-editor.php' !== $hook
-		     && 'theme-editor.php' !== $hook ){
+		     && 'theme-editor.php' !== $hook
+		     && 'toplevel_page_wpa_options_page' !== $hook ){
 			return false;
 		}
 
@@ -42,7 +43,11 @@ class aceEditor extends module {
 		wp_enqueue_script( 'emmet', '//nightwing.github.io/emmet-core/emmet.js', array( 'ace-editor' ), null );
 		wp_enqueue_script( 'ace-editor-emmet', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-emmet.js', array( 'ace-editor' ), null );
 		wp_enqueue_script( 'ace-editor-launguage', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-language_tools.js', array( 'ace-editor' ), null );
-		wp_enqueue_script( 'ace-editor-init', config::get( 'plugin_url' ) . 'modules/aceEditor/assets/aceinit.js', array( 'ace-editor' ), null );
+		if ( 'plugin-editor.php' == $hook
+		     || 'theme-editor.php' == $hook ){
+
+			wp_enqueue_script( 'ace-editor-init', config::get( 'plugin_url' ) . 'modules/aceEditor/assets/aceinit.js', array( 'ace-editor' ), null );
+		}
 
 		// ファイルの拡張子を取得
 		$file_name = isset( $_REQUEST['file'] ) ? esc_html( $_REQUEST['file'] ) : $default;

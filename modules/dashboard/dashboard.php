@@ -38,11 +38,16 @@ class dashboard extends module {
 	   ->add_field(
 	       array(
 	           'id'      => 'dashboard_contents',
-	           'title'   => '',
-	           'type'    => 'editor',
+	           'title'   => __( 'Dashboard Contents', 'wp-assistant' ),
+	           'type'    => 'source',
 	           'default' => '',
 	           'section' => 'dashboard',
-	           'desc'    => __( '<p>Please enter the content to be displayed on the dashboard.</p>', 'wp-assistant' )
+	           'desc'    => __( '<p>Please enter the content to be displayed on the dashboard.</p>', 'wp-assistant' ),
+		       'options' => array(
+					'lang' => 'php',
+					'height' => '500px',
+					'width' => '100%',
+				)
 	       )
 	   );
 	}

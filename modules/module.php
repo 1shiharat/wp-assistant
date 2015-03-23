@@ -108,6 +108,11 @@ class module{
 				'desc' => __( 'Introduced Ace in file editor.', 'wp-assistant' ),
 				'default' => 1,
 			),
+			'customizeAdmin' => array(
+				'name' => __( 'Customize Admin', 'wp-assistant' ),
+				'desc' => __( 'Change the logo management screen and text settings', 'wp-assistant' ),
+				'default' => 1,
+			),
 		);
 	}
 

@@ -242,14 +242,18 @@ class settings {
 			exit();
 		}
 
-		$form_str = urldecode( $_REQUEST['form'] );
-		parse_str( $form_str, $form_array );
+		$form_array = $_REQUEST['form'];
+
+		$form_save_data = array();
 
 		/**
 		 * 値が有効な場合、値を照合してサニタイズ後オプションを更新
 		 */
 		if ( $form_array ) {
-			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_array );
+			foreach ( $form_array as $form ){
+				$form_save_data[$form['name']] = $form['value'];
+			}
+			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_save_data );
 
 			/**
 			 * add_fieldで追加したinput以外は受け付けない
@@ -260,7 +264,8 @@ class settings {
 				}
 			}
 
-			$settings['dashboard_contents'] = esc_html( $form_array['dashboard_contents'] );
+			$settings['dashboard_contents'] = ( $form_save_data['dashboard_contents'] );
+
 			echo update_option( config::get( 'prefix' ) . 'options', $settings );
 			exit();
 		}
