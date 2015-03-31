@@ -87,14 +87,13 @@
 		submit_flag = false;
 		var self = $(this);
 		$('#wpa_tabs ul').find('.spinner').show();
-		console.log($('#wpa_settings_form').serializeArray());
 		$.ajax({
 			'type': 'post',
 			'url': ajaxurl,
 			'data': {
 				'action': wpaSETTINGS.action,
 				'_wp_nonce': wpaSETTINGS._wp_nonce,
-				'form': $('#wpa_settings_form').serializeArray(),
+				'form': $('#wpa_settings_form').serializeArray()
 			},
 			'success': function (data) {
 				if (1 == data) {

@@ -250,6 +250,7 @@ class settings {
 
 		$form_array = $_REQUEST['form'];
 
+
 		$form_save_data = array();
 
 		/**
@@ -257,16 +258,21 @@ class settings {
 		 */
 		if ( $form_array ) {
 			foreach ( $form_array as $form ){
-				$form_save_data[$form['name']] = $form['value'];
+				if ( $form['name'] === 'admin_menu_user[]' ){
+					$form_save_data['admin_menu_user'][] = $form['value'];
+				} else {
+					$form_save_data[$form['name']] = $form['value'];
+				}
 			}
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_save_data );
 
 			/**
 			 * add_fieldで追加したinput以外は受け付けない
 			 */
-			foreach ( $settings as $settting_key => $setting ) {
-				if ( ! in_array( $settting_key, $this->fields ) ) {
-					unset( $settings[ $settting_key ] );
+
+			foreach ( $settings as $setting_key => $setting ) {
+				if ( ! in_array( $setting_key, $this->fields ) ) {
+					unset( $settings[ $setting_key ] );
 				}
 			}
 

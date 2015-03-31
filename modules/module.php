@@ -99,6 +99,12 @@ class module{
 				'default' => 1,
 				'activation' => 0,
 			),
+			'customizeAdmin' => array(
+				'name' => __( 'Customize Admin', 'wp-assistant' ),
+				'desc' => __( 'Change the logo management screen and text settings', 'wp-assistant' ),
+				'default' => 1,
+				'activation' => 0,
+			),
 			'optimize' => array(
 				'name' => __( 'Database Optimization', 'wp-assistant' ),
 				'desc' => __( 'Database Optimization module.', 'wp-assistant' ),
@@ -117,12 +123,7 @@ class module{
 				'default' => 1,
 				'activation' => 1,
 			),
-			'customizeAdmin' => array(
-				'name' => __( 'Customize Admin', 'wp-assistant' ),
-				'desc' => __( 'Change the logo management screen and text settings', 'wp-assistant' ),
-				'default' => 1,
-				'activation' => 0,
-			),
+
 		);
 	}
 

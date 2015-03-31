@@ -109,7 +109,7 @@ class customizeAdmin extends module {
 				.login{
 					background: url(<?php echo esc_url( $logo_bg_url ); ?>) no-repeat 0 0;
 					background-size: auto 100%;
-					background: rgba(255,255,255,0.7);
+					background-color: rgba(255,255,255,0.7);
 					background-position: center center;
 				}
 			</style>

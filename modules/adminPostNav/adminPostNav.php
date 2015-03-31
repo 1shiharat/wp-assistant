@@ -44,8 +44,8 @@ class adminPostNav extends module {
 
 		/** 各ナビゲーションの初期値を設定*/
 
-		self::$prev_text = __( '&larr; Previous', 'wp-assistant' );
-		self::$next_text = __( 'Next &rarr;', 'wp-assistant' );
+//		self::$prev_text = __( '&larr; Previous', 'wp-assistant' );
+//		self::$next_text = __( 'Next &rarr;', 'wp-assistant' );
 
 		/** アクションフックを登録 */
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_css' ) );
