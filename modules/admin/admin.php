@@ -64,6 +64,21 @@ class admin extends module {
 			)
 		)->add_field(
 			array(
+				'id'                => 'show_current_template',
+				'title'             => __( 'Show in the admin bar the current template name', 'wp-assistant' ),
+				'type'              => 'radiobox',
+				'section'           => 'general',
+				'default'           => 'false',
+				'desc'              => __( 'To view the template name in the management bar, please to ON', 'wp-assistant' ),
+				'size'              => '',
+				'options'           => array(
+					'true'  => __( 'On', 'wp-assistant' ),
+					'false' => __( 'Off', 'wp-assistant' ),
+				),
+				'sanitize_callback' => '',
+			)
+		)->add_field(
+			array(
 				'id'      => 'feed_links',
 				'title'   => __( 'Feed link tags (rss)', 'wp-assistant' ),
 				'desc'    => __( 'Please set the on or off of the feed links that are output to wp_head.', 'wp-assistant' ),
@@ -75,17 +90,15 @@ class admin extends module {
 					'false' => __( 'Off', 'wp-assistant' ),
 				),
 			)
-		)->add_field(
+		)
+		->add_field(
 			array(
-				'id'                => 'test_media',
-				'title'             => __( 'Feed link tags (rss)', 'wp-assistant' ),
-				'type'              => 'media',
-				'section'           => 'general',
-				'default'           => '',
-				'desc'              => 'テストメディア',
-				'size'              => '',
-				'options'           => array( '1' => 'test1', '2' => 'test2' ),
-				'sanitize_callback' => '',
+				'id'      => 'favicon',
+				'title'   => __( 'Site Favicon', 'wp-assistant' ),
+				'type'    => 'media',
+				'default' => '',
+				'section' => 'general',
+				'desc'    => __( '<p>Please upload the favicon.</p>', 'wp-assistant' )
 			)
 		)->add_field(
 			array(
@@ -200,21 +213,6 @@ class admin extends module {
 				'section'           => 'general',
 				'default'           => 'false',
 				'desc'              => __( 'Please specify whether to disable the author archive as a security measure.', 'wp-assistant' ),
-				'size'              => '',
-				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
-				),
-				'sanitize_callback' => '',
-			)
-		)->add_field(
-			array(
-				'id'                => 'show_current_template',
-				'title'             => __( 'Show in the admin bar the current template name', 'wp-assistant' ),
-				'type'              => 'radiobox',
-				'section'           => 'general',
-				'default'           => 'false',
-				'desc'              => __( 'To view the template name in the management bar, please to ON', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
 					'true'  => __( 'On', 'wp-assistant' ),

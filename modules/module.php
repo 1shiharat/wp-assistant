@@ -46,9 +46,10 @@ class module{
 				if ( 'activation' == $key ){
 					continue;
 				}
+
 				$enhanced = config::get_option( 'modules_list_' . $key, $module['default'] );
 
-				if ( $enhanced == "0" ){
+				if ( $enhanced == "0" && $module['activation'] == 0  ){
 					unset( $modules_list[$key] );
 				}
 			}
@@ -72,46 +73,55 @@ class module{
 				'name' => __( 'General', 'wp-assistant' ),
 				'desc' => __( 'General setting for this site.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'dashboard' => array(
 				'name' => __( 'Original Dashboard Widget', 'wp-assistant' ),
 				'desc' => __( 'Original dashboard widget module.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'breadcrumb' => array(
 				'name' => __( 'Breadcrumbs', 'wp-assistant' ),
 				'desc' => __( 'breadcrumbs for this site.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'cf7AjaxZip' => array(
 				'name' => __( 'AjaxZip3 for Contact Form 7', 'wp-assistant' ),
 				'desc' => __( '"zip", a name of a prefecture can implement automatic input to a zip code by using "address" for "pref", the address.', 'wp-assistant' ),
 				'default' => 0,
+				'activation' => 1,
 			),
 			'menuEditor' => array(
 				'name' => __( 'Admin Menu Editor', 'wp-assistant' ),
 				'desc' => __( 'Set display, non-display of the admin menu item every user.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'optimize' => array(
 				'name' => __( 'Database Optimization', 'wp-assistant' ),
 				'desc' => __( 'Database Optimization module.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'tools' => array(
 				'name' => __( 'Tools', 'wp-assistant' ),
 				'desc' => __( 'Export & import of this plugin setting.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 			'aceEditor' => array(
 				'name' => __( 'Ace Editor', 'wp-assistant' ),
 				'desc' => __( 'Introduced Ace in file editor.', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 1,
 			),
 			'customizeAdmin' => array(
 				'name' => __( 'Customize Admin', 'wp-assistant' ),
 				'desc' => __( 'Change the logo management screen and text settings', 'wp-assistant' ),
 				'default' => 1,
+				'activation' => 0,
 			),
 		);
 	}

@@ -18,6 +18,7 @@ class customizeAdmin extends module {
 		$this->parent = $parent;
 		add_action( 'admin_init', array( $this, 'add_settings' ), 10 );
 		add_action( 'login_enqueue_scripts', array( $this, 'change_login_panel' ) );
+		add_filter( 'admin_footer_text', array( $this, 'change_footer_text' ), 10, 1 );
 	}
 
 	/**
@@ -31,16 +32,6 @@ class customizeAdmin extends module {
 				'id'        => 'customize_admin',
 				'desc'      => __( 'Change the logo management screen and text settings', 'wp-assistant' ),
 				'tabs_name' => __( 'Customize Admin', 'wp-assistant' )
-			)
-		)
-		->add_field(
-			array(
-				'id'      => 'favicon',
-				'title'   => __( 'Site Favicon', 'wp-assistant' ),
-				'type'    => 'media',
-				'default' => '',
-				'section' => 'customize_admin',
-				'desc'    => __( '<p>Please upload the favicon.</p>', 'wp-assistant' )
 			)
 		)
 		->add_field(
@@ -62,9 +53,26 @@ class customizeAdmin extends module {
 				'section' => 'customize_admin',
 				'desc'    => __( '<p>Please upload the favicon.</p>', 'wp-assistant' )
 			)
+		)
+		->add_field(
+			array(
+				'id'      => 'admin_footer_text',
+				'title'   => __( 'Admin footer text', 'wp-assistant' ),
+				'type'    => 'text',
+				'default' => '',
+				'section' => 'customize_admin',
+				'desc'    => __( 'change to footer text', 'wp-assistant' )
+			)
 		);
+
 	}
 
+	/**
+	 * アタッチメントIDを取得
+	 * @param $url
+	 *
+	 * @return int
+	 */
 	public function get_attachment_id( $url ) {
 		global $wpdb;
 		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s";
@@ -73,6 +81,10 @@ class customizeAdmin extends module {
 		return (int)$wpdb->get_var($wpdb->prepare($sql, $post_name));
 	}
 
+	/**
+	 * ログイン画面を変更
+	 *
+	 */
 	public function change_login_panel(){
 		$logo_url = config::get_option( 'login_panel_logo' );
 		$logo_bg_url = config::get_option( 'login_panel_background' );
@@ -103,6 +115,14 @@ class customizeAdmin extends module {
 			</style>
 		<?php
 		}
+	}
+
+	public function change_footer_text( $text ){
+		$footer_text = config::get_option( 'admin_footer_text' );
+		if ( $footer_text ){
+          return wp_kses_post( $footer_text );
+		}
+		return $text;
 	}
 
 }

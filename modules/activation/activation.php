@@ -47,7 +47,7 @@ class activation extends module {
 		$modules = $this->parent->get_modules();
 		foreach ( $modules as $module => $module_info ) {
 
-			if ( $module_info['name'] ) {
+			if ( $module_info['name'] && $module_info['activation'] === 1 ) {
 
 				$this->parent->settings->add_field(
 					array(

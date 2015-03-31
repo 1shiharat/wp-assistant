@@ -129,6 +129,36 @@ h2 #admin-post-nav {
   display: inline-block;
 }
 
+/**
+ * メニュー更新
+ */
+.menu-list-item {
+  margin-bottom: 4px;
+  border: 1px solid #e8e8e8;
+  padding: 8px 5px;
+}
+
+.menu-list-item-text_input {
+  display: none;
+}
+
+.menu-list-item-text-save {
+  border: none;
+  background: #0063AF;
+  border-radius: 0%;
+  color: #FFF;
+  display: inline-block;
+  width: 39px;
+  height: 36px;
+  margin-left: -40px;
+  vertical-align: top;
+  margin-top: 1px;
+}
+.menu-list-item-text-save:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
 /*!
 * Bootstrap v3.3.2 (http://getbootstrap.com)
 * Copyright 2011-2015 Twitter, Inc.

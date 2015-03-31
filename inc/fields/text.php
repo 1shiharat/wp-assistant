@@ -6,7 +6,7 @@ namespace WP_Assistant\inc\fields;
 
 use WP_Assistant\inc\helper;
 
-class textarea extends field {
+class text extends field {
 
 	public $options = array();
 
@@ -23,7 +23,7 @@ class textarea extends field {
 
 	public function render() {
 		?>
-			<textarea class="wpa-textarea" name="<?php echo $this->get( 'id' ); ?>" id="<?php echo $this->get( 'id' ); ?>"><?php echo $this->value ?></textarea>
-		<?php
+		<input type="text" class="wpa-text" name="<?php echo $this->get( 'id' ); ?>" id="<?php echo $this->get( 'id' ); ?>" value="<?php echo $this->value ?>" />
+	<?php
 	}
 }

@@ -43,6 +43,7 @@ class adminPostNav extends module {
 	public static function register_post_page_hooks() {
 
 		/** 各ナビゲーションの初期値を設定*/
+
 		self::$prev_text = __( '&larr; Previous', 'wp-assistant' );
 		self::$next_text = __( 'Next &rarr;', 'wp-assistant' );
 

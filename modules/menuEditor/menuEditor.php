@@ -11,7 +11,6 @@ use WP_Assistant\inc\config;
 use WP_Assistant\inc\helper;
 use WP_Assistant\modules\module;
 
-// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -22,6 +21,7 @@ class menuEditor extends module {
 	 * 初期化
 	 */
 	public function __construct( $parent ) {
+
 		$this->parent = $parent;
 
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
@@ -64,9 +64,7 @@ class menuEditor extends module {
 			echo '</style>';
 		}, 999 );
 
-
 	} // construct
-
 
 	/**
 	 * フィールドを追加
@@ -80,7 +78,7 @@ class menuEditor extends module {
 				'tabs_name' => __( 'Admin Menu Settings', 'wp-assistant' ),
 			)
 		)
-       ->add_field(
+		->add_field(
 			array(
 				'id'      => 'admin_menu_user',
 				'title'   => __( 'Select User', 'wp-assistant' ),
@@ -96,20 +94,21 @@ class menuEditor extends module {
 				},
 				'default' => '0',
 			)
-       )
-       ->add_field(
-	       array(
-		       'id'      => 'admin_menu',
-		       'title'   => __( 'Select Admin Menu', 'wp-assistant' ),
-		       'desc'    => __( 'Please set the on or off of the feed links that are output to wp_head.', 'wp-assistant' ),
-		       'section' => 'admin_menu',
-		       'type'    => function () {
+		)
+		->add_field(
+			array(
+				'id'      => 'admin_menu',
+				'title'   => __( 'Select Admin Menu', 'wp-assistant' ),
+				'desc'    => __( 'Please set the on or off of the feed links that are output to wp_head.', 'wp-assistant' ),
+				'section' => 'admin_menu',
+				'type'    => function () {
 					$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
 					<div id="wpa_admin_menus"></div>
 					<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
 					<?php
-		       },
-	       )
-       );
+				},
+			)
+		);
+
 	}
 }

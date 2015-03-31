@@ -111,21 +111,25 @@ class settings {
 	 *
 	 * @param array $args
 	 *
-	 * @return $this
-	 * @internal param フィールドID $name
-	 * @internal param フィールドのタイトル $title
-	 * @internal param フィールドが呼び出された時に実行するコールバック $callback
-	 * @internal param フィールドが属するセクション $section
-	 * @internal param int $default デフォルトの値
+	 * @internal id フィールドID $name
+	 * @internal title フィールドのタイトル $title
+	 * @internal type フィールドが呼び出された時に実行するコールバック $callback
+	 * @internal section フィールドが属するセクション $section
+	 * @internal default int $default デフォルトの値
+	 * @internal size int フィールドのサイズ
+	 * @internal options array フィールドのオプション
+	 * @internal sanitize_callback function サニタイズ用のコールバック関数を指定
 	 *
 	 * @internal param string $desc
+   *
+	 * @return $this
 	 */
 	public function add_field( $args = array() ) {
 
 		/** @var array $defaults デフォルトの設定 */
 		$defaults = array(
 			'id'                => '',
-			'title'             => __( '', 'wp-assistant' ),
+			'title'             => '',
 			'type'              => 'text',
 			'section'           => '',
 			'default'           => '',
@@ -187,6 +191,8 @@ class settings {
 	 *
 	 * @param $type
 	 * @param $field
+	 *
+	 * @return callable
 	 */
 	public function callback( $type, $field ) {
 		/** 指定されたタイプのフィールドがあり、クラスが存在する時発火 */

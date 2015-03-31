@@ -118,9 +118,6 @@ class optimize extends module {
 	public function run_optimize() {
 		global $wpdb;
 
-		// キャッシュを再セット
-		config::set( 'options', get_option( config::get( 'prefix' ) . 'options' ) );
-
 		$wp_nonce = $_REQUEST['_wp_optimize_nonce'];
 
 		if ( ! wp_verify_nonce( $wp_nonce, __FILE__ ) ) {
@@ -128,10 +125,12 @@ class optimize extends module {
 			exit();
 		}
 
+		$selected_action = $_REQUEST['selected_action'];
+
 		/**
 		 * リビジョンの削除
 		 */
-		if ( 1 == config::get_option( 'optimize_revision' ) ) {
+		if ( 'true' === $selected_action['revision'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
 			if ( $query ) {
 				foreach ( $query as $id ) {
@@ -145,7 +144,7 @@ class optimize extends module {
 		/**
 		 * 自動下書きの削除
 		 */
-		if ( 1 == config::get_option( 'optimize_auto_draft' ) ) {
+		if ( 'true' === $selected_action['auto_draft'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
 			if ( $query ) {
 				foreach ( $query as $id ) {
@@ -159,7 +158,7 @@ class optimize extends module {
 		/**
 		 * ゴミ箱内の記事の削除
 		 */
-		if ( 1 == config::get_option( 'optimize_trash' ) ) {
+		if ( 'true' === $selected_action['optimize_trash'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
 			if ( $query ) {
 				foreach ( $query as $id ) {
@@ -174,7 +173,6 @@ class optimize extends module {
 			echo wp_send_json( $message );
 			exit();
 		} else {
-
 			$faild_message = array(
 				'html'   => __( 'Failed to delete.', 'wp-assistant' ),
 				'status' => 'faild',
