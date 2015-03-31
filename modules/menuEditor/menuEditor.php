@@ -63,21 +63,19 @@ class menuEditor extends module {
 				}
 			}
 
-			if ( ! is_array( $selected_user )
-			     || ! in_array( $current_user_id, $selected_user )
-			     || ! $true_menu_data
+			if ( is_array( $selected_user )
+			     && in_array( $current_user_id, $selected_user )
+			     && $true_menu_data
 			) {
-				return false;
-			}
-
-			echo '<style>';
-			foreach ( $true_menu_data as $menu ) {
-				if ( $menu['disp'] == 0 ) {
-					echo '#' . $menu['id']. '{ display: none !important}';
+				echo '<style>';
+				foreach ( $true_menu_data as $menu ) {
+					if ( $menu['disp'] == 0 ) {
+						echo '#' . $menu['id'] . '{ display: none !important}';
+					}
+					echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
 				}
-				echo '#' . $menu['id']. ' .wp-menu-name{ display: none}';
+				echo '</style>';
 			}
-			echo '</style>';
 			echo '<script type="text/javascript">
 (function($){
 	$(function(){ ';

@@ -293,6 +293,7 @@
 				var title = this.menuName;
 
 				if ( typeof savedMenus[i] !== "undefined"
+					 && typeof savedMenus[i].id !== "undefined"
 					 && this.menuID === savedMenus[i].id ) {
 					if (savedMenus[i].disp == 0) {
 						checked = ' checked="checked"';
@@ -300,7 +301,6 @@
 					var title = savedMenus[i].title;
 				}
 
-				$('#'+savedMenus[i].id).find('.wp-menu-name').text(title)
 
 				menuInputRender.append(
 					'<div class="menu-list-item">' +
