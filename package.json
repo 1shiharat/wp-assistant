@@ -1,5 +1,5 @@
 {
-  "name": "site-supports",
+  "name": "wp-assistant",
   "version": "0.1.1",
   "description": "Support plugins in order to produce a WordPress site.",
   "main": "gulpfile.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/1shiharaT/site-supports.git"
+    "url": "https://github.com/1shiharaT/wp-assistant.git"
   },
   "keywords": [
     "WordPress"
