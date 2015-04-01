@@ -34,7 +34,7 @@ require 'inc/autoload.php';
 
 $GLOBALS['WP_Assistant'] = new WP_Assistant();
 
-register_activation_hook( __FILE__, array( new WP_Assistant, 'activate' ) );
+register_activation_hook( __FILE__, array( $GLOBALS['WP_Assistant'], 'activate' ) );
 
 /**
  * Class wpaupports

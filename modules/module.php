@@ -135,7 +135,6 @@ class module{
 	 * @return array
 	 */
 	public function register_modules( $modules ){
-
 		if ( is_array( $modules ) && $modules ){
 			foreach ( $modules as $module => $module_info ){
 				$module_name = 'WP_Assistant\modules\\' . $module . '\\' . $module;

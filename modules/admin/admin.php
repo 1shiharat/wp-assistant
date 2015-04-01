@@ -33,14 +33,18 @@ class admin extends module {
 			$options = config::get( 'options' );
 		}
 
-		if ( is_array( $options ) ) {
-			foreach ( $options as $option_key => $option ) {
-				/** メソッドが存在する場合に発動 */
-				if ( method_exists( $this, $option_key ) ) {
-					$this->{$option_key}( $option );
+		$self = $this;
+		add_action( 'init', function() use( $self, $options ){
+			if ( is_array( $options ) ) {
+				foreach ( $options as $option_key => $option ) {
+					/** メソッドが存在する場合に発動 */
+					if ( method_exists( $self, $option_key ) ) {
+						$self->{$option_key}( $option );
+					}
 				}
 			}
-		}
+		}, 10, 1);
+
 
 		// load_template にフィルターを追加
 		$this->check_was_upgraded();
@@ -72,8 +76,8 @@ class admin extends module {
 				'desc'              => __( 'To view the template name in the management bar, please to ON', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -86,8 +90,8 @@ class admin extends module {
 				'type'    => 'radiobox',
 				'default' => 'false',
 				'options' => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 			)
 		)
@@ -110,8 +114,8 @@ class admin extends module {
 				'desc'              => __( 'The output the WordPress version information to wp_head.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -125,8 +129,8 @@ class admin extends module {
 				'desc'              => __( 'The output a short link to wp_head.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -140,8 +144,8 @@ class admin extends module {
 				'desc'              => __( 'Please select whether to stop the automatic formatting.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -155,8 +159,8 @@ class admin extends module {
 				'desc'              => __( 'You can choose to disable the revision control. * I only want to hide. The database will be accumulated.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -170,8 +174,8 @@ class admin extends module {
 				'desc'              => __( 'Please specify whether load the jQuery library of cdnjs.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -185,8 +189,8 @@ class admin extends module {
 				'desc'              => __( 'Please specify whether to load the Bootstrap framework', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -200,8 +204,8 @@ class admin extends module {
 				'desc'              => __( 'Please specify whether to disable the xmlrpc as a security measure.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -215,8 +219,8 @@ class admin extends module {
 				'desc'              => __( 'Please specify whether to disable the author archive as a security measure.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -230,8 +234,8 @@ class admin extends module {
 				'desc'              => __( 'In an article edit screen of the management screen, enabling the next post, the previous post link.', 'wp-assistant' ),
 				'size'              => '',
 				'options'           => array(
-					'true'  => __( 'On', 'wp-assistant' ),
-					'false' => __( 'Off', 'wp-assistant' ),
+					'1'  => __( 'On', 'wp-assistant' ),
+					'0' => __( 'Off', 'wp-assistant' ),
 				),
 				'sanitize_callback' => '',
 			)
@@ -291,6 +295,7 @@ class admin extends module {
 	 * @param $option
 	 */
 	public function wp_generator( $option ) {
+
 		if ( ! intval( $option ) ) {
 			remove_action( 'wp_head', 'wp_generator' );
 
@@ -512,6 +517,7 @@ class admin extends module {
 	 * @param $option
 	 */
 	public function show_current_template( $option ) {
+
 		if ( intval( $option )
 		     && ! is_admin()
 		) {
@@ -529,6 +535,9 @@ class admin extends module {
 	 */
 	public function admin_bar_template( $wp_admin_bar ) {
 		global $template;
+
+
+
 
 		$wp_admin_bar->add_menu(
 			array(
@@ -568,6 +577,7 @@ class admin extends module {
 			}
 			$i ++;
 		}
+
 
 	}
 

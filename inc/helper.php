@@ -26,7 +26,7 @@ class helper {
 			return;
 		}
 
-		if ( ! $value && $default && $option_value == $default ) {
+		if ( !$value && $default && $option_value == $default ) {
 			echo 'checked="checked"';
 			return;
 		}
