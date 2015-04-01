@@ -76,17 +76,19 @@ class menuEditor extends module {
 				}
 				echo '</style>';
 			}
-			echo '<style>#adminmenu li .wp-menu-name{ display: none; }</style>';
-			echo '<script type="text/javascript">
-(function($){
-	$(function(){
-	';
-			foreach ( $true_menu_data as $menu ) {?>
-		$('#<?php echo esc_attr( $menu['id'] ); ?> ').find('.wp-menu-name').text("<?php echo $menu['title'] ?>").fadeIn(500);
-					<?php
+			if ( is_array( $true_menu_data ) && is_array( $true_menu_data[0] ) ) {
+				echo '<style>#adminmenu li .wp-menu-name{ display: none; }</style>';
+				echo '<script type="text/javascript">
+	(function($){
+		$(function(){
+		';
+				foreach ( $true_menu_data as $menu ) { ?>
+					$('#<?php echo esc_attr( $menu['id'] ); ?> ').find('.wp-menu-name').text("<?php echo $menu['title'] ?>").fadeIn(500);
+				<?php
+				}
+				echo '});
+	})(jQuery);</script>';
 			}
-			echo '});
-})(jQuery);</script>';
 		}, 999 );
 
 		$this->flag = true;

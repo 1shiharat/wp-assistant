@@ -13,8 +13,15 @@
 		for (i = querystring.length; i > 0;) {
 			pair = querystring[--i].split('=');
 
+
 			if ( pair[0] && pair[0] !== 'undefined' ) {
 				var key = pair[0];
+
+				// 0.1.7以下のバージョンに対応
+				if ( ! key.match(/\d/g) ) {
+					return params;
+				}
+
 				var num = key.match(/\d/g).join('').trim();
 				var param_key = d(pair[0].match(/\D/g).join(''));
 				params[parseInt(num)][param_key] = d(pair[1].replace(/\+/g, " "));
@@ -115,13 +122,11 @@
 
 				var title = this.menuName;
 
-				if ( typeof savedMenus[i] !== "undefined"
-					 && typeof savedMenus[i].id !== "undefined"
-					 && this.menuID === savedMenus[i].id ) {
-					if (savedMenus[i].disp == 0) {
+				if ( typeof savedMenus[i] !== "undefined" && typeof savedMenus[i].id !== "undefined"  && this.menuID === savedMenus[i].id ) {
+					if (savedMenus[i].disp === 0) {
 						checked = ' checked="checked"';
 					}
-					var title = savedMenus[i].title;
+					title = savedMenus[i].title;
 				}
 
 
@@ -157,7 +162,7 @@
 			$('#' + menuid).fadeIn();
 		}
 
-	})
+	});
 
 
 
