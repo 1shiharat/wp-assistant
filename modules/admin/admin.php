@@ -286,6 +286,10 @@ class admin extends module {
 			remove_action( 'wp_head', 'feed_links', 2 );
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
 			remove_action( 'wp_head', 'rsd_link' );
+		} else {
+			add_action( 'wp_head', 'feed_links', 2 );
+			add_action( 'wp_head', 'feed_links_extra', 3 );
+			add_action( 'wp_head', 'rsd_link' );
 		}
 	}
 
@@ -293,14 +297,17 @@ class admin extends module {
 	 * WordPressバージョン情報の出力
 	 *
 	 * @param $option
+	 *
+	 * @return bool
 	 */
 	public function wp_generator( $option ) {
 
 		if ( ! intval( $option ) ) {
 			remove_action( 'wp_head', 'wp_generator' );
-
-			return false;
+		} else {
+			add_action( 'wp_head', 'wp_generator' );
 		}
+
 	}
 
 	/**
@@ -535,10 +542,6 @@ class admin extends module {
 	 */
 	public function admin_bar_template( $wp_admin_bar ) {
 		global $template;
-
-
-
-
 		$wp_admin_bar->add_menu(
 			array(
 				'id'    => 'admin_bar_template',

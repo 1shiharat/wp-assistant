@@ -123,7 +123,8 @@
 				var title = this.menuName;
 
 				if ( typeof savedMenus[i] !== "undefined" && typeof savedMenus[i].id !== "undefined"  && this.menuID === savedMenus[i].id ) {
-					if (savedMenus[i].disp === 0) {
+
+					if (savedMenus[i].disp === '0') {
 						checked = ' checked="checked"';
 					}
 					title = savedMenus[i].title;
@@ -163,8 +164,6 @@
 		}
 
 	});
-
-
 
 	/**
 	 * メニュー項目をクリックした時のイベント

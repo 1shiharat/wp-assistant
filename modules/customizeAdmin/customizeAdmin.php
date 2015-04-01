@@ -41,7 +41,7 @@ class customizeAdmin extends module {
 				'type'    => 'media',
 				'default' => '',
 				'section' => 'customize_admin',
-				'desc'    => __( '<p>Please upload a logo in the login screen.</p>', 'wp-assistant' )
+				'desc'    => __( 'Please upload a logo in the login screen.', 'wp-assistant' )
 			)
 		)
 		->add_field(
@@ -51,7 +51,7 @@ class customizeAdmin extends module {
 				'type'    => 'media',
 				'default' => '',
 				'section' => 'customize_admin',
-				'desc'    => __( '<p>Please upload the favicon.</p>', 'wp-assistant' )
+				'desc'    => __( 'Please upload the login screen background image. Will automatically be stretched. As recommended large size images.', 'wp-assistant' )
 			)
 		)
 		->add_field(

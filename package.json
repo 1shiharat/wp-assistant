@@ -1,6 +1,6 @@
 {
   "name": "wp-assistant",
-  "version": "0.1.1",
+  "version": "0.2.3",
   "description": "Support plugins in order to produce a WordPress site.",
   "main": "gulpfile.js",
   "scripts": {

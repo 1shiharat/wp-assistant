@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-assistant\n"
-"POT-Creation-Date: 2015-03-31 21:06+0900\n"
-"PO-Revision-Date: 2015-03-31 21:10+0900\n"
+"POT-Creation-Date: 2015-04-02 08:40+0900\n"
+"PO-Revision-Date: 2015-04-02 08:40+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
 "Language-Team: ishihara takashi <ishihara@grow-group.jp>\n"
 "Language: ja\n"
@@ -52,8 +52,8 @@ msgstr "設定画面"
 msgid "Save"
 msgstr "設定を保存"
 
-#: ../modules/module.php:73 ../modules/admin/admin.php:62
-#: ../modules/admin/admin.php:63
+#: ../modules/module.php:73 ../modules/admin/admin.php:66
+#: ../modules/admin/admin.php:67
 msgid "General"
 msgstr "サイトの設定"
 
@@ -96,11 +96,12 @@ msgstr ""
 msgid "Admin Menu Editor"
 msgstr "管理メニューエディター"
 
-#: ../modules/module.php:98
+#: ../modules/module.php:98 ../modules/menuEditor/menuEditor.php:131
 msgid "Set display, non-display of the admin menu item every user."
 msgstr ""
-"ユーザーごとに管理画面サイドメニューの表示・非表示、管理メニューのタイトルの"
-"変更を設定することができます。"
+"管理画面サイドメニューの表示・非表示、管理メニューのタイトルの変更を設定する"
+"ことができます。非表示にしたいメニューをチェックしてください。また、各項目名"
+"をクリックすることでメニュー名を編集できます。"
 
 #: ../modules/module.php:103 ../modules/customizeAdmin/customizeAdmin.php:34
 msgid "Customize Admin"
@@ -144,137 +145,136 @@ msgstr ""
 msgid "Modules Activation"
 msgstr "モジュールの有効化"
 
-#: ../modules/admin/admin.php:68
+#: ../modules/admin/admin.php:72
 msgid "Show in the admin bar the current template name"
 msgstr "アドミンバーに現在のテンプレート名を表示"
 
-#: ../modules/admin/admin.php:72
+#: ../modules/admin/admin.php:76
 msgid "To view the template name in the management bar, please to ON"
 msgstr "有効化するとアドミンバーにテンプレート名を表示します"
 
-#: ../modules/admin/admin.php:75 ../modules/admin/admin.php:89
-#: ../modules/admin/admin.php:113 ../modules/admin/admin.php:128
-#: ../modules/admin/admin.php:143 ../modules/admin/admin.php:158
-#: ../modules/admin/admin.php:173 ../modules/admin/admin.php:188
-#: ../modules/admin/admin.php:203 ../modules/admin/admin.php:218
-#: ../modules/admin/admin.php:233 ../modules/optimize/optimize.php:57
+#: ../modules/admin/admin.php:79 ../modules/admin/admin.php:93
+#: ../modules/admin/admin.php:117 ../modules/admin/admin.php:132
+#: ../modules/admin/admin.php:147 ../modules/admin/admin.php:162
+#: ../modules/admin/admin.php:177 ../modules/admin/admin.php:192
+#: ../modules/admin/admin.php:207 ../modules/admin/admin.php:222
+#: ../modules/admin/admin.php:237 ../modules/optimize/optimize.php:57
 #: ../modules/optimize/optimize.php:72 ../modules/optimize/optimize.php:87
 msgid "On"
 msgstr "有効"
 
-#: ../modules/admin/admin.php:76 ../modules/admin/admin.php:90
-#: ../modules/admin/admin.php:114 ../modules/admin/admin.php:129
-#: ../modules/admin/admin.php:144 ../modules/admin/admin.php:159
-#: ../modules/admin/admin.php:174 ../modules/admin/admin.php:189
-#: ../modules/admin/admin.php:204 ../modules/admin/admin.php:219
-#: ../modules/admin/admin.php:234 ../modules/optimize/optimize.php:58
+#: ../modules/admin/admin.php:80 ../modules/admin/admin.php:94
+#: ../modules/admin/admin.php:118 ../modules/admin/admin.php:133
+#: ../modules/admin/admin.php:148 ../modules/admin/admin.php:163
+#: ../modules/admin/admin.php:178 ../modules/admin/admin.php:193
+#: ../modules/admin/admin.php:208 ../modules/admin/admin.php:223
+#: ../modules/admin/admin.php:238 ../modules/optimize/optimize.php:58
 #: ../modules/optimize/optimize.php:73 ../modules/optimize/optimize.php:88
 msgid "Off"
 msgstr "無効"
 
-#: ../modules/admin/admin.php:83
+#: ../modules/admin/admin.php:87
 msgid "Feed link tags (rss)"
 msgstr "フィードリンクの出力 (RSS)"
 
-#: ../modules/admin/admin.php:84 ../modules/menuEditor/menuEditor.php:131
+#: ../modules/admin/admin.php:88
 msgid "Please set the on or off of the feed links that are output to wp_head."
 msgstr "フィードリンクをwp_headに出力します。"
 
-#: ../modules/admin/admin.php:97
+#: ../modules/admin/admin.php:101
 msgid "Site Favicon"
 msgstr "サイトのファビコン"
 
-#: ../modules/admin/admin.php:101
-#: ../modules/customizeAdmin/customizeAdmin.php:54
+#: ../modules/admin/admin.php:105
 msgid "<p>Please upload the favicon.</p>"
 msgstr "ファビコン画像をアップロードしてください。"
 
-#: ../modules/admin/admin.php:106
+#: ../modules/admin/admin.php:110
 msgid "WordPress generator meta tag"
 msgstr "WordPressジェネレーターメタタグの出力"
 
-#: ../modules/admin/admin.php:110
+#: ../modules/admin/admin.php:114
 msgid "The output the WordPress version information to wp_head."
 msgstr ""
 "WordPressのバージョン情報を出力するジェネレータータグをコントロールします。出"
 "力したくない時は無効を選択して下さい。"
 
-#: ../modules/admin/admin.php:121
+#: ../modules/admin/admin.php:125
 msgid "The output of the short link"
 msgstr "ショートリンクタグの出力"
 
-#: ../modules/admin/admin.php:125
+#: ../modules/admin/admin.php:129
 msgid "The output a short link to wp_head."
 msgstr ""
 "ショートリンクタグをwp_headに出力します。出力したくない時には無効を選択して下"
 "さい。"
 
-#: ../modules/admin/admin.php:136
+#: ../modules/admin/admin.php:140
 msgid "Stop of automatic formatting"
 msgstr "自動整形の停止"
 
-#: ../modules/admin/admin.php:140
+#: ../modules/admin/admin.php:144
 msgid "Please select whether to stop the automatic formatting."
 msgstr "自動整形を停止するためには有効を選択してください。"
 
-#: ../modules/admin/admin.php:151
+#: ../modules/admin/admin.php:155
 msgid "Stop of revision control"
 msgstr "リビジョンコントロールの無効化"
 
-#: ../modules/admin/admin.php:155
+#: ../modules/admin/admin.php:159
 msgid ""
 "You can choose to disable the revision control. * I only want to hide. The "
 "database will be accumulated."
 msgstr ""
 "リビジョンを隠すことができます。※ ただし、データベースには蓄積されます。"
 
-#: ../modules/admin/admin.php:166
+#: ../modules/admin/admin.php:170
 msgid "Load of the jQuery"
 msgstr "外部 jQuery ライブラリの読み込み"
 
-#: ../modules/admin/admin.php:170
+#: ../modules/admin/admin.php:174
 msgid "Please specify whether load the jQuery library of cdnjs."
 msgstr "cdnjs からjQueryライブラリを読み込むためには有効にしてください。"
 
-#: ../modules/admin/admin.php:181
+#: ../modules/admin/admin.php:185
 msgid "Load of The Bootstrap3 framework"
 msgstr "Bootstrap 3 フレームワークの自動ロード"
 
-#: ../modules/admin/admin.php:185
+#: ../modules/admin/admin.php:189
 msgid "Please specify whether to load the Bootstrap framework"
 msgstr "Bootstrap フレームワークを自動的に読み込みためには有効にしてください。"
 
-#: ../modules/admin/admin.php:196
+#: ../modules/admin/admin.php:200
 msgid "Stop of xmlrpc"
 msgstr "XMLRPC の停止"
 
-#: ../modules/admin/admin.php:200
+#: ../modules/admin/admin.php:204
 msgid "Please specify whether to disable the xmlrpc as a security measure."
 msgstr "XMLRPC を無効化するには有効を選択してください。"
 
-#: ../modules/admin/admin.php:211
+#: ../modules/admin/admin.php:215
 msgid "Disable the author page"
 msgstr "著者情報出力の停止"
 
-#: ../modules/admin/admin.php:215
+#: ../modules/admin/admin.php:219
 msgid ""
 "Please specify whether to disable the author archive as a security measure."
 msgstr ""
 "著者アーカイブ、著者ページへのリンクを無効化する場合は有効を選択してくださ"
 "い。"
 
-#: ../modules/admin/admin.php:226
+#: ../modules/admin/admin.php:230
 msgid "Enabling Admin post Navigation"
 msgstr "記事編集画面ナビゲーションの有効化"
 
-#: ../modules/admin/admin.php:230
+#: ../modules/admin/admin.php:234
 msgid ""
 "In an article edit screen of the management screen, enabling the next post, "
 "the previous post link."
 msgstr ""
 "有効にすると記事編集画面で次の記事へ、前の記事へナビゲーションを表示します。"
 
-#: ../modules/admin/admin.php:537
+#: ../modules/admin/admin.php:546
 msgid "<span class=\"ab-icon\"></span> Template : "
 msgstr "<span class=\"ab-icon\"></span> テンプレート :"
 
@@ -345,12 +345,20 @@ msgid "Login panel"
 msgstr "ログインパネル"
 
 #: ../modules/customizeAdmin/customizeAdmin.php:44
-msgid "<p>Please upload a logo in the login screen.</p>"
-msgstr "<p>ログイン画面に表示するロゴ画像をアップロードしてください。</p>"
+msgid "Please upload a logo in the login screen."
+msgstr "ログイン画面に表示するロゴ画像をアップロードしてください。"
 
 #: ../modules/customizeAdmin/customizeAdmin.php:50
 msgid "Login panel background"
 msgstr "ログイン画面の背景"
+
+#: ../modules/customizeAdmin/customizeAdmin.php:54
+msgid ""
+"Please upload the login screen background image. Will automatically be "
+"stretched. As recommended large size images."
+msgstr ""
+"ログイン画面の背景画像をアップロードしてください。アップロードした画像自動的"
+"に引き伸ばされ表示されます。できるだけ大きなサイズの画像を推奨します。"
 
 #: ../modules/customizeAdmin/customizeAdmin.php:60
 msgid "Admin footer text"
@@ -358,7 +366,9 @@ msgstr "管理画面フッターテキスト"
 
 #: ../modules/customizeAdmin/customizeAdmin.php:64
 msgid "change to footer text"
-msgstr "管理画面のフッターテキストを変更する際は入力してください。"
+msgstr ""
+"管理画面のフッターテキストを変更する時に入力してください。※ 空の場合に無効と"
+"なります。"
 
 #: ../modules/dashboard/dashboard.php:34
 msgid "Please input the content to be displayed on the dashboard widget."
@@ -376,8 +386,7 @@ msgstr "ダッシュボードコンテンツ"
 #: ../modules/dashboard/dashboard.php:45
 msgid "<p>Please enter the content to be displayed on the dashboard.</p>"
 msgstr ""
-"<p>オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
-"</p>"
+"オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
 
 #: ../modules/menuEditor/menuEditor.php:106
 msgid "Admin Menu"
@@ -389,20 +398,19 @@ msgstr "管理メニューの設定"
 
 #: ../modules/menuEditor/menuEditor.php:113
 msgid "Select User"
-msgstr "ユーザーを選択"
+msgstr "管理メニュー非表示有効ユーザーを選択"
 
 #: ../modules/menuEditor/menuEditor.php:114
 msgid ""
 "Please select the account to apply the Admin menu change. <br /> * You can "
 "select more than one by selecting while holding down the  shift key."
 msgstr ""
-"管理メニューの非表示を有効にしたいユーザーを選択してください。 <br /> ※ "
-"shift キーを押しながら選択することで、複数のユーザーを選択することができま"
-"す。"
+"管理メニュー非表示を有効にしたいユーザーを選択してください。※ shift キーを押"
+"しながら選択することで、複数のユーザーを選択することができます。"
 
 #: ../modules/menuEditor/menuEditor.php:130
 msgid "Select Admin Menu"
-msgstr "非表示にする管理メニューを選択"
+msgstr "管理メニューエディター"
 
 #: ../modules/optimize/optimize.php:50
 msgid "Delete all revisions"
@@ -410,7 +418,7 @@ msgstr "すべてのリビジョンの削除"
 
 #: ../modules/optimize/optimize.php:54
 msgid "Please specify to enable revision of the deletion."
-msgstr "すべてのリビジョンを一括削除したい時には、有効にしてください。"
+msgstr "すべてのリビジョンを一括削除したい時に有効にしてください。"
 
 #: ../modules/optimize/optimize.php:65
 msgid "Delete all of the auto draft"
@@ -418,7 +426,7 @@ msgstr "すべての自動下書きを削除"
 
 #: ../modules/optimize/optimize.php:69
 msgid "Please specify to enable auto-draft of the deletion."
-msgstr "自動下書き記事を一括削除したい場合には、有効にしてください。"
+msgstr "自動下書き記事を一括削除したい場合に有効にしてください。"
 
 #: ../modules/optimize/optimize.php:80
 msgid "Delete trash in the post of all post type"
@@ -434,7 +442,7 @@ msgstr "最適化を実行"
 
 #: ../modules/optimize/optimize.php:99
 msgid "To apply the above settings, please save once."
-msgstr ""
+msgstr "最適化を実行します。"
 
 #: ../modules/optimize/optimize.php:139
 msgid "Deleted successfully revision."
