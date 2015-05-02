@@ -18,6 +18,7 @@ class dashboard extends module {
 	public function __construct( $parent ) {
 		$this->parent = $parent;
 		add_action( 'admin_init', array( $this, 'add_settings' ), 10 );
+
 		if ( config::get_option( 'dashboard_contents' ) ) {
 			add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
 			add_action( 'load-index.php', array( $this, 'hide_welcome_panel' ) );
@@ -83,7 +84,6 @@ class dashboard extends module {
 	 */
 	function hide_welcome_panel() {
 		$user_id = get_current_user_id();
-
 		if ( 1 == get_user_meta( $user_id, 'show_welcome_panel', true ) ) {
 			update_user_meta( $user_id, 'show_welcome_panel', 0 );
 		}

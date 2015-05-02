@@ -121,7 +121,7 @@ class settings {
 	 * @internal sanitize_callback function サニタイズ用のコールバック関数を指定
 	 *
 	 * @internal param string $desc
-   *
+	 *
 	 * @return $this
 	 */
 	public function add_field( $args = array() ) {
@@ -257,11 +257,11 @@ class settings {
 		 * 値が有効な場合、値を照合してサニタイズ後オプションを更新
 		 */
 		if ( $form_array ) {
-			foreach ( $form_array as $form ){
-				if ( $form['name'] === 'admin_menu_user[]' ){
+			foreach ( $form_array as $form ) {
+				if ( $form['name'] === 'admin_menu_user[]' ) {
 					$form_save_data['admin_menu_user'][] = $form['value'];
 				} else {
-					$form_save_data[$form['name']] = $form['value'];
+					$form_save_data[ $form['name'] ] = $form['value'];
 				}
 			}
 			$settings = array_map( array( $this, 'sanitizes_fields' ), $form_save_data );
@@ -328,12 +328,24 @@ class settings {
 					'_wp_nonce' => wp_create_nonce( __FILE__ )
 				) );
 				break;
+
+			default :
+				wp_enqueue_script( config::get( 'prefix' ) . 'admin_scripts', config::get( 'plugin_url' ) . 'assets/js/plugins.min.js', array(
+					'jquery',
+					'jquery-ui-tabs',
+					'jquery-ui-button',
+					'jquery-ui-accordion',
+					'underscore'
+				), config::get( 'version' ) );
+
+				break;
 		}
 		wp_enqueue_style( 'jquery-ui-smoothness', config::get( 'plugin_url' ) . 'assets/css/plugins.min.css', config::get( 'version' ), config::get( 'version' ) );
 	}
 
 	/**
 	 * Settings API のフィールドを出力
+	 *
 	 * @param $page
 	 * @param $section
 	 */
@@ -352,7 +364,7 @@ class settings {
 				echo '<h3 class="ui-accordion-header ui-helper-reset ui-corner-top">' . $field['title'] . '</h3>';
 			}
 			echo '<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active">';
-			echo '<p>'. $field['args']['desc'] .'</p>';
+			echo '<p>' . $field['args']['desc'] . '</p>';
 			call_user_func( $field['callback'], $field['args'] );
 			echo '</div>';
 		}

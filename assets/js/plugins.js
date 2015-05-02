@@ -178,206 +178,309 @@
 (function ($) {
 	"use strict";
 
-	var deparam = function (querystring) {
+	var adminMenuEditor = {
+		insertTarget: '#wpa_admin_menus_list',
+		saveHiddenInput: '#admin_menu_hidden',
+		checkedMenus: '#wpa_admin_menus .adminmenu_hidden_check',
+		menuListTemplateID: '#wpa_admin_menus_template',
+		adminMenu: '#adminmenu > li',
+		/**
+		 * データベースに保存する値を更新
+		 */
+		update: function () {
+			var checkedMenus = $(adminMenuEditor.checkedMenus),
+				menuListText = $('.menu-list-item-text_input'),
+				menuListTextStr = '',
+				i = 0;
 
-		querystring = querystring.substring(querystring.indexOf('?') + 1).split('&');
-		var params = {}, pair, d = decodeURIComponent, i, r;
+			$.each(menuListText, function () {
+				var id = $(this).data('menu-id'),
+					text = $(this).val().replace(/\s+/g, "+");
+				var disp = ( $(this).prev().prev().attr('checked') ) ? 0 : 1;
 
-		for (r=0; r < querystring.length;r++) {
-			params[r] = {};
-		}
-		// クエリストリングから変換
-		for (i = querystring.length; i > 0;) {
-			pair = querystring[--i].split('=');
+				var order = $(this).closest('.menu-list-item').data('order');
 
-
-			if ( pair[0] && pair[0] !== 'undefined' ) {
-				var key = pair[0];
-
-				// 0.1.7以下のバージョンに対応
-				if ( ! key.match(/\d/g) ) {
-					return params;
+				if (text) {
+					if (i === 0) {
+						menuListTextStr += i + 'id=' + id;
+						menuListTextStr += '&' + i + 'text=' + text;
+						menuListTextStr += '&' + i + 'disp=' + disp;
+						menuListTextStr += '&' + i + 'order=' + i;
+					} else {
+						menuListTextStr += '&' + i + 'id=' + id;
+						menuListTextStr += '&' + i + 'text=' + text;
+						menuListTextStr += '&' + i + 'disp=' + disp;
+						menuListTextStr += '&' + i + 'order=' + i;
+					}
+					i++;
 				}
 
-				var num = key.match(/\d/g).join('').trim();
-				var param_key = d(pair[0].match(/\D/g).join(''));
-				params[parseInt(num)][param_key] = d(pair[1].replace(/\+/g, " "));
+			});
+			$(adminMenuEditor.saveHiddenInput).val(menuListTextStr);
+		},
+
+		/**
+		 * クエリストリングから配列に変換
+		 * @param querystring
+		 * @returns {{}}
+		 */
+		deparam: function (querystring) {
+			querystring = querystring.substring(querystring.indexOf('?') + 1).split('&');
+			var params = {}, pair, d = decodeURIComponent, i, r;
+
+			for (r = 0; r < querystring.length; r++) {
+				params[r] = {};
 			}
-		}
-
-		// 余計なオブジェクトを削除
-		$.each(params,function(key){
-			if ( typeof this.id == "undefined" ){
-				delete(params[key]);
+			// クエリストリングから変換
+			for (i = querystring.length; i > 0;) {
+				pair = querystring[--i].split('=');
+				if (pair[0] && pair[0] !== 'undefined') {
+					var key = pair[0];
+					// 0.1.7以下のバージョンに対応
+					if (!key.match(/\d/g)) {
+						return params;
+					}
+					var num = key.match(/\d/g).join('').trim();
+					var param_key = d(pair[0].match(/\D/g).join(''));
+					params[parseInt(num)][param_key] = d(pair[1].replace(/\+/g, " "));
+				}
 			}
-		});
+			// 余計な情報を削除
+			$.each(params, function (key) {
+				if (typeof this.id == "undefined") {
+					delete(params[key]);
+				}
+			});
+			return params;
+		},
 
-		return params;
+		/**
+		 * メニューエディタを挿入するjQueryオブジェクトを返す
+		 * @returns {*|HTMLElement}
+		 */
+		getTarget: function () {
+			return $(adminMenuEditor.insertTarget);
+		},
 
-	};
+		/**
+		 * もともとのメニューを返す
+		 * @returns {*|HTMLElement}
+		 */
+		getOriginalMenu: function () {
+			return $(adminMenu);
+		},
 
-	/**
-	 * メニューの配列を整形
-	 * @param adminMenu
-	 * @returns {*}
-	 */
-	function getMenuArray(adminMenu) {
-		var menus = {};
-		if (typeof adminMenu == 'undefined') {
-			return false;
-		}
+		/**
+		 * もともとのメニューをオブジェクトに整形
+		 * @param originalMenu
+		 * @returns {*}
+		 */
+		getOriginalMenuArray: function () {
+			var originalMenu = adminMenuEditor.getOriginalMenu(),
+				menus = {};
 
-		$.each(adminMenu, function (menuKey, menu) {
+			if (typeof originalMenu == 'undefined') {
+				return false;
+			}
 
-			$(this).find(".wp-menu-name").find('.pending-count').remove();
-			$(this).find(".wp-menu-name").find('.plugin-count').remove();
-			var menuName = $(this).find(".wp-menu-name").text();
-			var menuID = $(this).attr('id');
-			menus[menuKey] = {
-				menuName: menuName,
-				menuID: menuID
+			$.each(originalMenu, function (menuKey, menu) {
+				$(this).find(".wp-menu-name").find('.pending-count').remove();
+				$(this).find(".wp-menu-name").find('.plugin-count').remove();
+				var text = $(this).find(".wp-menu-name").text();
+				var id = $(this).attr('id');
+				menus[menuKey] = {
+					title: text,
+					id: id
+				};
+			});
+
+			return menus;
+		},
+
+		/**
+		 * テンプレートをセット
+		 */
+		setTemplate: function () {
+			adminMenuEditor.template = _.template($(adminMenuEditor.menuListTemplateID).html());
+		},
+
+		/**
+		 * オリジナルのメニューを取得
+		 * @return {{menus: *}}
+		 */
+		getMenus: function () {
+			return {
+				menus: adminMenuEditor.getOriginalMenuArray()
 			};
+		},
 
-		});
+		formatMenu: function (menus) {
 
-		return menus;
+		},
 
-	}
+		/**
+		 * すでに保存してある値を取得
+		 * @param menus
+		 * @returns {{menus: {}}}
+		 */
+		getData: function (menus) {
+			var menuObj = adminMenuEditor.deparam(menus);
+			menuObj = _.sortBy( menuObj, function(menu){ return parseInt( menu.order ); } )
 
-	/**
-	 * チェックされているIDを更新する
-	 */
-	function changeCheckedInput() {
-		var checkedMenus = $('#wpa_admin_menus .adminmenu_hidden_check'),
-			checkedMenuID = [];
-		var admin_menu_title = $('.menu-list-item-text_input');
-		var am_array = '';
+			return {
+				menus: menuObj
+			};
+		},
 
-		var i = 0;
-		$.each(admin_menu_title, function (key, data) {
-			var menu_id = $(this).data('menu-id');
-			var menu_title = $(this).val().replace(/\s+/g, "+");
-			var menu_disp_check = $(this).prev().prev();
-			var menu_disp = '';
-			if ( menu_disp_check.attr('checked') ) {
-				menu_disp = 0;
+		/**
+		 * 初期化
+		 * @param wpa_ADMIN_MENU
+		 */
+		init: function (settings) {
+			var self = adminMenuEditor;
+			if ( $(adminMenuEditor.menuListTemplateID).length ) {
+				self.setTemplate();
+				var defaults = adminMenuEditor.defaults();
+				var menus = settings.menus || defaults;
+
+				adminMenuEditor.enhanced(self.getData(menus));
+				var compiledHtml = self.compiled(self.getData(menus));
+				self.getTarget().html(compiledHtml);
+				adminMenuEditor.update();
+				adminMenuEditor.event();
 			} else {
-				menu_disp = 1;
+				var defaults = adminMenuEditor.defaults();
+				var menus = settings.menus || defaults;
+				adminMenuEditor.enhanced(self.getData(menus));
 			}
+		},
 
-			if (menu_title) {
-				if ( i === 0 ){
-					am_array += i + 'id=' + menu_id;
-					am_array += '&' + i + 'title=' + menu_title;
-					am_array += '&' + i + 'disp=' + menu_disp;
-				} else {
-					am_array += '&' + i + 'id=' + menu_id;
-					am_array += '&' + i + 'title=' + menu_title;
-					am_array += '&' + i + 'disp=' + menu_disp;
+		/**
+		 * テンプレートをコンパイル
+		 * @param menus
+		 * @returns {*}
+		 */
+		compiled: function (menus) {
+			return adminMenuEditor.template(menus);
+		},
+
+		enhanced: function(settings){
+			var adminMenu = _.clone( $('#adminmenu') );
+			_.each(settings.menus,function(menu, key){
+				var target = adminMenu.find('#'+menu.id);
+				target.find('.wp-menu-name').text(menu.text);
+				target.attr('data-order', menu.order);
+			});
+			adminMenu.html( _.sortBy(adminMenu.children(), function(menu){ return parseInt( $(menu).data('order') ) }) );
+
+		},
+		defaults: function(){
+			var menuStr = '';
+			var i = 0;
+			var adminMenu = _.clone( $(adminMenuEditor.adminMenu) );
+			adminMenu.each(function(){
+				var id = $(this).attr('id');
+				var text = $(this).find('.wp-menu-name').text().replace(/(^\s+)|(\s+$)/g, "");
+				if ( text ) {
+					if (i === 0) {
+						menuStr += i + 'id=' + id;
+						menuStr += '&' + i + 'title=' + text;
+						menuStr += '&' + i + 'disp=' + 1;
+						menuStr += '&' + i + 'order=' + i;
+					} else {
+						menuStr += '&' + i + 'id=' + id;
+						menuStr += '&' + i + 'title=' + text;
+						menuStr += '&' + i + 'disp=' + 0;
+						menuStr += '&' + i + 'order=' + i;
+					}
 				}
-			}
-			i++;
-		});
+				i++;
+			});
+			return menuStr;
+		},
 
-		$('#admin_menu_hidden').val(am_array);
-	}
+
+		/**
+		 * イベントを登録
+		 */
+		event: function () {
+			/**
+			 * チェックボックスのクリック時イベント
+			 */
+			$(document).on('click', '#wpa_admin_menus input', function () {
+				adminMenuEditor.update();
+			});
+
+			$(document).on('click', '#wpa_admin_menus input[type="checkbox"]', function () {
+				var menuid = $(this).next().next().data('menu-id');
+				var checked = $(this).attr('checked');
+
+				if (checked === 'checked') {
+					$('#' + menuid).fadeOut();
+				} else {
+					$('#' + menuid).fadeIn();
+				}
+
+			});
+
+			/**
+			 * メニュー項目をクリックした時のイベント
+			 */
+			$(document).on('click', '.menu-list-item-text', function (e) {
+				var parentList = $(this).closest('.menu-list-item');
+				var input = $(this).next('.menu-list-item-text_input');
+
+				if (!parentList.hasClass('on')) {
+					parentList.addClass('on');
+					$(this).hide();
+					input.show();
+					input.next().show();
+				} else if ($(this).next(".menu-list-item-text_input").attr('class') !== $(e.target).attr('class')) {
+					parentList.removeClass('on');
+					$(this).text(input.val());
+					$(this).show();
+					input.hide();
+				}
+			});
+
+			/**
+			 * セーブボタンをクリックした時のイベント
+			 */
+			$(document).on('click', '.menu-list-item-text-save', function (e) {
+				e.preventDefault();
+				var input_value = $(this).prev('.menu-list-item-text_input').val();
+				$(this).prev().prev().fadeOut().text(input_value).fadeIn();
+				var menuid = $(this).prev().data('menu-id');
+				$('#' + menuid).find('.wp-menu-name').fadeOut().text(input_value).fadeIn();
+				$(this).hide();
+				$(this).prev().hide();
+				$(this).prev().prev().show();
+				adminMenuEditor.update();
+			});
+
+		}
+	};
 
 	/**
 	 * ロード時のイベント
 	 */
 	$(function () {
-		var menuInputRender = $('#wpa_admin_menus'),
-			adminMenu = $('#adminmenu > li'),
-			menus = getMenuArray(adminMenu);
-		var savedMenus = deparam(wpa_ADMIN_MENU.menus);
-
-		var i = 0;
-
-		$.each(menus, function () {
-			if (this.menuID && this.menuName) {
-				var checked = '';
-
-				var title = this.menuName;
-
-				if ( typeof savedMenus[i] !== "undefined" && typeof savedMenus[i].id !== "undefined"  && this.menuID === savedMenus[i].id ) {
-
-					if (savedMenus[i].disp === '0') {
-						checked = ' checked="checked"';
-					}
-					title = savedMenus[i].title;
+		var settings = wpa_ADMIN_MENU || {};
+		adminMenuEditor.init( settings );
+		if ($('body').hasClass('toplevel_page_wpa_options_page')) {
+			var order_data = $("#wpa_admin_menus").sortable({
+				placeholder: "ui-state-highlight",
+				update: function (event, ui) {
+					$(this).find('.menu-list-item').each(function(key,item){
+						$(item).attr( 'data-order', key );
+						setTimeout(function(){
+							adminMenuEditor.update();
+						}, 500);
+					});
 				}
-
-
-				menuInputRender.append(
-					'<div class="menu-list-item">' +
-					'<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[' + this.menuID + '][disp]" value="1" ' + checked + '/>' +
-					'<span class="menu-list-item-text"> ' + title +
-					'</span>' +
-					'<input type="text" class="admin_menu_edit menu-list-item-text_input" data-menu-id="' + this.menuID + '" name="wpa_supports_checkobox[' + this.menuID + '][name]" value="' + title + '" />' +
-					'<button class="menu-list-item-text-save" style="display: none"><span class="dashicons dashicons-yes"></span> </button>' +
-					'</div>'
-				);
-				i++;
-			}
-		});
-		changeCheckedInput();
-	});
-
-	/**
-	 * チェックボックスのクリック時イベント
-	 */
-	$(document).on('click', '#wpa_admin_menus input', function () {
-		changeCheckedInput();
-	});
-
-	$(document).on('click','#wpa_admin_menus input[type="checkbox"]',function(){
-		var menuid = $(this).next().next().data('menu-id');
-		var checked = $(this).attr('checked');
-
-		if ( checked === 'checked' ){
-			$('#' + menuid).fadeOut();
-		} else{
-			$('#' + menuid).fadeIn();
-		}
-
-	});
-
-	/**
-	 * メニュー項目をクリックした時のイベント
-	 */
-	$(document).on('click', '.menu-list-item-text', function (e) {
-		var parentList = $(this).closest('.menu-list-item');
-		var input = $(this).next('.menu-list-item-text_input');
-
-		if (!parentList.hasClass('on')) {
-			parentList.addClass('on');
-			$(this).hide();
-			input.show();
-			input.next().show();
-		} else if ($(this).next(".menu-list-item-text_input").attr('class') !== $(e.target).attr('class')) {
-			parentList.removeClass('on');
-			$(this).text(input.val());
-			$(this).show();
-			input.hide();
+			});
 		}
 	});
-
-	/**
-	 * セーブボタンをクリックした時のイベント
-	 */
-	$(document).on('click', '.menu-list-item-text-save', function (e) {
-		e.preventDefault();
-		var input_value = $(this).prev('.menu-list-item-text_input').val();
-		$(this).prev().prev().fadeOut().text(input_value).fadeIn();
-		var menuid = $(this).prev().data('menu-id');
-		$('#' + menuid ).find('.wp-menu-name').fadeOut().text(input_value).fadeIn();
-		$(this).hide();
-		$(this).prev().hide();
-		$(this).prev().prev().show();
-		changeCheckedInput();
-
-	});
-
 
 })(jQuery);
 

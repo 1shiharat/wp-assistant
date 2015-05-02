@@ -18,85 +18,77 @@ if ( ! defined( 'WPINC' ) ) {
 class menuEditor extends module {
 
 	public $flag = false;
+
 	/**
 	 * 初期化
 	 */
 	public function __construct( $parent ) {
-		if ( $this->flag === true ){
+		if ( $this->flag === true ) {
 			return false;
 		}
 		$this->parent = $parent;
 
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 
-		add_action( 'admin_print_scripts', function () {
-			$admin_menus = config::get_option( 'admin_menu' );
-			wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array( 'menus' => $admin_menus ) );
-		}, 10 );
+		add_action( 'admin_print_scripts', array( $this, 'scripts' ), 10 );
 
-		add_action( 'admin_menu', function () {
-			$admin_menus = config::get_option( 'admin_menu' );
-			if ( ! $admin_menus ) {
-				return;
-			}
-			$admin_menu_array = explode( ',', $admin_menus );
-			foreach ( $admin_menu_array as $admin_menu ) {
-				if ( $admin_menu ) {
-					remove_menu_page( $admin_menu );
-				}
-			}
-		}, 10 );
-
-		add_action( 'admin_print_scripts', function () {
-			$admin_menus     = config::get_option( 'admin_menu' );
-			$selected_user   = config::get_option( 'admin_menu_user' );
-			$current_user_id = get_current_user_id();
-			$true_menu_data = array();
-
-			parse_str( $admin_menus, $menus );
-
-			if ( is_array( $menus ) ){
-				foreach( $menus as $menu_key => $menu ){
-					preg_match('/\d*/', $menu_key, $menu_number );
-					preg_match('|[a-z]+\$*|', $menu_key, $menu_text );
-					$true_menu_data[$menu_number[0]][$menu_text[0]] = $menu;
-				}
-			}
-
-			if ( is_array( $selected_user )
-			     && in_array( $current_user_id, $selected_user )
-			     && $true_menu_data
-			) {
-				echo '<style>';
-				foreach ( $true_menu_data as $menu ) {
-					if ( $menu['disp'] == 0 ) {
-						echo '#' . $menu['id'] . '{ display: none !important}';
-					}
-					echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
-				}
-				echo '</style>';
-			}
-			if ( is_array( $true_menu_data ) && is_array( $true_menu_data[0] ) ) {
-				echo '<style>#adminmenu li .wp-menu-name{ display: none; }</style>';
-				echo '<script type="text/javascript">
-	(function($){
-		$(function(){
-		';
-				foreach ( $true_menu_data as $menu ) { ?>
-					$('#<?php echo esc_attr( $menu['id'] ); ?> ').find('.wp-menu-name').text("<?php echo $menu['title'] ?>").fadeIn(500);
-				<?php
-				}
-				echo '});
-	})(jQuery);</script>';
-			}
-		}, 999 );
+		// 設定を css と js として出力する
+		add_action( 'admin_print_scripts', array( $this, 'enhanced' ) , 999 );
 
 		$this->flag = true;
 
-	} // construct
+	}
 
 	/**
-	 * フィールドを追加
+	 * 現在の設定を js に渡す
+	 */
+	public function scripts() {
+		$admin_menus = config::get_option( 'admin_menu' );
+
+		wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array( 'menus' => $admin_menus ) );
+	}
+
+	/**
+	 * 設定をcssとjsとして出力
+	 * @return void
+	 */
+	public function enhanced(){
+		$admin_menus     = ( $a = config::get_option( 'admin_menu' ) ) ? $a : '';
+		$selected_user   = config::get_option( 'admin_menu_user' );
+		$current_user_id = get_current_user_id();
+		$true_menu_data  = array();
+		parse_str( $admin_menus, $menus );
+
+		if ( is_array( $menus ) ) {
+			foreach ( $menus as $menu_key => $menu ) {
+				preg_match( '/\d*/', $menu_key, $menu_number );
+				preg_match( '|[a-z]+\$*|', $menu_key, $menu_text );
+				$true_menu_data[ $menu_number[0] ][ $menu_text[0] ] = $menu;
+			}
+		}
+
+		if ( is_array( $selected_user )
+		     && in_array( $current_user_id, $selected_user )
+		     && $true_menu_data
+		) {
+			echo '<style>';
+			foreach ( $true_menu_data as $menu ) {
+				if ( $menu['disp'] == 0 ) {
+					echo '#' . $menu['id'] . '{ display: none !important}';
+				}
+				echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
+			}
+			echo '</style>';
+		}
+
+		if ( is_array( $true_menu_data ) && isset( $true_menu_data[0] ) && is_array( $true_menu_data[0] ) ) {
+//			echo '<style>#adminmenu li .wp-menu-name{ display: none; }</style>';
+		}
+	}
+
+	/**
+	 * 設定ページにフィールドを追加
+	 * @return void
 	 */
 	public function add_settings() {
 
@@ -106,8 +98,7 @@ class menuEditor extends module {
 				'title'     => __( 'Admin Menu', 'wp-assistant' ),
 				'tabs_name' => __( 'Admin Menu Settings', 'wp-assistant' ),
 			)
-		)
-		->add_field(
+		)->add_field(
 			array(
 				'id'      => 'admin_menu_user',
 				'title'   => __( 'Select User', 'wp-assistant' ),
@@ -123,8 +114,7 @@ class menuEditor extends module {
 				},
 				'default' => '0',
 			)
-		)
-		->add_field(
+		)->add_field(
 			array(
 				'id'      => 'admin_menu',
 				'title'   => __( 'Select Admin Menu', 'wp-assistant' ),
@@ -133,10 +123,24 @@ class menuEditor extends module {
 				'type'    => function () {
 					$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
 					<form id="wpa_admin_menu_form" name="wpa_admin_menu_form" action="get">
-						<div id="wpa_admin_menus"></div>
+						<div id="wpa_admin_menus_list"></div>
 					</form>
 					<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
-					<?php
+					<script type="text/template" id="wpa_admin_menus_template">
+						<div id="wpa_admin_menus">
+							<% _.each( menus, function(menu,key) {  %>
+							<div class="menu-list-item" data-order="<%= menu.order %>">
+								<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[<%= menu.id %>][disp]" value="1" <% if ( menu.disp === '0'){ %> checked="checked"<% };%> />
+								<span class="menu-list-item-text"><%= menu.text %> </span>
+								<input type="text" class="admin_menu_edit menu-list-item-text_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][name]" value="<%= menu.text %>"/>
+								<button class="menu-list-item-text-save" style="display: none">
+									<span class="dashicons dashicons-yes"></span></button>
+							</div>
+							<% } ) %>
+						</div>
+					</script>
+					<button id="add_menu_list_item"><?php _e( 'Add New', 'wp-assistant' ) ?></button>
+				<?php
 				},
 			)
 		);

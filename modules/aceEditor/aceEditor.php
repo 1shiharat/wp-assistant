@@ -37,15 +37,13 @@ class aceEditor extends module {
 			$default = 'css';
 		}
 
-
-		$ace_version = '1.1.8';
+		$ace_version = '1.1.9';
 		wp_enqueue_script( 'ace-editor', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ace.js', array( 'jquery' ), null );
 		wp_enqueue_script( 'emmet', '//nightwing.github.io/emmet-core/emmet.js', array( 'ace-editor' ), null );
 		wp_enqueue_script( 'ace-editor-emmet', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-emmet.js', array( 'ace-editor' ), null );
 		wp_enqueue_script( 'ace-editor-launguage', '//cdnjs.cloudflare.com/ajax/libs/ace/' . $ace_version . '/ext-language_tools.js', array( 'ace-editor' ), null );
-		if ( 'plugin-editor.php' == $hook
-		     || 'theme-editor.php' == $hook ){
 
+		if ( static::is_aceeditor_init( $hook ) ){
 			wp_enqueue_script( 'ace-editor-init', config::get( 'plugin_url' ) . 'modules/aceEditor/assets/aceinit.js', array( 'ace-editor' ), null );
 		}
 
@@ -64,6 +62,17 @@ class aceEditor extends module {
 
 		wp_enqueue_style( 'ace-edior-style', plugins_url( '/assets/ace-editor-style.css', __FILE__ ) );
 
+	}
+
+	/**
+	 * aceeditorを読み込ませるか判断
+	 * @param $hook
+	 *
+	 * @return bool
+	 */
+	public static function is_aceeditor_init( $hook ){
+		return ( 'plugin-editor.php' == $hook
+		         || 'theme-editor.php' == $hook );
 	}
 
 }
