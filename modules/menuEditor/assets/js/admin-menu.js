@@ -20,7 +20,7 @@
 				var id = $(this).data('menu-id'),
 					parent = $(this).closest('.menu-list-item'),
 					text = $(this).val().replace(/\s+/g, "+"),
-					disp = ( $(this).prev().prev().attr('checked') ) ? 0 : 1,
+					disp = ( parent.find('.adminmenu_hidden_check').attr('checked') ) ? 0 : 1,
 					target = ( parent.find('.menu-list-item-target_input').val() ) ? parent.find('.menu-list-item-target_input').val() : '',
 					link = adminMenuEditor.utf8_to_b64( $(this).closest('.menu-list-item').find('.menu-list-item-link_input').val() ),
 					order = $(this).closest('.menu-list-item').data('order');
@@ -227,6 +227,8 @@
 			var adminMenu = $('#adminmenu').clone();
 			$('#adminmenu').attr('id', 'adminmenu_original').hide();
 			$('#adminmenuwrap').append(adminMenu);
+
+
 			_.each(settings.menus, function (menu, key) {
 				if ( ! menu.id ){
 					return false;
@@ -240,6 +242,10 @@
 				}
 				if ( typeof menu.target !== 'undefined' ) {
 					target.children('a').attr('target', menu.target);
+				}
+
+				if ( adminMenuEditor.settings.user.userflag === true && menu.disp == 0 ){
+					target.remove();
 				}
 				target.find('.wp-menu-name').text(menu.text);
 				target.attr('data-order', menu.order);
@@ -431,7 +437,6 @@
 			$(document).on('click', '#add_menu_list_item', function (e) {
 				e.preventDefault();
 				var newMenuItem = _.template($('#wpa_admin_menu_template').html());
-
 				var compiledHtml = newMenuItem({
 					menu: {
 						order: 20,
@@ -442,6 +447,9 @@
 				});
 				$(adminMenuEditor.insertTarget).append(compiledHtml);
 			})
+			$('.menu-list-item-text_input').on( 'keydown keyup keypress change', function(){
+				$(this).closest( '.menu-list-item').find('.menu-list-item-text').text($(this).val());
+			});
 
 		}
 	};

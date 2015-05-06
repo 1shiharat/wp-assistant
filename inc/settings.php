@@ -250,7 +250,6 @@ class settings {
 
 		$form_array = $_REQUEST['form'];
 
-
 		$form_save_data = array();
 
 		/**
@@ -258,9 +257,9 @@ class settings {
 		 */
 		if ( $form_array ) {
 			foreach ( $form_array as $form ) {
-				if ( $form['name'] === 'admin_menu_user[]' ) {
+				if ( isset( $form['name'] ) && $form['name'] === 'admin_menu_user[]' ) {
 					$form_save_data['admin_menu_user'][] = $form['value'];
-				} else {
+				} else if( isset( $form['name']  ) && isset( $form['value'] )  ) {
 					$form_save_data[ $form['name'] ] = $form['value'];
 				}
 			}
@@ -275,14 +274,86 @@ class settings {
 					unset( $settings[ $setting_key ] );
 				}
 			}
-
 			$settings['dashboard_contents'] = ( $form_save_data['dashboard_contents'] );
 
-			echo update_option( config::get( 'prefix' ) . 'options', $settings );
+			$update = $this->update_option( config::get( 'prefix' ) . 'options', $settings );
+			echo $update;
 			exit();
 		}
 		echo 0;
 		exit();
+	}
+
+	/**
+	 * オプションの更新
+	 * @param $option
+	 * @param $value
+	 * @param null $autoload
+	 *
+	 * @return bool
+	 */
+	public function update_option( $option, $value, $autoload = null ){
+		global $wpdb;
+
+		$option = trim($option);
+		if ( empty($option) )
+			return false;
+
+		wp_protect_special_option( $option );
+
+		if ( is_object( $value ) )
+			$value = clone $value;
+
+		$value = sanitize_option( $option, $value );
+		$old_value = get_option( $option );
+
+		$value = apply_filters( 'pre_update_option_' . $option, $value, $old_value );
+
+		$value = apply_filters( 'pre_update_option', $value, $option, $old_value );
+
+		// If the new and old values are the same, no need to update.
+		if ( $value === $old_value )
+			return 3;
+
+		if ( apply_filters( 'default_option_' . $option, false ) === $old_value ) {
+			if ( null === $autoload ) {
+				$autoload = 'yes';
+			}
+
+			return add_option( $option, $value, '', $autoload );
+		}
+
+		$serialized_value = maybe_serialize( $value );
+
+		$update_args = array(
+			'option_value' => $serialized_value,
+		);
+
+		if ( null !== $autoload ) {
+			$update_args['autoload'] = ( 'no' === $autoload || false === $autoload ) ? 'no' : 'yes';
+		}
+
+		$result = $wpdb->update( $wpdb->options, $update_args, array( 'option_name' => $option ) );
+		if ( ! $result )
+			return false;
+
+		$notoptions = wp_cache_get( 'notoptions', 'options' );
+		if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
+			unset( $notoptions[$option] );
+			wp_cache_set( 'notoptions', $notoptions, 'options' );
+		}
+
+		if ( ! defined( 'WP_INSTALLING' ) ) {
+			$alloptions = wp_load_alloptions();
+			if ( isset( $alloptions[$option] ) ) {
+				$alloptions[ $option ] = $serialized_value;
+				wp_cache_set( 'alloptions', $alloptions, 'options' );
+			} else {
+				wp_cache_set( $option, $serialized_value, 'options' );
+			}
+		}
+
+		return true;
 	}
 
 	/**

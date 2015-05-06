@@ -21,7 +21,7 @@ class helper {
 	public static function checked( $option_key, $option_value, $default = false ) {
 		$value = config::get_option( $option_key );
 
-		if ( $value == $option_value ) {
+		if ( (string) $value === (string) $option_value ) {
 			echo 'checked="checked"';
 			return;
 		}

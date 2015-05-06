@@ -45,10 +45,16 @@ class menuEditor extends module {
 	public function scripts() {
 		$admin_menus = config::get_option( 'admin_menu' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
+		$selected_user   = config::get_option( 'admin_menu_user' );
+		$current_user_id = get_current_user_id();
+
 		$dialog_context = array(
 			'dialog' => array(
 				'title'   => __( '本当にリセットしますか？', 'wp-assistant' ),
 				'context' => __( '以下のメニューデータはすべて削除されます。バックアップをとることをおすすめします。', 'wp-assistant' )
+			),
+			'user' => array(
+				'userflag' => in_array( $current_user_id, $selected_user ),
 			)
 		);
 		wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array_merge( array( 'menus' => $admin_menus ), $dialog_context ) );

@@ -97,7 +97,7 @@ class module{
 				'name' => __( 'Admin Menu Editor', 'wp-assistant' ),
 				'desc' => __( 'Set display, non-display of the admin menu item every user.', 'wp-assistant' ),
 				'default' => 1,
-				'activation' => 0,
+				'activation' => 1,
 			),
 			'customizeAdmin' => array(
 				'name' => __( 'Customize Admin', 'wp-assistant' ),

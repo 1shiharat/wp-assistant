@@ -33,7 +33,7 @@ class source extends field {
 	public function render() {
 		$ace_editor_id = $this->get( 'id' ) . '_ace';
 		?>
-		<textarea class="wpa-url aceeditor" style="width: <?php echo $this->options['width']; ?>; height: <?php echo $this->options['height']; ?>;" data-lang="css" name="<?php echo $this->get( 'id' ); ?>" id="<?php echo $this->get( 'id' ); ?>" cols="30" rows="10"><?php echo $this->value ?></textarea>
+		<textarea class="wpa-url aceeditor" style="width: <?php echo $this->options['width']; ?>; height: <?php echo $this->options['height']; ?>;" data-lang="css" name="<?php echo $this->get( 'id' ); ?>" id="<?php echo $this->get( 'id' ); ?>" cols="30" rows="10"><?php echo stripslashes_deep( $this->value ) ?></textarea>
 		<input type="button" class="button wpa-browse button-small" value="<?php _e( 'Upload File', 'wp-assistant' ); ?>" />
 		<div id="<?php echo $this->get( 'id' ); ?>_ace"></div>
 		<script>

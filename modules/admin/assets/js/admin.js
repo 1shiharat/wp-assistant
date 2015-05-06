@@ -29,138 +29,142 @@
 (function ($) {
 	"use strict";
 
-	/**
-	 * メッセージを表示
-	 * @param type メッセージの種類
-	 */
-	var timer;
-
-	var submit = '#wpa-submit';
-
-	function wpaMessage(type, message) {
-		var messageContainer = $('.wpa-message-' + type);
-		if (message) {
-			messageContainer.html(message);
-		}
-		var already = 'message-aleady';
-		messageContainer.fadeIn();
-		clearTimeout(timer);
-		if (!messageContainer.hasClass(already)) {
-			timer = setTimeout(function () {
-				messageContainer.fadeOut('500');
-			}, 800);
-		}
-	}
-
-	function submit_enhanced() {
-		$(submit).removeAttr('disabled');
-	}
-
-	function changeOnHash() {
-		var tab_id = location.hash;
-		var tabIndexs = {
-			'#wpa-basic-setting': 0,
-			'#wpa-dashboard-setting': 1,
-			'#wpa-admin-menu-setting': 2
-		};
-		$('#wpa_tabs').tabs(
-			'enable', tab_id
-		).addClass("ui-tabs-vertical ui-helper-clearfix");
-	}
-
-
-	$(document).change('#wpa_settings_form *', function () {
-		submit_enhanced();
-	});
-
-	var submit_flag = true;
-
-	/**
-	 * 変更を保存時のイベント
-	 * @return void
-	 */
-	$(document).on('click', submit, function (e) {
-		e.preventDefault();
-		if (false === submit_flag) {
-			return false;
-		}
-		submit_flag = false;
-		var self = $(this);
-		$('#wpa_tabs ul').find('.spinner').show();
-		$.ajax({
-			'type': 'post',
-			'url': ajaxurl,
-			'data': {
-				'action': wpaSETTINGS.action,
-				'_wp_nonce': wpaSETTINGS._wp_nonce,
-				'form': $('#wpa_settings_form').serializeArray()
-			},
-			'success': function (data) {
-				if (1 == data) {
-					$('#wpa_tabs ul').find('.spinner').hide();
-					wpaMessage('success');
-					self.attr('disabled', 'disabled');
-				} else {
-					$('#wpa_tabs ul').find('.spinner').hide();
-					wpaMessage('faild');
-				}
-				submit_flag = true;
+	var wpa = {
+		timer: 0,
+		submit: '#wpa-submit',
+		// メッセージを表示
+		message: function( type, message){
+			var messageContainer = $('.wpa-message-' + type);
+			if (message) {
+				messageContainer.html(message);
 			}
-		});
-	});
+			var already = 'message-aleady';
+			messageContainer.fadeIn();
+			clearTimeout(wpa.timer);
+			if (!messageContainer.hasClass(already)) {
+				wpa.timer = setTimeout(function () {
+					messageContainer.fadeOut('500');
+				}, 800);
+			}
+		},
+		// 初期化
+		init: function(){
+			window.addEventListener("hashchange", wpa.changeOnHash, false);
+			$('.acoordion').multiAccordion({
+				animate: 100,
+				autoHeight: false,
+				heightStyle: "content"
+			});
+			// タブ
+			$('#wpa_tabs').tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+			$('#wpa_tabs ul li a').on('click', function () {
+				location.hash = $(this).attr('href');
+				window.scrollTo(0, 0);
+			});
+			$('.form-group-radiobox').buttonset();
 
+			$('#wpa-submit').attr('disabled', 'disabled');
+			wpa.event();
+		},
+		// 送信ボタンをクリックできるように
+		submit_enhanced: function(){
+			$(wpa.submit).removeAttr('disabled');
+		},
+		// ハッシュの変更を監視し、タブを変更
+		changeOnHash: function(){
+			var tab_id = location.hash;
+			var tabIndexs = {
+				'#wpa-basic-setting': 0,
+				'#wpa-dashboard-setting': 1,
+				'#wpa-admin-menu-setting': 2
+			};
+			$('#wpa_tabs').tabs(
+				'enable', tab_id
+			).addClass("ui-tabs-vertical ui-helper-clearfix");
+		},
+		// オプションを更新
+		updateOption: function(e){
+			e.preventDefault();
+			if (false === wpa.submit_flag) {
+				return false;
+			}
+			wpa.submit_flag = false;
+			var self = $(this);
+			$('#wpa_tabs ul').find('.spinner').show();
+			var formArray = $('#wpa_settings_form').serializeArray();
+			_.each(formArray,function(form, key){
+				if ( form.name.match( /wpa_supports_check/ ) ){
+					delete formArray[key];
+				}
+			});
 
-	/**
-	 * wp.media api を利用してメディアアップローダーを開く
-	 */
-	$(document).on('click', '.wpa-browse', function (event) {
-		event.preventDefault();
-		var self = $(this);
-		var file_frame = null;
+			$.ajax({
+				'type': 'post',
+				'url': ajaxurl,
+				'data': {
+					'action': wpaSETTINGS.action,
+					'_wp_nonce': wpaSETTINGS._wp_nonce,
+					'form': formArray
+				},
+				'success': function (data) {
+					if (1 == data) {
+						$('#wpa_tabs ul').find('.spinner').hide();
+						wpa.message('success');
+						self.attr('disabled', 'disabled');
+					} else if ( 3 == data ){
+						$('#wpa_tabs ul').find('.spinner').hide();
+						wpa.message('no-update');
+						self.attr('disabled', 'disabled');
+					} else {
+						$('#wpa_tabs ul').find('.spinner').hide();
+						wpa.message('faild');
+					}
+					wpa.submit_flag = true;
+				}
+			});
+		},
+		openMediaUpload: function(self,e){
+			e.preventDefault();
 
-		if (file_frame) {
+			var file_frame = null;
+
+			if (file_frame) {
+				file_frame.open();
+				return false;
+			}
+			file_frame = wp.media.frames.file_frame = wp.media({
+				title: self.data('uploader_title'),
+				button: {
+					text: self.data('uploader_button_text')
+				},
+				multiple: false
+			});
+			file_frame.on('select', function () {
+				var attachment = file_frame.state().get('selection').first().toJSON();
+				wpa.submit_enhanced();
+				self.prev('.wpa-url').val(attachment.url);
+			});
 			file_frame.open();
-			return false;
+		},
+		event: function(){
+			$(document).on('click', wpa.submit, function (e) {
+				wpa.updateOption(e);
+			});
+			$(document).on('click', '.wpa-browse', function(e) {
+				wpa.openMediaUpload($(this),e);
+			} );
+			$(document).change(function(){
+				wpa.submit_enhanced();
+			})
 		}
-		file_frame = wp.media.frames.file_frame = wp.media({
-			title: self.data('uploader_title'),
-			button: {
-				text: self.data('uploader_button_text')
-			},
-			multiple: false
-		});
-		file_frame.on('select', function () {
-			var attachment = file_frame.state().get('selection').first().toJSON();
-			submit_enhanced();
-			self.prev('.wpa-url').val(attachment.url);
-		});
-		file_frame.open();
-	});
+
+	};
 
 	/**
 	 * ロード時のイベント
 	 */
 	$(function () {
-		window.addEventListener("hashchange", changeOnHash, false);
-		$('.acoordion').multiAccordion({
-			animate: 100,
-			autoHeight: false,
-			heightStyle: "content"
-		});
-
-		// タブ
-		$('#wpa_tabs').tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
-
-
-		$('#wpa_tabs ul li a').on('click', function () {
-			location.hash = $(this).attr('href');
-			window.scrollTo(0, 0);
-		});
-
-		$('.form-group-radiobox').buttonset();
-
-		$('#wpa-submit').attr('disabled', 'disabled');
-
+		wpa.init();
 	});
 
 })(jQuery);

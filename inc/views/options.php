@@ -15,6 +15,9 @@ use WP_Assistant\inc\config;
 		<div class="wpa-message wpa-message-faild error">
 			<h3><span class="dashicons dashicons-dismiss"></span> <?php _e( 'Failed to save', 'wp-assistant' ) ?></h3>
 		</div>
+		<div class="wpa-message wpa-message-no-update error">
+			<h3><span class="dashicons dashicons-dismiss"></span> <?php _e( 'There is no content to be updated', 'wp-assistant' ) ?></h3>
+		</div>
 	</div>
 	<!--/.wpa-message-wrap-->
 
