@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-assistant\n"
-"POT-Creation-Date: 2015-04-02 08:40+0900\n"
-"PO-Revision-Date: 2015-04-02 08:40+0900\n"
+"POT-Creation-Date: 2015-05-06 21:31+0900\n"
+"PO-Revision-Date: 2015-05-06 21:33+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
 "Language-Team: ishihara takashi <ishihara@grow-group.jp>\n"
 "Language: ja\n"
@@ -36,19 +36,23 @@ msgstr "ファイルを選択"
 msgid "Upload File"
 msgstr "ファイルをアップロード"
 
-#: ../inc/views/options.php:12
+#: ../inc/views/options.php:12 ../modules/admin/views/options.php:12
 msgid "Saved successfully"
 msgstr "設定を保存しました。"
 
-#: ../inc/views/options.php:16
+#: ../inc/views/options.php:16 ../modules/admin/views/options.php:16
 msgid "Failed to save"
 msgstr "設定の保存に失敗しました。"
 
-#: ../inc/views/options.php:21
+#: ../inc/views/options.php:19
+msgid "There is no content to be updated"
+msgstr "更新するデータがありません。"
+
+#: ../inc/views/options.php:24 ../modules/admin/views/options.php:20
 msgid "Setting"
 msgstr "設定画面"
 
-#: ../inc/views/options.php:31
+#: ../inc/views/options.php:34 ../modules/admin/views/options.php:30
 msgid "Save"
 msgstr "設定を保存"
 
@@ -96,7 +100,7 @@ msgstr ""
 msgid "Admin Menu Editor"
 msgstr "管理メニューエディター"
 
-#: ../modules/module.php:98 ../modules/menuEditor/menuEditor.php:131
+#: ../modules/module.php:98 ../modules/menuEditor/menuEditor.php:133
 msgid "Set display, non-display of the admin menu item every user."
 msgstr ""
 "管理画面サイドメニューの表示・非表示、管理メニューのタイトルの変更を設定する"
@@ -274,7 +278,7 @@ msgid ""
 msgstr ""
 "有効にすると記事編集画面で次の記事へ、前の記事へナビゲーションを表示します。"
 
-#: ../modules/admin/admin.php:546
+#: ../modules/admin/admin.php:549 ../modules/cleanup/cleanup.php:363
 msgid "<span class=\"ab-icon\"></span> Template : "
 msgstr "<span class=\"ab-icon\"></span> テンプレート :"
 
@@ -370,37 +374,47 @@ msgstr ""
 "管理画面のフッターテキストを変更する時に入力してください。※ 空の場合に無効と"
 "なります。"
 
-#: ../modules/dashboard/dashboard.php:34
+#: ../modules/dashboard/dashboard.php:37
 msgid "Please input the content to be displayed on the dashboard widget."
 msgstr ""
 "オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
 
-#: ../modules/dashboard/dashboard.php:35
+#: ../modules/dashboard/dashboard.php:38
 msgid "Replace Welcome Panel"
 msgstr "オリジナルダッシュボードウィジェット"
 
-#: ../modules/dashboard/dashboard.php:41
+#: ../modules/dashboard/dashboard.php:44
 msgid "Dashboard Contents"
 msgstr "ダッシュボードコンテンツ"
 
-#: ../modules/dashboard/dashboard.php:45
+#: ../modules/dashboard/dashboard.php:48
 msgid "<p>Please enter the content to be displayed on the dashboard.</p>"
 msgstr ""
 "オリジナルダッシュボートウィジェットに表示するコンテンツを入力して下さい。"
 
-#: ../modules/menuEditor/menuEditor.php:106
+#: ../modules/menuEditor/menuEditor.php:53
+msgid "Are you sure you want to reset?"
+msgstr "本当にリセットしますか？"
+
+#: ../modules/menuEditor/menuEditor.php:54
+msgid "It is recommended that you take a backup."
+msgstr ""
+"以下のメニューデータはすべて削除されます。先にバックアップをとることをおすす"
+"めします。"
+
+#: ../modules/menuEditor/menuEditor.php:110
 msgid "Admin Menu"
 msgstr "管理メニュー"
 
-#: ../modules/menuEditor/menuEditor.php:107
+#: ../modules/menuEditor/menuEditor.php:111
 msgid "Admin Menu Settings"
 msgstr "管理メニューの設定"
 
-#: ../modules/menuEditor/menuEditor.php:113
+#: ../modules/menuEditor/menuEditor.php:116
 msgid "Select User"
 msgstr "管理メニュー非表示有効ユーザーを選択"
 
-#: ../modules/menuEditor/menuEditor.php:114
+#: ../modules/menuEditor/menuEditor.php:117
 msgid ""
 "Please select the account to apply the Admin menu change. <br /> * You can "
 "select more than one by selecting while holding down the  shift key."
@@ -408,9 +422,32 @@ msgstr ""
 "管理メニュー非表示を有効にしたいユーザーを選択してください。※ shift キーを押"
 "しながら選択することで、複数のユーザーを選択することができます。"
 
-#: ../modules/menuEditor/menuEditor.php:130
+#: ../modules/menuEditor/menuEditor.php:132
 msgid "Select Admin Menu"
 msgstr "管理メニューエディター"
+
+#: ../modules/menuEditor/menuEditor.php:151
+#: ../modules/menuEditor/menuEditor.php:183
+msgid "Label"
+msgstr "ラベル"
+
+#: ../modules/menuEditor/menuEditor.php:155
+#: ../modules/menuEditor/menuEditor.php:187
+msgid "Link"
+msgstr "リンク"
+
+#: ../modules/menuEditor/menuEditor.php:159
+#: ../modules/menuEditor/menuEditor.php:191
+msgid "Target"
+msgstr "ターゲット"
+
+#: ../modules/menuEditor/menuEditor.php:171
+msgid "Reset"
+msgstr "リセット"
+
+#: ../modules/menuEditor/menuEditor.php:172
+msgid "Add New"
+msgstr "新しく追加"
 
 #: ../modules/optimize/optimize.php:50
 msgid "Delete all revisions"

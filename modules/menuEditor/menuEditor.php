@@ -50,8 +50,8 @@ class menuEditor extends module {
 
 		$dialog_context = array(
 			'dialog' => array(
-				'title'   => __( '本当にリセットしますか？', 'wp-assistant' ),
-				'context' => __( '以下のメニューデータはすべて削除されます。バックアップをとることをおすすめします。', 'wp-assistant' )
+				'title'   => __( 'Are you sure you want to reset?', 'wp-assistant' ),
+				'context' => __( 'It is recommended that you take a backup.', 'wp-assistant' )
 			),
 			'user' => array(
 				'userflag' => in_array( $current_user_id, $selected_user ),
