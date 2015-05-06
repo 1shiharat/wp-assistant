@@ -33,7 +33,7 @@ class menuEditor extends module {
 		add_action( 'admin_print_scripts', array( $this, 'scripts' ), 10 );
 
 		// 設定を css と js として出力する
-		add_action( 'admin_print_scripts', array( $this, 'enhanced' ) , 999 );
+		add_action( 'admin_print_scripts', array( $this, 'enhanced' ), 999 );
 
 		$this->flag = true;
 
@@ -44,15 +44,21 @@ class menuEditor extends module {
 	 */
 	public function scripts() {
 		$admin_menus = config::get_option( 'admin_menu' );
-
-		wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array( 'menus' => $admin_menus ) );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		$dialog_context = array(
+			'dialog' => array(
+				'title'   => __( '本当にリセットしますか？', 'wp-assistant' ),
+				'context' => __( '以下のメニューデータはすべて削除されます。バックアップをとることをおすすめします。', 'wp-assistant' )
+			)
+		);
+		wp_localize_script( config::get( 'prefix' ) . 'admin_scripts', 'wpa_ADMIN_MENU', array_merge( array( 'menus' => $admin_menus ), $dialog_context ) );
 	}
 
 	/**
 	 * 設定をcssとjsとして出力
 	 * @return void
 	 */
-	public function enhanced(){
+	public function enhanced() {
 		$admin_menus     = ( $a = config::get_option( 'admin_menu' ) ) ? $a : '';
 		$selected_user   = config::get_option( 'admin_menu_user' );
 		$current_user_id = get_current_user_id();
@@ -74,15 +80,15 @@ class menuEditor extends module {
 			echo '<style>';
 			foreach ( $true_menu_data as $menu ) {
 				if ( $menu['disp'] == 0 ) {
-					echo '#' . $menu['id'] . '{ display: none !important}';
+//					echo '#' . $menu['id'] . '{ display: none !important}';
 				}
-				echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
+//				echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
 			}
 			echo '</style>';
 		}
 
 		if ( is_array( $true_menu_data ) && isset( $true_menu_data[0] ) && is_array( $true_menu_data[0] ) ) {
-//			echo '<style>#adminmenu li .wp-menu-name{ display: none; }</style>';
+			echo '<style id="admin-menu-hide-css">#adminmenu li{ display: none; }</style>';
 		}
 	}
 
@@ -122,24 +128,75 @@ class menuEditor extends module {
 				'section' => 'admin_menu',
 				'type'    => function () {
 					$checked_admin_menus = config::get_option( 'admin_menu' ); ?>
+
 					<form id="wpa_admin_menu_form" name="wpa_admin_menu_form" action="get">
 						<div id="wpa_admin_menus_list"></div>
 					</form>
 					<input type="hidden" id="admin_menu_hidden" value="<?php echo $checked_admin_menus; ?>" name="admin_menu"/>
 					<script type="text/template" id="wpa_admin_menus_template">
 						<div id="wpa_admin_menus">
-							<% _.each( menus, function(menu,key) {  %>
+							<% _.each( menus, function(menu,key) { %>
 							<div class="menu-list-item" data-order="<%= menu.order %>">
 								<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[<%= menu.id %>][disp]" value="1" <% if ( menu.disp === '0'){ %> checked="checked"<% };%> />
 								<span class="menu-list-item-text"><%= menu.text %> </span>
-								<input type="text" class="admin_menu_edit menu-list-item-text_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][name]" value="<%= menu.text %>"/>
+
+								<div class="wpa wpa_hide_form">
+									<div class="wpa_input-group hide">
+										<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Label', 'wp-assistant' ) ?></label>
+										<input type="text" class="admin_menu_edit menu-list-item-text_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][name]" value="<%= menu.text %>"/>
+									</div>
+									<div class="wpa_input-group hide">
+										<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Link', 'wp-assistant' ) ?></label>
+										<input type="text" class="admin_menu_edit menu-list-item-link_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][link]" value="<%= menu.link %>"/>
+									</div>
+									<div class="wpa_input-group hide">
+										<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Target', 'wp-assistant' ) ?></label>
+										<input type="text" class="admin_menu_edit menu-list-item-target_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][target]" value="<%= menu.target %>"/>
+									</div>
+								</div>
 								<button class="menu-list-item-text-save" style="display: none">
 									<span class="dashicons dashicons-yes"></span></button>
+								<a href="#" class="menu-list-item-remove"><i class="dashicons dashicons-trash"></i></a>
 							</div>
 							<% } ) %>
 						</div>
 					</script>
-					<button id="add_menu_list_item"><?php _e( 'Add New', 'wp-assistant' ) ?></button>
+					<p style="margin-top: 20px;">
+						<button id="wpa_admin_menu_reset" class="button-primary"><?php _e( 'Reset', 'wp-assistant' ); ?></button>
+						<button id="add_menu_list_item" class="button-secondary"><?php _e( 'Add New', 'wp-assistant' ) ?></button>
+
+					</p>
+
+					<script type="text/template" id="wpa_admin_menu_template">
+						<div class="menu-list-item new_menu-list-item" data-order="<%= menu.order %>">
+							<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[<%= menu.id %>][disp]" value="1" <% if ( menu.disp === '0'){ %> checked="checked"<% };%> />
+							<span class="menu-list-item-text"><%= menu.text %> </span>
+
+							<div class="wpa wpa_hide_form">
+								<div class="wpa_input-group hide">
+									<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Label', 'wp-assistant' ) ?></label>
+									<input type="text" class="admin_menu_edit menu-list-item-text_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][name]" value="<%= menu.text %>"/>
+								</div>
+								<div class="wpa_input-group hide">
+									<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Link', 'wp-assistant' ) ?></label>
+									<input type="text" class="admin_menu_edit menu-list-item-link_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][link]" value="<%= menu.link %>"/>
+								</div>
+								<div class="wpa_input-group hide">
+									<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Target', 'wp-assistant' ) ?></label>
+									<input type="text" class="admin_menu_edit menu-list-item-target_input" data-menu-id="<%= menu.id %>" name="wpa_supports_checkobox[<%= menu.id %>][target]" value="<%= menu.target %>"/>
+								</div>
+							</div>
+							<button class="menu-list-item-text-save" style="display: none">
+								<span class="dashicons dashicons-yes"></span></button>
+						</div>
+					</script>
+
+					<script type="text/template" id="wpa_admin_menu_dialog">
+						<div id="admin_menu_dialog" title="<%= title %>">
+							<p><%= context %></p>
+						</div>
+					</script>
+
 				<?php
 				},
 			)

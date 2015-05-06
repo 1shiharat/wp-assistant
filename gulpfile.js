@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 gulp.task('browserSync', function () {
 	browserSync( {
 		notify: true,
-		proxy: 'test.wordpress.com',
+		proxy: 'wp-assistant.com',
 		ghostMode: {
 			clicks: true,
 			location: true,

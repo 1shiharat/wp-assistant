@@ -23,6 +23,10 @@ $admin-panel-width: 1215px;
   }
 }
 
+#admin_menu_user{
+  min-width: 200px;
+  min-height: 100px;
+}
 #wpa_settings_form {
   input[type=text],
   input[type=search] {
@@ -146,20 +150,51 @@ h2 #admin-post-nav {
   margin-bottom: 4px;
   border: 1px solid #e8e8e8;
   background: #fff;
-  padding: 8px 5px;
+  padding: 3px 10px;
   transition: background ease-in 0.2s;
+  position: relative;
   &:hover{
 	background: #f5f5f5;
-	cursor: pointer;
+	cursor: row-resize;
 	border: 1px solid #e8e8e8;
 	box-shadow: inset 1px 1px 0px rgba(255,255,255,1),
 	1px 3px 0px rgba(0,0,0,0.02);
   }
   &.ui-sortable-helper{
 	background: #f5f5f5;
-	cursor: pointer;
+	cursor: row-resize;
 	border: 1px solid #e8e8e8;
 	box-shadow: inset 1px 1px 0px rgba(255,255,255,1);
+  }
+  &.on{
+
+	.adminmenu_hidden_check{
+	  margin-top: 11px;
+	  margin-bottom: 17px;
+	}
+	.wpa_hide_form{
+	  background: #e8e8e8;
+	  padding: 10px;
+	  border: 1px solid #ccc;
+	  margin-bottom: 5px;
+	}
+	.menu-list-item-remove{
+	  display: block;
+	  position: absolute;
+	  top: 1px;
+	  right: 40px;
+	  background: #D81515;
+	  color: #FFF;
+	  text-decoration: none;
+	  width: 39px;
+	  text-align: center;
+	  height: 26px;
+	  padding-top: 8px;
+	  border: 1px solid #B11616;
+	  &:hover{
+		opacity: 0.8;
+	  }
+	}
   }
 
 }
@@ -167,9 +202,37 @@ h2 #admin-post-nav {
   height: 36px;
   margin-bottom: 4px;
 }
-
+.wpa_input-group {
+  &.hide{
+	display: none;
+  }
+}
+.wpa_label{
+  min-width: 50px;
+  text-align: center;display: inline-block;
+}
+.menu-list-item-remove{
+  display: none;
+}
 .menu-list-item-text_input{
   display: none;
+}
+.menu-list-item-link_input{
+  display: none;
+}
+.menu-list-item-text{
+  min-width: 100px;
+  min-height: 10px;
+  display: inline-block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 1px dashed transparent;
+  &:hover{
+	background: #FFE9A7;
+	border-color: #b4bb7b
+  }
 }
 
 #add_menu_list_item{
@@ -185,7 +248,9 @@ h2 #admin-post-nav {
   display: inline-block;
   width: 39px;
   height: 36px;
-  margin-left: -40px;
+  position: absolute;
+  right: 0;
+  top: 0;
   vertical-align: top;
   margin-top: 1px;
   &:hover{
@@ -201,7 +266,7 @@ h2 #admin-post-nav {
 */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=7278092e7970a622287d)
+ * Generated using te Bootstrap Customizer (http://getbootstrap.com/customize/?id=7278092e7970a622287d)
  * Config saved to config.json and https://gist.github.com/7278092e7970a622287d
  */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
