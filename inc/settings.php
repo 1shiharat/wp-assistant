@@ -244,7 +244,7 @@ class settings {
 
 		/** nonceの確認 */
 		if ( ! wp_verify_nonce( $_REQUEST['_wp_nonce'], __FILE__ ) ) {
-			echo 0;
+			echo 5;
 			exit();
 		}
 
@@ -297,7 +297,7 @@ class settings {
 
 		$option = trim($option);
 		if ( empty($option) )
-			return false;
+			return 2;
 
 		wp_protect_special_option( $option );
 
@@ -335,7 +335,7 @@ class settings {
 
 		$result = $wpdb->update( $wpdb->options, $update_args, array( 'option_name' => $option ) );
 		if ( ! $result )
-			return false;
+			return 4;
 
 		$notoptions = wp_cache_get( 'notoptions', 'options' );
 		if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {

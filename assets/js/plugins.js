@@ -56,7 +56,16 @@
 				heightStyle: "content"
 			});
 			// タブ
-			$('#wpa_tabs').tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+			$('#wpa_tabs').tabs({
+				hide: {
+					effect: "fadeOut",
+					duration: 200
+				},
+				show: {
+					effect: "fadeIn",
+					duration: 200
+				}
+			}).addClass("ui-tabs-vertical ui-helper-clearfix");
 			$('#wpa_tabs ul li a').on('click', function () {
 				location.hash = $(this).attr('href');
 				window.scrollTo(0, 0);
@@ -178,147 +187,6 @@
     });
 })(jQuery);
 
-
-;(function($){
-		var timer;
-		var wpaMessage = function (type, message) {
-				var messageContainer = $('.wpa-message-' + type);
-				if ( message ) {
-						messageContainer.html(message);
-				}
-				var already = 'message-aleady';
-				messageContainer.fadeIn();
-				clearTimeout(timer);
-				if ( ! messageContainer.hasClass(already)) {
-						timer = setTimeout(function () {
-								messageContainer.fadeOut('500');
-						}, 800);
-				}
-		};
-		/**
-		 * カウントをリセット
-		 * @param target
-		 * @returns {boolean}
-		 */
-		function countReset( target ){
-				if ( ! target ){
-						return false;
-				}
-				target = $('.post-count-' + target);
-				target.text('0');
-		}
-
-		/**
-		 * 最適化の実行
-		 * @type {boolean}
-		 */
-		var optimize_flag = true;
-
-		$(document).on('click', '#optimize_submit', function (e) {
-
-				e.preventDefault();
-				if ( false === optimize_flag) {
-						return false;
-				}
-
-				var optimize_wrap = $('#wpa_optimize');
-				var optimize_value = {
-					revision : $('input[name="optimize_revision"]:checked').val(),
-					auto_draft : $('input[name="optimize_auto_draft"]:checked').val(),
-					trash : $('input[name="optimize_trash"]:checked').val()
-				};
-
-
-				optimize_flag = false;
-				var nonce = $('#optimize_nonce').val();
-				$('.run_optimize').find('.spinner').show();
-				$.ajax({
-						'type': 'post',
-						'url': ajaxurl,
-						'data': {
-								'action': 'run_optimize',
-								'_wp_optimize_nonce': nonce,
-								'selected_action' : optimize_value
-						},
-						'success': function (data) {
-								$('.run_optimize').find('.spinner').hide();
-								if ( data.status == 'faild') {
-										wpaMessage('faild', '<h3>' + data.html + '</h3>');
-								} else {
-										var message = document.createElement('div');
-										var heading = document.createElement('h3');
-										if ( data.optimize_revision ) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
-												countReset('revision');
-										}
-										if (data.optimize_auto_draft) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
-												countReset('auto_draft');
-										}
-										if (data.optimize_trash) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
-												countReset('trash');
-										}
-										if ( $(message).length > 0 ){
-												wpaMessage( 'optimize', $(message) );
-										}
-
-								}
-								optimize_flag = true;
-						}
-				});
-
-		});
-})(jQuery);
-
-/**
- * 設定をインポート
- */
-;(function($){
-    "use strict";
-    var import_button = '#tools_option_import',
-        import_file_input = 'tools_option_import_file',
-        import_data = '#tools_option_import_data';
-
-    $(document).on( 'change', '#'+import_file_input, function(){
-        var reader = new FileReader(),
-            importData;
-        var file = document.getElementById( import_file_input ).files[0];
-        reader.onload = function(){
-            $(import_data).val( reader.result );
-        };
-        reader.readAsText( file );
-    } );
-
-    $(document).on('click', import_button,function(e){
-        e.preventDefault();
-        var importData;
-        var import_data_text = $(import_data).val();
-        var reg = /^a:.*;}$/;
-        if ( ! import_data_text.match( reg ) ){
-            alert( '有効なファイルではありません。ファイルが正しいか確認してください。' );
-            return false;
-        }
-        var wp_import_nonce = $('#tools_option_import_nonce').val();
-        $.ajax({
-            type : 'post',
-            url: ajaxurl,
-            data : {
-                action : 'wpa_option_import',
-                wp_import_nonce : wp_import_nonce,
-                import_data: import_data_text
-            },
-            success : function(data){
-                console.log(data);
-                if ( data === '1' ){
-                    alert( 'オプションを更新しました' );
-                    location.reload();
-                    return true;
-                }
-            }
-        });
-    });
-})(jQuery);
 
 (function ($) {
 	"use strict";
@@ -780,6 +648,9 @@
 	 * ロード時のイベント
 	 */
 	$(function () {
+		if ( typeof wpa_ADMIN_MENU == 'undefined' ){
+			return false;
+		}
 		var settings = wpa_ADMIN_MENU || {};
 		adminMenuEditor.init(settings);
 		if ($('body').hasClass('toplevel_page_wpa_options_page')) {
@@ -792,9 +663,151 @@
 							adminMenuEditor.update();
 						}, 500);
 					});
+					wp
 				}
 			});
 		}
 	});
 
+})(jQuery);
+
+;(function($){
+		var timer;
+		var wpaMessage = function (type, message) {
+				var messageContainer = $('.wpa-message-' + type);
+				if ( message ) {
+						messageContainer.html(message);
+				}
+				var already = 'message-aleady';
+				messageContainer.fadeIn();
+				clearTimeout(timer);
+				if ( ! messageContainer.hasClass(already)) {
+						timer = setTimeout(function () {
+								messageContainer.fadeOut('500');
+						}, 800);
+				}
+		};
+		/**
+		 * カウントをリセット
+		 * @param target
+		 * @returns {boolean}
+		 */
+		function countReset( target ){
+				if ( ! target ){
+						return false;
+				}
+				target = $('.post-count-' + target);
+				target.text('0');
+		}
+
+		/**
+		 * 最適化の実行
+		 * @type {boolean}
+		 */
+		var optimize_flag = true;
+
+		$(document).on('click', '#optimize_submit', function (e) {
+
+				e.preventDefault();
+				if ( false === optimize_flag) {
+						return false;
+				}
+
+				var optimize_wrap = $('#wpa_optimize');
+				var optimize_value = {
+					revision : $('input[name="optimize_revision"]:checked').val(),
+					auto_draft : $('input[name="optimize_auto_draft"]:checked').val(),
+					trash : $('input[name="optimize_trash"]:checked').val()
+				};
+
+
+				optimize_flag = false;
+				var nonce = $('#optimize_nonce').val();
+				$('.run_optimize').find('.spinner').show();
+				$.ajax({
+						'type': 'post',
+						'url': ajaxurl,
+						'data': {
+								'action': 'run_optimize',
+								'_wp_optimize_nonce': nonce,
+								'selected_action' : optimize_value
+						},
+						'success': function (data) {
+								$('.run_optimize').find('.spinner').hide();
+								if ( data.status == 'faild') {
+										wpaMessage('faild', '<h3>' + data.html + '</h3>');
+								} else {
+										var message = document.createElement('div');
+										var heading = document.createElement('h3');
+										if ( data.optimize_revision ) {
+												$(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
+												countReset('revision');
+										}
+										if (data.optimize_auto_draft) {
+												$(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
+												countReset('auto_draft');
+										}
+										if (data.optimize_trash) {
+												$(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
+												countReset('trash');
+										}
+										if ( $(message).length > 0 ){
+												wpaMessage( 'optimize', $(message) );
+										}
+
+								}
+								optimize_flag = true;
+						}
+				});
+
+		});
+})(jQuery);
+
+/**
+ * 設定をインポート
+ */
+;(function($){
+    "use strict";
+    var import_button = '#tools_option_import',
+        import_file_input = 'tools_option_import_file',
+        import_data = '#tools_option_import_data';
+
+    $(document).on( 'change', '#'+import_file_input, function(){
+        var reader = new FileReader(),
+            importData;
+        var file = document.getElementById( import_file_input ).files[0];
+        reader.onload = function(){
+            $(import_data).val( reader.result );
+        };
+        reader.readAsText( file );
+    } );
+
+    $(document).on('click', import_button,function(e){
+        e.preventDefault();
+        var importData;
+        var import_data_text = $(import_data).val();
+        var reg = /^a:.*;}$/;
+        if ( ! import_data_text.match( reg ) ){
+            alert( '有効なファイルではありません。ファイルが正しいか確認してください。' );
+            return false;
+        }
+        var wp_import_nonce = $('#tools_option_import_nonce').val();
+        $.ajax({
+            type : 'post',
+            url: ajaxurl,
+            data : {
+                action : 'wpa_option_import',
+                wp_import_nonce : wp_import_nonce,
+                import_data: import_data_text
+            },
+            success : function(data){
+                console.log(data);
+                if ( data === '1' ){
+                    alert( 'オプションを更新しました' );
+                    location.reload();
+                    return true;
+                }
+            }
+        });
+    });
 })(jQuery);

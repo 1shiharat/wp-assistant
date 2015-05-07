@@ -2096,7 +2096,7 @@ body .ui-tooltip {
   border-right-width: 1px; }
 
 .ui-tabs-vertical .ui-tabs-panel {
-  padding: 1em;
+  padding: 0.4em 1em 0em;
   float: right;
   width: 82%; }
 
@@ -2108,3 +2108,15 @@ body .ui-tooltip {
     padding: .2em .1em .2em .2em;
     float: none;
     width: 100%; } }
+
+.ui-tabs-nav .ui-state-active {
+  position: relative; }
+  .ui-tabs-nav .ui-state-active:before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 100%;
+    background: #0073AA;
+    position: absolute;
+    left: 0;
+    top: 0; }

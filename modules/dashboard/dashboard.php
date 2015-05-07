@@ -64,7 +64,7 @@ class dashboard extends module {
 				<div id="wpadashboard" class="original-panel">
 					<div class="original-panel-content">
 						<?php
-						echo html_entity_decode( config::get_option( 'dashboard_contents' ) );
+						echo stripslashes_deep( config::get_option( 'dashboard_contents' ) );
 						?>
 					</div>
 				</div>

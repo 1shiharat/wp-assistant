@@ -23,6 +23,9 @@ class menuEditor extends module {
 	 * 初期化
 	 */
 	public function __construct( $parent ) {
+		if (  intval( config::get_option( 'modules_list_menuEditor' ) ) === 0 ){
+			return false;
+		}
 		if ( $this->flag === true ) {
 			return false;
 		}
@@ -46,6 +49,11 @@ class menuEditor extends module {
 		$admin_menus = config::get_option( 'admin_menu' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		$selected_user   = config::get_option( 'admin_menu_user' );
+
+		if ( ! $selected_user ){
+			$selected_user = array();
+		}
+
 		$current_user_id = get_current_user_id();
 
 		$dialog_context = array(

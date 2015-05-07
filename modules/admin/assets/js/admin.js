@@ -56,7 +56,16 @@
 				heightStyle: "content"
 			});
 			// タブ
-			$('#wpa_tabs').tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+			$('#wpa_tabs').tabs({
+				hide: {
+					effect: "fadeOut",
+					duration: 200
+				},
+				show: {
+					effect: "fadeIn",
+					duration: 200
+				}
+			}).addClass("ui-tabs-vertical ui-helper-clearfix");
 			$('#wpa_tabs ul li a').on('click', function () {
 				location.hash = $(this).attr('href');
 				window.scrollTo(0, 0);

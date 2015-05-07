@@ -458,6 +458,9 @@
 	 * ロード時のイベント
 	 */
 	$(function () {
+		if ( typeof wpa_ADMIN_MENU == 'undefined' ){
+			return false;
+		}
 		var settings = wpa_ADMIN_MENU || {};
 		adminMenuEditor.init(settings);
 		if ($('body').hasClass('toplevel_page_wpa_options_page')) {
@@ -470,6 +473,7 @@
 							adminMenuEditor.update();
 						}, 500);
 					});
+					wp
 				}
 			});
 		}

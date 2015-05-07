@@ -20,20 +20,25 @@ class cf7AjaxZip extends module{
 	public function __construct() {
 		global $post;
 
+
+		if ( intval( config::get_option( 'modules_list_cf7AjaxZip' ) ) === 0 ){
+			return false;
+		}
 		/**
 		 * cf7 がインストールされていない
 		 * もしくは、ページの本文中にショートコードがない場合は
 		 * 何もしない
 		 */
+
 		if ( ! defined( 'WPCF7_VERSION' )
-		     || ( isset( $post->post_content )  && ! strpos( $post->post_content, 'contact-form-7' ) )
+		     || ( isset( $post->post_content )  && ! strpos( $post->post_content, 'contact-form-7' ) < 0 )
 			 || is_admin()
 		) {
 			return false;
 		}
 
 		add_action( 'wp_enqueue_scripts', function(){
-			wp_enqueue_script( 'cf7_ajaxzip3', plugins_url( '/', __FILE__ ) . '/assets/js/ajaxzip3.js', array( 'jquery' ), null, false );
+			wp_enqueue_script( 'cf7_ajaxzip3', plugins_url( '/', __FILE__ ) . 'assets/js/ajaxzip3.js', array( 'jquery' ), null, false );
 		} );
 
 		add_action( 'wp_head', function () {
