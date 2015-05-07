@@ -251,6 +251,9 @@
 				target.attr('data-order', menu.order);
 			});
 			adminMenu.html(_.sortBy(adminMenu.children(), function (menu) {
+				if ( ! $(menu).data('order') ){
+					return 100;
+				}
 				return parseInt($(menu).data('order'))
 			}));
 		},
@@ -298,7 +301,6 @@
 				}
 				i++;
 			});
-			console.log(menuStr);
 			return menuStr;
 		},
 
@@ -316,6 +318,7 @@
 				}
 			});
 		},
+
 		/**
 		 * デフォルトのメニューを復元
 		 */
@@ -325,6 +328,7 @@
 			var compiledHtml = adminMenuEditor.compiled(adminMenuEditor.getData(defaults));
 			adminMenuEditor.getTarget().html(compiledHtml);
 		},
+
 		removeDisable: function(){
 			$('#wpa-submit').removeAttr('disabled');
 		},
@@ -469,11 +473,12 @@
 				update: function (event, ui) {
 					$(this).find('.menu-list-item').each(function (key, item) {
 						$(item).attr('data-order', key);
+
 						setTimeout(function () {
 							adminMenuEditor.update();
 						}, 500);
 					});
-					wp
+					adminMenuEditor.removeDisable();
 				}
 			});
 		}
