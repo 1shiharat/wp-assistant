@@ -39,12 +39,22 @@
 				messageContainer.html(message);
 			}
 			var already = 'message-aleady';
-			messageContainer.fadeIn();
+			//messageContainer.fadeIn();
+			messageContainer.show();
+			messageContainer.addClass('slideInDown');
 			clearTimeout(wpa.timer);
 			if (!messageContainer.hasClass(already)) {
 				wpa.timer = setTimeout(function () {
-					messageContainer.fadeOut('500');
-				}, 800);
+					messageContainer.addClass('slideOutUp');
+					setTimeout(function(){
+						messageContainer.removeClass('slideInDown');
+						setTimeout(function(){
+							messageContainer.removeClass('slideOutUp');
+							messageContainer.hide();
+						},1000)
+					}, 1000);
+					//messageContainer.fadeOut('500');
+				}, 1600);
 			}
 		},
 		// 初期化
@@ -74,6 +84,7 @@
 
 			$('#wpa-submit').attr('disabled', 'disabled');
 			wpa.event();
+			$('#wpa_tabs_hide').remove();
 		},
 		// 送信ボタンをクリックできるように
 		submit_enhanced: function(){

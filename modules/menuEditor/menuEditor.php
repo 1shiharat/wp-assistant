@@ -184,7 +184,7 @@ class menuEditor extends module {
 					<script type="text/template" id="wpa_admin_menu_template">
 						<div class="menu-list-item new_menu-list-item" data-order="<%= menu.order %>">
 							<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[<%= menu.id %>][disp]" value="1" <% if ( menu.disp === '0'){ %> checked="checked"<% };%> />
-							<span class="menu-list-item-text"><%= menu.text %> </span>
+							<span class="menu-list-item-text"><span style="display: inline-block; height: 10px;"></span></span>
 
 							<div class="wpa wpa_hide_form">
 								<div class="wpa_input-group hide">

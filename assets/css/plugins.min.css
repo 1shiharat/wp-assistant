@@ -2,6 +2,63 @@
 /**
  オリジナルCSS
  */
+@-webkit-keyframes slideInDown {
+  0% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible; }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); } }
+
+@keyframes slideInDown {
+  0% {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible; }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); } }
+
+.slideInDown {
+  -webkit-animation-name: slideInDown;
+  animation-name: slideInDown;
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both; }
+
+@-webkit-keyframes slideOutUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible; }
+
+  100% {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0); } }
+
+@keyframes slideOutUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+
+  100% {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0); } }
+
+.slideOutUp {
+  -webkit-animation-name: slideOutUp;
+  animation-name: slideOutUp;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both; }
+
 #wpa_settings_form h1 {
   font-size: 1.7em;
   font-family: Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "游ゴシック体", "Yu Gothic", YuGothic, Meiryo, "メイリオ", sans-serif;
@@ -71,15 +128,37 @@
     -moz-box-shadow: none;
     box-shadow: none; }
 
-.wpa-message {
+.wpa-label {
+  display: inline-block;
+  width: 100px;
+  text-align: center; }
+
+.wpa-message-wrap .wpa-message {
   display: none;
   position: fixed;
   top: 0px;
   width: 100%;
   left: 0px;
   margin: 0;
-  z-index: 100000; }
-  .wpa-message .wpa-message-success {
+  line-height: 4em;
+  -webkit-transform: translate3d(0, -100%, 0);
+  z-index: 100000;
+  margin: 0;
+  background: rgba(120, 202, 106, 0.91);
+  color: #FFF;
+  border: none; }
+  .wpa-message-wrap .wpa-message.wpa-message-faild, .wpa-message-wrap .wpa-message.wpa-message-no-update {
+    background: rgba(187, 54, 59, 0.91); }
+  .wpa-message-wrap .wpa-message h3 {
+    color: #FFFFFF;
+    font-size: 1.5em;
+    margin: 1em 0; }
+    .wpa-message-wrap .wpa-message h3 .dashicons {
+      margin-top: 12px;
+      width: 28px;
+      height: 28px;
+      font-size: 28px; }
+  .wpa-message-wrap .wpa-message .wpa-message-success {
     background: rgba(29, 173, 6, 0.7);
     color: #FFF; }
 

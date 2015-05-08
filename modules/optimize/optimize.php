@@ -124,19 +124,19 @@ class optimize extends module {
 			echo 'nonce is not defined.';
 			exit();
 		}
-
+		$message = array();
 		$selected_action = $_REQUEST['selected_action'];
 
 		/**
 		 * リビジョンの削除
 		 */
-		if ( 'true' === $selected_action['revision'] ) {
+		if ( isset( $selected_action['revision'] ) && 'true' === $selected_action['revision'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
 			if ( $query ) {
 				foreach ( $query as $id ) {
 					wp_delete_post_revision( intval( $id ) );
 				}
-				$message['optimize_revision'] = __( 'Deleted successfully revision.', 'wp-assistant' );
+				$message['revision'] = __( 'Deleted successfully revision.', 'wp-assistant' );
 				$message['status']            = 'success';
 			}
 		}
@@ -144,13 +144,13 @@ class optimize extends module {
 		/**
 		 * 自動下書きの削除
 		 */
-		if ( 'true' === $selected_action['auto_draft'] ) {
+		if ( isset( $selected_action['auto_draft'] ) && 'true' === $selected_action['auto_draft'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
 			if ( $query ) {
 				foreach ( $query as $id ) {
 					wp_delete_post( intval( $id ), true );
 				}
-				$message['optimize_auto_draft'] = __( 'Deleted successfully automatic draft.', 'wp-assistant' );
+				$message['auto_draft'] = __( 'Deleted successfully automatic draft.', 'wp-assistant' );
 				$message['status']              = 'success';
 			}
 		}
@@ -158,13 +158,14 @@ class optimize extends module {
 		/**
 		 * ゴミ箱内の記事の削除
 		 */
-		if ( 'true' === $selected_action['optimize_trash'] ) {
+		if ( isset( $selected_action['trash'] ) && 'true' === $selected_action['trash'] ) {
 			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
+
 			if ( $query ) {
 				foreach ( $query as $id ) {
 					wp_delete_post( intval( $id ), true );
 				}
-				$message['optimize_trash'] = __( 'Deleted successfully trash in the article', 'wp-assistant' );
+				$message['trash'] = __( 'Deleted successfully trash in the article', 'wp-assistant' );
 				$message['status']         = 'success';
 			}
 		}

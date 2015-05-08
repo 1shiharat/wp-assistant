@@ -21,8 +21,13 @@ use WP_Assistant\inc\config;
 	</div>
 	<!--/.wpa-message-wrap-->
 
-	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Setting', 'wp-assistant' ) ?></h1>
-
+	<h1><span class="dashicons dashicons-admin-settings"></span> <?php bloginfo( 'title' ); ?> <?php _e( 'Setting', 'wp-assistant' ) ?> </h1><span class="wpa-label wp-label-blue" for="">version <?php echo config::get('version') ?></span>
+	<style id="wpa_tabs_hide">
+		#wpa_tabs{
+			display: none;
+			opacity: 0;
+		}
+	</style>
 	<div id="<?php echo config::get( 'prefix' ); ?>tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix">
 		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 			<?php

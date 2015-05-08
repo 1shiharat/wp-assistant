@@ -39,12 +39,22 @@
 				messageContainer.html(message);
 			}
 			var already = 'message-aleady';
-			messageContainer.fadeIn();
+			//messageContainer.fadeIn();
+			messageContainer.show();
+			messageContainer.addClass('slideInDown');
 			clearTimeout(wpa.timer);
 			if (!messageContainer.hasClass(already)) {
 				wpa.timer = setTimeout(function () {
-					messageContainer.fadeOut('500');
-				}, 800);
+					messageContainer.addClass('slideOutUp');
+					setTimeout(function(){
+						messageContainer.removeClass('slideInDown');
+						setTimeout(function(){
+							messageContainer.removeClass('slideOutUp');
+							messageContainer.hide();
+						},1000)
+					}, 1000);
+					//messageContainer.fadeOut('500');
+				}, 1600);
 			}
 		},
 		// 初期化
@@ -74,6 +84,7 @@
 
 			$('#wpa-submit').attr('disabled', 'disabled');
 			wpa.event();
+			$('#wpa_tabs_hide').remove();
 		},
 		// 送信ボタンをクリックできるように
 		submit_enhanced: function(){
@@ -441,14 +452,13 @@
 				target.attr('data-order', menu.order);
 			});
 			adminMenu.html(_.sortBy(adminMenu.children(), function (menu) {
-				if ( ! $(menu).data('order') ){
+				if ( ! $(menu).data('order') && $(menu).data('order') + '' !== "0" ){
 					return 100;
 				}
 				return parseInt($(menu).data('order'))
 			}));
 		},
 		utf8_to_b64: function ( str ) {
-
 			return window.btoa(unescape(encodeURIComponent( str )));
 		},
 
@@ -677,95 +687,112 @@
 })(jQuery);
 
 ;(function($){
-		var timer;
-		var wpaMessage = function (type, message) {
-				var messageContainer = $('.wpa-message-' + type);
-				if ( message ) {
-						messageContainer.html(message);
-				}
-				var already = 'message-aleady';
-				messageContainer.fadeIn();
-				clearTimeout(timer);
-				if ( ! messageContainer.hasClass(already)) {
-						timer = setTimeout(function () {
-								messageContainer.fadeOut('500');
-						}, 800);
-				}
-		};
-		/**
-		 * カウントをリセット
-		 * @param target
-		 * @returns {boolean}
-		 */
-		function countReset( target ){
-				if ( ! target ){
-						return false;
-				}
-				target = $('.post-count-' + target);
-				target.text('0');
-		}
+	var timer;
+	var optimize = {
+		timer: null,
+		init: function(){
+			this.optimize_flag = true;
+			this.timer = 0;
+			optimize.event();
+		},
+		// メッセージを表示
+		message: function( type, message ){
+			var messageContainer = $('.wpa-message-' + type);
+			if (message) {
+				messageContainer.html(message);
+			}
+			var already = 'message-aleady';
+			//messageContainer.fadeIn();
+			messageContainer.show();
+			messageContainer.addClass('slideInDown');
+			clearTimeout(optimize.timer);
+			if (!messageContainer.hasClass(already)) {
+				optimize.timer = setTimeout(function () {
+					messageContainer.addClass('slideOutUp');
+					setTimeout(function(){
+						messageContainer.removeClass('slideInDown');
+						setTimeout(function(){
+							messageContainer.removeClass('slideOutUp');
+							messageContainer.hide();
+						},1000)
+					}, 1000);
+					//messageContainer.fadeOut('500');
+				}, 1600);
+			}
+		},
+		// カウントのリセット
+		countReset: function(target){
+			if ( ! target ){
+				return false;
+			}
+			target = $('.post-count-' + target);
+			target.text('0');
+		},
+		// 最適化の実行
+		optimizeSubmit: function(e){
+			e.preventDefault();
+			if ( false === this.optimize_flag) {
+				return false;
+			}
 
-		/**
-		 * 最適化の実行
-		 * @type {boolean}
-		 */
-		var optimize_flag = true;
-
-		$(document).on('click', '#optimize_submit', function (e) {
-
-				e.preventDefault();
-				if ( false === optimize_flag) {
-						return false;
-				}
-
-				var optimize_wrap = $('#wpa_optimize');
-				var optimize_value = {
-					revision : $('input[name="optimize_revision"]:checked').val(),
-					auto_draft : $('input[name="optimize_auto_draft"]:checked').val(),
-					trash : $('input[name="optimize_trash"]:checked').val()
-				};
+			var optimize_wrap = $('#wpa_optimize');
+			var optimize_value = {
+				revision : $('input[name="optimize_revision"]:checked').val(),
+				auto_draft : $('input[name="optimize_auto_draft"]:checked').val(),
+				trash : $('input[name="optimize_trash"]:checked').val()
+			};
 
 
-				optimize_flag = false;
-				var nonce = $('#optimize_nonce').val();
-				$('.run_optimize').find('.spinner').show();
-				$.ajax({
-						'type': 'post',
-						'url': ajaxurl,
-						'data': {
-								'action': 'run_optimize',
-								'_wp_optimize_nonce': nonce,
-								'selected_action' : optimize_value
-						},
-						'success': function (data) {
-								$('.run_optimize').find('.spinner').hide();
-								if ( data.status == 'faild') {
-										wpaMessage('faild', '<h3>' + data.html + '</h3>');
-								} else {
-										var message = document.createElement('div');
-										var heading = document.createElement('h3');
-										if ( data.optimize_revision ) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_revision ));
-												countReset('revision');
-										}
-										if (data.optimize_auto_draft) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_auto_draft ));
-												countReset('auto_draft');
-										}
-										if (data.optimize_trash) {
-												$(message).append($(heading).text( $(heading).text() + data.optimize_trash ));
-												countReset('trash');
-										}
-										if ( $(message).length > 0 ){
-												wpaMessage( 'optimize', $(message) );
-										}
-
-								}
-								optimize_flag = true;
+			this.optimize_flag = false;
+			var nonce = $('#optimize_nonce').val();
+			$('.run_optimize').find('.spinner').show();
+			$.ajax({
+				'type': 'post',
+				'url': ajaxurl,
+				'data': {
+					'action': 'run_optimize',
+					'_wp_optimize_nonce': nonce,
+					'selected_action' : optimize_value
+				},
+				'success': function (data) {
+					$('.run_optimize').find('.spinner').hide();
+					if ( data.status == 'faild') {
+						optimize.message('faild', '<h3>' + data.html + '</h3>');
+					} else {
+						var message = document.createElement('div');
+						var heading = document.createElement('h3');
+						if ( data.revision ) {
+							$(message).append($(heading).text( $(heading).text() + data.revision ));
+							optimize.countReset('revision');
 						}
-				});
+						if (data.auto_draft) {
+							$(message).append($(heading).text( $(heading).text() + data.auto_draft ));
+							optimize.countReset('auto_draft');
+						}
+						if (data.trash) {
+							$(message).append($(heading).text( $(heading).text() + data.trash ));
+							optimize.countReset('trash');
+						}
+						if ( $(message).length > 0 ){
+							optimize.message( 'optimize', $(message) );
+						}
 
-		});
+					}
+					this.optimize_flag = true;
+				}
+			});
+		},
+		event: function(){
+			$(document).on('click', '#optimize_submit', function (e) {
+				optimize.optimizeSubmit(e);
+			});
+		}
+	}
+
+	$(function(){
+		optimize.init();
+	});
+
 })(jQuery);
 
 /**

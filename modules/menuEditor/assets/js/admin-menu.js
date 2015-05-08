@@ -251,14 +251,13 @@
 				target.attr('data-order', menu.order);
 			});
 			adminMenu.html(_.sortBy(adminMenu.children(), function (menu) {
-				if ( ! $(menu).data('order') ){
+				if ( ! $(menu).data('order') && $(menu).data('order') + '' !== "0" ){
 					return 100;
 				}
 				return parseInt($(menu).data('order'))
 			}));
 		},
 		utf8_to_b64: function ( str ) {
-
 			return window.btoa(unescape(encodeURIComponent( str )));
 		},
 
