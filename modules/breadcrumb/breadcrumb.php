@@ -41,8 +41,41 @@ class breadcrumb extends module {
 
 
 	public function __construct(){
+		$this->settings = parent::get_settings();
 		add_shortcode( 'wpa_breadcrumb', array( $this, 'shortcode' ) );
+		add_action( 'admin_init', array( $this, 'add_settings' ) );
 	}
+
+	/**
+	 * パンくずの設定を追加
+	 */
+	public function add_settings() {
+
+		$this->settings->add_section(
+			array(
+				'id'        => 'breadcrumbs',
+				'title'     => __( 'Breadcrumbs', 'wp-assistant' ),
+				'desc'      => __( 'Setting for Beradcrumbs', 'wp-assistant' ),
+				'tabs_name' => __( 'Breadcrumbs', 'wp-assistant' ),
+			)
+		)->add_field(
+			array(
+				'id'                => 'Label Home',
+				'title'             => __( 'Label Home', 'wp-assistant' ),
+				'type'              => 'text',
+				'section'           => 'breadcrumbs',
+				'default'           => 'Home',
+				'desc'              => __( 'Please input home label', 'wp-assistant' ),
+				'size'              => '',
+				'options'           => array(
+					'true'  => __( 'On', 'wp-assistant' ),
+					'false' => __( 'Off', 'wp-assistant' ),
+				),
+				'sanitize_callback' => '',
+			)
+		);
+	}
+
 
 	public function init( $templates = array(), $options = array(), $strings = array(), $autorun = true  ){
 

@@ -33,14 +33,10 @@ class menuEditor extends module {
 		if ( $this->flag === true ) {
 			return false;
 		}
-
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
-
 		add_action( 'admin_print_scripts', array( $this, 'scripts' ), 10 );
-
 		// 設定を css と js として出力する
 		add_action( 'admin_print_scripts', array( $this, 'enhanced' ), 999 );
-
 		$this->flag = true;
 
 	}
@@ -180,7 +176,6 @@ class menuEditor extends module {
 						<div class="menu-list-item new_menu-list-item" data-order="<%= menu.order %>">
 							<input type="checkbox" class="admin_menu_edit adminmenu_hidden_check" name="wpa_supports_checkobox[<%= menu.id %>][disp]" value="1" <% if ( menu.disp === '0'){ %> checked="checked"<% };%> />
 							<span class="menu-list-item-text"><span style="display: inline-block; height: 10px;"></span></span>
-
 							<div class="wpa wpa_hide_form">
 								<div class="wpa_input-group hide">
 									<label for="" class="wpa_label wpa_label-sm"><?php _e( 'Label', 'wp-assistant' ) ?></label>

@@ -55,7 +55,6 @@ class admin extends module {
 	 * @return void
 	 */
 	public function add_settings() {
-
 		/**
 		 * 1. サイト設定
 		 */
@@ -452,9 +451,9 @@ class admin extends module {
 
 					if ( $author_can === true || ! is_404() || is_404() ) {
 
-						if ( $url == '' ) {
-							$url = home_url();
-						}
+//						if ( $url == '' ) {
+						$url = home_url();
+//						}
 						wp_redirect( $url, "302" );
 						exit;
 					}

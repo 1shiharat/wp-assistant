@@ -132,8 +132,9 @@
 					'form': formArray
 				},
 				'success': function (data) {
-					var status = data + 0;
+					var status = data-0;
 					if ( 1 === status ) {
+
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('success');
 						self.attr('disabled', 'disabled');
@@ -225,8 +226,7 @@
 		saveHiddenInput: '#admin_menu_hidden',
 		checkedMenus: '#wpa_admin_menus .adminmenu_hidden_check',
 		menuListTemplateID: '#wpa_admin_menus_template',
-		adminMenu: '#adminmenu > li',
-
+		adminMenu: '#adminmenu li',
 		/**
 		 * データベースに保存する値を更新
 		 */
@@ -261,7 +261,6 @@
 					}
 					i++;
 				}
-
 			});
 			$(adminMenuEditor.saveHiddenInput).val(menuListTextStr);
 		},
@@ -269,7 +268,7 @@
 		/**
 		 * クエリストリングから配列に変換
 		 * @param querystring
-		 * @returns {{}}
+		 * @returns object
 		 */
 		deparam: function (querystring) {
 			querystring = querystring.substring(querystring.indexOf('?') + 1).split('&');
@@ -387,6 +386,12 @@
 				menus: menuObj
 			};
 		},
+
+		/**
+		 * ユニークなID
+		 * @param L
+		 * @returns {string}
+		 */
 		randomstring: function (L) {
 			var s = '';
 			var randomchar = function () {
@@ -398,6 +403,7 @@
 			while (s.length < L) s += randomchar();
 			return s;
 		},
+
 		/**
 		 * 初期化
 		 * @param wpa_ADMIN_MENU
@@ -464,7 +470,6 @@
 				if (typeof menu.target !== 'undefined') {
 					target.children('a').attr('target', menu.target);
 				}
-
 				if (adminMenuEditor.settings.user.userflag === true && menu.disp == 0) {
 					target.remove();
 				}
@@ -478,6 +483,7 @@
 				return parseInt($(menu).data('order'));
 			}));
 		},
+
 		utf8_to_b64: function (str) {
 			return window.btoa(unescape(encodeURIComponent(str)));
 		},
@@ -485,6 +491,7 @@
 		b64_to_utf8: function (str) {
 			return decodeURIComponent(escape(window.atob(str)));
 		},
+
 		// デフォルトの値を取得
 		defaults: function (originalAdminMenu) {
 			var menuStr = '';
@@ -495,12 +502,10 @@
 				var id = $(this).attr('id');
 				var menuName = $(this).find('.wp-menu-name');
 				var target = '';
-
 				var linktext = ( $(this).children('a').attr('href') ) ? $(this).children('a').attr('href') : '';
 				var link = ( linktext ) ? adminMenuEditor.utf8_to_b64(linktext) : ' ';
 				menuName.find('.pending-count').remove();
 				menuName.find('.plugin-count').remove();
-
 				var text = $(this).find('.wp-menu-name').text().replace(/(^\s+)|(\s+$)/g, "");
 				if (text) {
 					if (i === 0) {
@@ -624,6 +629,7 @@
 					parentList.find('.wpa_input-group').addClass('hide');
 					$(this).text(input.val());
 					$(this).show();
+					
 					parentList.find('button').hide();
 					input.hide();
 					adminMenuEditor.removeDisable();
@@ -673,11 +679,12 @@
 				$(adminMenuEditor.insertTarget).append(compiledHtml);
 			});
 
+			// メニューラベルに変更をリアルタイムに反映
 			$('.menu-list-item-text_input').on('keydown keyup keypress change', function () {
 				$(this).closest('.menu-list-item').find('.menu-list-item-text').text($(this).val());
 			});
 
-			// 複数ユーザーのリセット
+			// 複数ユーザー選択時のリセット
 			$(document).on('click','#wpa_menu_user_reset',function(e){
 				e.preventDefault();
 				$('#admin_menu_user option').removeAttr('selected');
@@ -698,7 +705,6 @@
 		var settings = wpa_ADMIN_MENU || {};
 
 		window.wpa.adminMenuEditor = adminMenuEditor;
-
 		wpa.adminMenuEditor.init(settings);
 		if ($('body').hasClass('toplevel_page_wpa_options_page')) {
 			$("#wpa_admin_menus").sortable({

@@ -132,8 +132,9 @@
 					'form': formArray
 				},
 				'success': function (data) {
-					var status = data + 0;
+					var status = data-0;
 					if ( 1 === status ) {
+
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('success');
 						self.attr('disabled', 'disabled');
