@@ -14,8 +14,8 @@ use WP_Assistant\modules\settings;
 class tools extends module {
 
 
-	public function __construct( $parent ) {
-		$this->parent = $parent;
+	public function __construct() {
+		$this->settings = parent::get_settings();
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'wp_ajax_wpa_option_import', array( $this, 'option_import' ) );
 	}
@@ -23,67 +23,61 @@ class tools extends module {
 	/**
 	 * フィールドを追加
 	 *
-	 * @param $this ->parent->settings->WP_Assistant\module\admin\admin クラスのインスタンス
-	 *
 	 * @return void
 	 */
 	public function add_settings() {
-		$this->parent->settings->add_section(
+		$this->settings->add_section(
 			array(
 				'id'        => 'tools',
 				'title'     => __( 'Tools', 'wp-assistant' ),
 				'tabs_name' => __( 'Tools', 'wp-assistant' ),
 			)
-		);
-
-		$this->parent->settings->add_field(
+		)->add_field(
 			array(
 				'id'      => 'tools_export',
 				'title'   => __( 'Export Settings', 'wp-assistant' ),
 				'type'    => function () {
 					?>
-						<div class="tools-option-export">
-							<a href='data:text/plain;charset=UTF-8,<?php echo serialize( get_option( config::get( 'prefix' ) . 'options' ) ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
-						</div>
+					<div class="tools-option-export">
+						<a href='data:text/plain;charset=UTF-8,<?php echo serialize( get_option( config::get( 'prefix' ) . 'options' ) ); ?>' id="option-export" class="button-secondary" download="<?php echo config::get( 'prefix' ) . date( 'Ymd' ) ?>.txt"><?php _e( 'Export', 'wp-assistant' ); ?></a>
+					</div>
 				<?php
 				},
-				'desc' => __( 'Download the set as a text file.', 'wp-assistant' ),
+				'desc'    => __( 'Download the set as a text file.', 'wp-assistant' ),
 				'section' => 'tools',
 			)
-		);
-
-		$this->parent->settings->add_field(
+		)->add_field(
 			array(
 				'id'      => 'tools_export_text',
 				'title'   => __( 'Settings Copy', 'wp-assistant' ),
 				'type'    => function () {
 					?>
 					<div>
-						<textarea id="" cols="30" rows="10"><?php echo serialize( config::get_option() ); ?></textarea>
+						<textarea id="" cols="40" rows="10"><?php echo htmlentities( serialize( config::get_option() ) ); ?></textarea>
 					</div>
-					<?php
+				<?php
 				},
 				'section' => 'tools',
 				'default' => 0
 			)
-		);
-
-		$this->parent->settings->add_field(
+		)->add_field(
 			array(
 				'id'      => 'tools_import',
 				'title'   => __( 'Import Settings', 'wp-assistant' ),
 				'type'    => function () {
 					$nonce = wp_create_nonce( __FILE__ );
 					?>
-				<div>
-					<input id="tools_option_import_file" type="file" />
-					<p>
-						<input type="hidden" id="tools_option_import_nonce" name="tools_option_import_nonce" value="<?php echo $nonce ?>" />
-						<button id="tools_option_import" class="button-secondary"><?php _e( 'Import', 'wp-assistant' ); ?></button>
-						<input type="hidden" name="tools_option_import_data" id="tools_option_import_data" value="" />
-						<span class="spinner"></span>
-					</p>
-				</div>
+					<div>
+						<input id="tools_option_import_file" type="file"/>
+						<p>or</p>
+						<textarea cols="40" rows="10" name="import_textarea" id="import_textarea"></textarea>
+						<p>
+							<input type="hidden" id="tools_option_import_nonce" name="tools_option_import_nonce" value="<?php echo $nonce ?>"/>
+							<button id="tools_option_import" class="button-secondary"><?php _e( 'Import', 'wp-assistant' ); ?></button>
+							<input type="hidden" name="tools_option_import_data" id="tools_option_import_data" value=""/>
+							<span class="spinner"></span>
+						</p>
+					</div>
 				<?php
 				},
 				'section' => 'tools',

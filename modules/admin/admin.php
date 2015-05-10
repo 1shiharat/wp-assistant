@@ -17,9 +17,9 @@ class admin extends module {
 	/**
 	 * 初期化
 	 */
-	public function __construct( $parent ) {
+	public function __construct() {
 
-		$this->parent = $parent;
+		$this->settings = parent::get_settings();
 
 		add_action( 'admin_init', array( $this, 'add_settings' ), 10 );
 
@@ -59,8 +59,7 @@ class admin extends module {
 		/**
 		 * 1. サイト設定
 		 */
-
-		$this->parent->settings->add_section(
+		$this->settings->add_section(
 			array(
 				'id'    => 'general',
 				'title' => __( 'General', 'wp-assistant' ),

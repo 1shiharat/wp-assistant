@@ -239,10 +239,18 @@ h2 #admin-post-nav {
   font-size: 0.6em;
 }
 
-.inside #admin-post-nav a {
+.wrap #admin-post-nav a {
   top: 0;
-  margin-top: 4px;
+  margin-top: 0px;
   display: inline-block;
+  padding-top: 4px;
+  height: 18px;
+  width: 50px;
+  text-align: center;
+  vertical-align: text-bottom;
+  span.dashicons{
+
+  }
 }
 
 /**
@@ -312,8 +320,9 @@ h2 #admin-post-nav {
   }
 }
 .wpa_label{
-  min-width: 50px;
-  text-align: center;display: inline-block;
+  min-width: 100px;
+  text-align: center;
+  display: inline-block;
 }
 .menu-list-item-remove{
   display: none;

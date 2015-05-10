@@ -22,14 +22,17 @@ class menuEditor extends module {
 	/**
 	 * 初期化
 	 */
-	public function __construct( $parent ) {
+	public function __construct() {
+
+		$this->settings = parent::get_settings();
+
 		if (  intval( config::get_option( 'modules_list_menuEditor' ) ) === 0 ){
 			return false;
 		}
+
 		if ( $this->flag === true ) {
 			return false;
 		}
-		$this->parent = $parent;
 
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 
@@ -41,6 +44,7 @@ class menuEditor extends module {
 		$this->flag = true;
 
 	}
+
 
 	/**
 	 * 現在の設定を js に渡す
@@ -87,20 +91,6 @@ class menuEditor extends module {
 			}
 		}
 
-		if ( is_array( $selected_user )
-		     && in_array( $current_user_id, $selected_user )
-		     && $true_menu_data
-		) {
-			echo '<style>';
-			foreach ( $true_menu_data as $menu ) {
-				if ( $menu['disp'] == 0 ) {
-//					echo '#' . $menu['id'] . '{ display: none !important}';
-				}
-//				echo '#' . $menu['id'] . ' .wp-menu-name{ display: none}';
-			}
-			echo '</style>';
-		}
-
 		if ( is_array( $true_menu_data ) && isset( $true_menu_data[0] ) && is_array( $true_menu_data[0] ) ) {
 			echo '<style id="admin-menu-hide-css">#adminmenu li{ display: none; }</style>';
 		}
@@ -112,7 +102,7 @@ class menuEditor extends module {
 	 */
 	public function add_settings() {
 
-		$this->parent->settings->add_section(
+		$this->settings->add_section(
 			array(
 				'id'        => 'admin_menu',
 				'title'     => __( 'Admin Menu', 'wp-assistant' ),
@@ -131,6 +121,11 @@ class menuEditor extends module {
 						'id'       => 'admin_menu_user',
 						'selected' => $selected
 					) );
+					?>
+					<p style="margin-top: 20px">
+					<button class="btn button-secondary" id="wpa_menu_user_reset"><?php _e( 'Reset', 'wp-assistant' ); ?></button>
+					</p>
+					<?php
 				},
 				'default' => '0',
 			)

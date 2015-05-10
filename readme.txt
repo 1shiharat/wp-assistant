@@ -3,7 +3,7 @@ Contributors: ishihara takashi
 Tags: Option Framework
 Requires at least: 4.2.1
 Tested up to: 4.0
-Stable tag: 0.2.9
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,10 @@ Inform to the github repository for the following if you request something or fi
 3. Database optimization.
 
 == Changelog ==
+
+= 0.3.0
+* 細かいバグの修正
+* テキストエリアからのインポートをサポート
 
 = 0.2.4 =
 メニューエディタの機能追加

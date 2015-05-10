@@ -183,10 +183,15 @@
 h2 #admin-post-nav {
   font-size: 0.6em; }
 
-.inside #admin-post-nav a {
+.wrap #admin-post-nav a {
   top: 0;
-  margin-top: 4px;
-  display: inline-block; }
+  margin-top: 0px;
+  display: inline-block;
+  padding-top: 4px;
+  height: 18px;
+  width: 50px;
+  text-align: center;
+  vertical-align: text-bottom; }
 
 /**
  * メニュー更新
@@ -240,7 +245,7 @@ h2 #admin-post-nav {
   display: none; }
 
 .wpa_label {
-  min-width: 50px;
+  min-width: 100px;
   text-align: center;
   display: inline-block; }
 
@@ -2177,7 +2182,9 @@ body .ui-tooltip {
 .ui-tabs-vertical .ui-tabs-panel {
   padding: 0.4em 1em 0em;
   float: right;
-  width: 82%; }
+  width: 82%;
+  box-shadow: -2px 0px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 3px; }
 
 @media screen and (max-width: 640px) {
   .ui-tabs-vertical .ui-tabs-panel {

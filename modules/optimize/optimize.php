@@ -20,8 +20,8 @@ class optimize extends module {
 	 * @todo 適当すぎるので実装を考える
 	 *
 	 */
-	public function __construct( $parent ) {
-		$this->parent = $parent;
+	public function __construct() {
+		$this->settings = parent::get_settings();
 		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'wp_ajax_run_optimize', array( $this, 'run_optimize' ), 10, 1 );
 
@@ -37,7 +37,7 @@ class optimize extends module {
 		$draft_results        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
 		$trash_results        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
 
-		$this->parent->settings->add_section(
+		$this->settings->add_section(
 			array(
 				'id'        => 'optimize',
 				'title'     => __( 'Database Optimization', 'wp-assistant' ),

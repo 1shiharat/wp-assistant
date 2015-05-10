@@ -14,8 +14,8 @@ class customizeAdmin extends module {
 	/**
 	 * 初期化
 	 */
-	public function __construct( $parent ) {
-		$this->parent = $parent;
+	public function __construct() {
+		$this->settings = parent::get_settings();
 		add_action( 'admin_init', array( $this, 'add_settings' ), 10 );
 		add_action( 'login_enqueue_scripts', array( $this, 'change_login_panel' ) );
 		add_filter( 'admin_footer_text', array( $this, 'change_footer_text' ), 10, 1 );
@@ -27,7 +27,7 @@ class customizeAdmin extends module {
 	 */
 	public function add_settings() {
 
-		$this->parent->settings->add_section(
+		$this->settings->add_section(
 			array(
 				'id'        => 'customize_admin',
 				'desc'      => __( 'Change the logo management screen and text settings', 'wp-assistant' ),

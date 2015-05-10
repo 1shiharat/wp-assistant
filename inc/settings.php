@@ -45,7 +45,6 @@ class settings {
 		if ( null === static::$instance ) {
 			static::$instance = new self();
 		}
-
 		return static::$instance;
 	}
 
@@ -54,7 +53,6 @@ class settings {
 	 * @return void
 	 */
 	public function add_admin_menu() {
-		$settings = $this->settings;
 		add_menu_page(
 			__( 'WP Assistant', 'wp-assistant' ),
 			__( 'WP Assistant', 'wp-assistant' ),

@@ -33,38 +33,41 @@
 		timer: 0,
 		submit: '#wpa-submit',
 		// メッセージを表示
-		message: function( type, message){
+		message: function (type, message) {
 			var messageContainer = $('.wpa-message-' + type);
+
 			if (message) {
 				messageContainer.html(message);
 			}
+
 			var already = 'message-aleady';
-			//messageContainer.fadeIn();
+			clearTimeout(wpa.timer);
 			messageContainer.show();
 			messageContainer.addClass('slideInDown');
-			clearTimeout(wpa.timer);
-			if (!messageContainer.hasClass(already)) {
+			if ( ! messageContainer.hasClass(already)) {
 				wpa.timer = setTimeout(function () {
 					messageContainer.addClass('slideOutUp');
-					setTimeout(function(){
+					setTimeout(function () {
 						messageContainer.removeClass('slideInDown');
-						setTimeout(function(){
+						setTimeout(function () {
 							messageContainer.removeClass('slideOutUp');
 							messageContainer.hide();
-						},1000)
+						}, 1000);
 					}, 1000);
-					//messageContainer.fadeOut('500');
 				}, 1600);
 			}
 		},
+
 		// 初期化
-		init: function(){
+		init: function () {
 			window.addEventListener("hashchange", wpa.changeOnHash, false);
+
 			$('.acoordion').multiAccordion({
 				animate: 100,
 				autoHeight: false,
 				heightStyle: "content"
 			});
+
 			// タブ
 			$('#wpa_tabs').tabs({
 				hide: {
@@ -83,15 +86,17 @@
 			$('.form-group-radiobox').buttonset();
 
 			$('#wpa-submit').attr('disabled', 'disabled');
+
 			wpa.event();
+
 			$('#wpa_tabs_hide').remove();
 		},
 		// 送信ボタンをクリックできるように
-		submit_enhanced: function(){
+		submit_enhanced: function () {
 			$(wpa.submit).removeAttr('disabled');
 		},
 		// ハッシュの変更を監視し、タブを変更
-		changeOnHash: function(){
+		changeOnHash: function () {
 			var tab_id = location.hash;
 			var tabIndexs = {
 				'#wpa-basic-setting': 0,
@@ -103,7 +108,7 @@
 			).addClass("ui-tabs-vertical ui-helper-clearfix");
 		},
 		// オプションを更新
-		updateOption: function(e){
+		updateOption: function (e) {
 			e.preventDefault();
 			if (false === wpa.submit_flag) {
 				return false;
@@ -112,8 +117,8 @@
 			var self = $(this);
 			$('#wpa_tabs ul').find('.spinner').show();
 			var formArray = $('#wpa_settings_form').serializeArray();
-			_.each(formArray,function(form, key){
-				if ( form.name.match( /wpa_supports_check/ ) ){
+			_.each(formArray, function (form, key) {
+				if (form.name.match(/wpa_supports_check/)) {
 					delete formArray[key];
 				}
 			});
@@ -127,11 +132,12 @@
 					'form': formArray
 				},
 				'success': function (data) {
-					if (1 == data) {
+					var status = data + 0;
+					if ( 1 === status ) {
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('success');
 						self.attr('disabled', 'disabled');
-					} else if ( 3 == data ){
+					} else if (3 === status ) {
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('no-update');
 						self.attr('disabled', 'disabled');
@@ -143,7 +149,15 @@
 				}
 			});
 		},
-		openMediaUpload: function(self,e){
+
+		/**
+		 * メディアアップローダーを開く
+		 *
+		 * @param self
+		 * @param e
+		 * @returns {boolean}
+		 */
+		openMediaUpload: function (self, e) {
 			e.preventDefault();
 
 			var file_frame = null;
@@ -166,24 +180,28 @@
 			});
 			file_frame.open();
 		},
-		event: function(){
+
+		/**
+		 * イベントの実行
+		 */
+		event: function () {
 			$(document).on('click', wpa.submit, function (e) {
 				wpa.updateOption(e);
 			});
-			$(document).on('click', '.wpa-browse', function(e) {
-				wpa.openMediaUpload($(this),e);
-			} );
-			$(document).change(function(){
+			$(document).on('click', '.wpa-browse', function (e) {
+				wpa.openMediaUpload($(this), e);
+			});
+			$(document).change(function () {
 				wpa.submit_enhanced();
-			})
+			});
 		}
-
 	};
 
 	/**
 	 * ロード時のイベント
 	 */
-	$(function () {
+	$(function (){
+		window.wpa = wpa;
 		wpa.init();
 	});
 
@@ -223,7 +241,7 @@
 					text = $(this).val().replace(/\s+/g, "+"),
 					disp = ( parent.find('.adminmenu_hidden_check').attr('checked') ) ? 0 : 1,
 					target = ( parent.find('.menu-list-item-target_input').val() ) ? parent.find('.menu-list-item-target_input').val() : '',
-					link = adminMenuEditor.utf8_to_b64( $(this).closest('.menu-list-item').find('.menu-list-item-link_input').val() ),
+					link = adminMenuEditor.utf8_to_b64($(this).closest('.menu-list-item').find('.menu-list-item-link_input').val()),
 					order = $(this).closest('.menu-list-item').data('order');
 				if (text) {
 					if (i === 0) {
@@ -271,13 +289,13 @@
 					var num = key.match(/\d/g).join('').trim();
 					var param_key = d(pair[0].match(/\D/g).join(''));
 
-					if ( param_key == "link" ){
-						if (  d(pair[1].replace(/\+/g, " "))  ) {
+					if (param_key == "link") {
+						if (d(pair[1].replace(/\+/g, " "))) {
 							params[parseInt(num)][param_key] = adminMenuEditor.b64_to_utf8(d(pair[1].replace(/\+/g, " ")));
 						} else {
 							params[parseInt(num)][param_key] = d(pair[1].replace(/\+/g, " "));
 						}
-					} else if ( typeof params[parseInt(num)] !== "undefined" && d(pair[1].replace(/\+/g, " ")) ) {
+					} else if (typeof params[parseInt(num)] !== "undefined" && d(pair[1].replace(/\+/g, " "))) {
 						params[parseInt(num)][param_key] = d(pair[1].replace(/\+/g, " "));
 					}
 				}
@@ -364,7 +382,7 @@
 			var menuObj = adminMenuEditor.deparam(menus);
 			menuObj = _.sortBy(menuObj, function (menu) {
 				return parseInt(menu.order);
-			})
+			});
 			return {
 				menus: menuObj
 			};
@@ -376,7 +394,7 @@
 				if (n < 10) return n; //1-10
 				if (n < 36) return String.fromCharCode(n + 55); //A-Z
 				return String.fromCharCode(n + 61); //a-z
-			}
+			};
 			while (s.length < L) s += randomchar();
 			return s;
 		},
@@ -386,12 +404,14 @@
 		 */
 		init: function (settings) {
 			var self = adminMenuEditor;
+			var defaults;
+			var menus;
 			adminMenuEditor.settings = settings;
 			if ($(adminMenuEditor.menuListTemplateID).length) {
 				self.setTemplate();
 				adminMenuEditor.cloneMenu();
-				var defaults = adminMenuEditor.defaults(adminMenuEditor.originalAdminMenu);
-				var menus = ( settings.menus ) ? settings.menus : defaults;
+				defaults = adminMenuEditor.defaults(adminMenuEditor.originalAdminMenu);
+				menus = ( settings.menus ) ? settings.menus : defaults;
 
 				adminMenuEditor.enhanced(self.getData(menus));
 				var compiledHtml = self.compiled(self.getData(menus));
@@ -399,8 +419,8 @@
 				adminMenuEditor.update();
 				adminMenuEditor.event();
 			} else {
-				var defaults = adminMenuEditor.defaults();
-				var menus = settings.menus || defaults;
+				defaults = adminMenuEditor.defaults();
+				menus = settings.menus || defaults;
 				adminMenuEditor.enhanced(self.getData(menus));
 			}
 			$("#admin-menu-hide-css").remove();
@@ -431,39 +451,39 @@
 
 
 			_.each(settings.menus, function (menu, key) {
-				if ( ! menu.id ){
+				if (!menu.id) {
 					return false;
 				}
-				if ( adminMenu.find('#' + menu.id).length == 0 ){
-					adminMenu.find('#collapse-menu').before( '<li id="'+menu.id+'" class=" menu-top menu-icon-generic menu-top-first menu-top-last"><a href="" class=" menu-top menu-icon-generic menu-top-first menu-top-last"><div class="wp-menu-image dashicons-before dashicons-admin-generic"><br></div> <div class="wp-menu-name">'+menu.text+'</div></a></li>' );
+				if (adminMenu.find('#' + menu.id).length == 0) {
+					adminMenu.find('#collapse-menu').before('<li id="' + menu.id + '" class=" menu-top menu-icon-generic menu-top-first menu-top-last"><a href="" class=" menu-top menu-icon-generic menu-top-first menu-top-last"><div class="wp-menu-image dashicons-before dashicons-admin-generic"><br></div> <div class="wp-menu-name">' + menu.text + '</div></a></li>');
 				}
 				var target = adminMenu.find('#' + menu.id);
-				if ( typeof menu.link !== 'undefined' ) {
+				if (typeof menu.link !== 'undefined') {
 					target.children('a').attr('href', menu.link);
 				}
-				if ( typeof menu.target !== 'undefined' ) {
+				if (typeof menu.target !== 'undefined') {
 					target.children('a').attr('target', menu.target);
 				}
 
-				if ( adminMenuEditor.settings.user.userflag === true && menu.disp == 0 ){
+				if (adminMenuEditor.settings.user.userflag === true && menu.disp == 0) {
 					target.remove();
 				}
 				target.find('.wp-menu-name').text(menu.text);
 				target.attr('data-order', menu.order);
 			});
 			adminMenu.html(_.sortBy(adminMenu.children(), function (menu) {
-				if ( ! $(menu).data('order') && $(menu).data('order') + '' !== "0" ){
+				if (!$(menu).data('order') && $(menu).data('order') + '' !== "0") {
 					return 100;
 				}
-				return parseInt($(menu).data('order'))
+				return parseInt($(menu).data('order'));
 			}));
 		},
-		utf8_to_b64: function ( str ) {
-			return window.btoa(unescape(encodeURIComponent( str )));
+		utf8_to_b64: function (str) {
+			return window.btoa(unescape(encodeURIComponent(str)));
 		},
 
-		b64_to_utf8: function ( str ) {
-			return decodeURIComponent(escape(window.atob( str )));
+		b64_to_utf8: function (str) {
+			return decodeURIComponent(escape(window.atob(str)));
 		},
 		// デフォルトの値を取得
 		defaults: function (originalAdminMenu) {
@@ -477,7 +497,7 @@
 				var target = '';
 
 				var linktext = ( $(this).children('a').attr('href') ) ? $(this).children('a').attr('href') : '';
-				var link = ( linktext ) ? adminMenuEditor.utf8_to_b64( linktext ) : ' ';
+				var link = ( linktext ) ? adminMenuEditor.utf8_to_b64(linktext) : ' ';
 				menuName.find('.pending-count').remove();
 				menuName.find('.plugin-count').remove();
 
@@ -529,7 +549,7 @@
 			adminMenuEditor.getTarget().html(compiledHtml);
 		},
 
-		removeDisable: function(){
+		removeDisable: function () {
 			$('#wpa-submit').removeAttr('disabled');
 		},
 		/**
@@ -572,7 +592,7 @@
 				});
 				adminMenuEditor.removeDisable();
 
-			})
+			});
 
 			// チェックボックスをクリックした時のイベント
 			$(document).on('click', '#wpa_admin_menus input[type="checkbox"]', function () {
@@ -611,13 +631,13 @@
 
 			});
 
-			$(document).on('click', '.menu-list-item-remove',function(e){
+			$(document).on('click', '.menu-list-item-remove', function (e) {
 				e.preventDefault();
-				var parent = $(this).closest( '.menu-list-item');
-				parent.fadeOut( '500' );
-				setTimeout(function(){
+				var parent = $(this).closest('.menu-list-item');
+				parent.fadeOut('500');
+				setTimeout(function () {
 					parent.remove();
-				}, 500)
+				}, 500);
 
 			});
 
@@ -633,11 +653,12 @@
 				var menuid = $(this).prev().data('menu-id');
 				$('#' + menuid).find('.wp-menu-name').fadeOut().text(input_value).fadeIn();
 				$(this).hide();
-				parent.removeClass('on')
+				parent.removeClass('on');
 				adminMenuEditor.update();
 				adminMenuEditor.removeDisable();
 			});
 
+			// 新しいメニューを追加
 			$(document).on('click', '#add_menu_list_item', function (e) {
 				e.preventDefault();
 				var newMenuItem = _.template($('#wpa_admin_menu_template').html());
@@ -650,10 +671,19 @@
 					}
 				});
 				$(adminMenuEditor.insertTarget).append(compiledHtml);
-			})
-			$('.menu-list-item-text_input').on( 'keydown keyup keypress change', function(){
-				$(this).closest( '.menu-list-item').find('.menu-list-item-text').text($(this).val());
 			});
+
+			$('.menu-list-item-text_input').on('keydown keyup keypress change', function () {
+				$(this).closest('.menu-list-item').find('.menu-list-item-text').text($(this).val());
+			});
+
+			// 複数ユーザーのリセット
+			$(document).on('click','#wpa_menu_user_reset',function(e){
+				e.preventDefault();
+				$('#admin_menu_user option').removeAttr('selected');
+				adminMenuEditor.removeDisable();
+			});
+
 
 		}
 	};
@@ -662,11 +692,14 @@
 	 * ロード時のイベント
 	 */
 	$(function () {
-		if ( typeof wpa_ADMIN_MENU == 'undefined' ){
+		if (typeof wpa_ADMIN_MENU == 'undefined') {
 			return false;
 		}
 		var settings = wpa_ADMIN_MENU || {};
-		adminMenuEditor.init(settings);
+
+		window.wpa.adminMenuEditor = adminMenuEditor;
+
+		wpa.adminMenuEditor.init(settings);
 		if ($('body').hasClass('toplevel_page_wpa_options_page')) {
 			$("#wpa_admin_menus").sortable({
 				placeholder: "ui-state-highlight",
@@ -686,17 +719,17 @@
 
 })(jQuery);
 
-;(function($){
+;(function ($) {
 	var timer;
 	var optimize = {
 		timer: null,
-		init: function(){
+		init: function () {
 			this.optimize_flag = true;
 			this.timer = 0;
 			optimize.event();
 		},
 		// メッセージを表示
-		message: function( type, message ){
+		message: function (type, message) {
 			var messageContainer = $('.wpa-message-' + type);
 			if (message) {
 				messageContainer.html(message);
@@ -709,37 +742,37 @@
 			if (!messageContainer.hasClass(already)) {
 				optimize.timer = setTimeout(function () {
 					messageContainer.addClass('slideOutUp');
-					setTimeout(function(){
+					setTimeout(function () {
 						messageContainer.removeClass('slideInDown');
-						setTimeout(function(){
+						setTimeout(function () {
 							messageContainer.removeClass('slideOutUp');
 							messageContainer.hide();
-						},1000)
+						}, 1000);
 					}, 1000);
 					//messageContainer.fadeOut('500');
 				}, 1600);
 			}
 		},
 		// カウントのリセット
-		countReset: function(target){
-			if ( ! target ){
+		countReset: function (target) {
+			if (!target) {
 				return false;
 			}
 			target = $('.post-count-' + target);
 			target.text('0');
 		},
 		// 最適化の実行
-		optimizeSubmit: function(e){
+		optimizeSubmit: function (e) {
 			e.preventDefault();
-			if ( false === this.optimize_flag) {
+			if (false === this.optimize_flag) {
 				return false;
 			}
 
 			var optimize_wrap = $('#wpa_optimize');
 			var optimize_value = {
-				revision : $('input[name="optimize_revision"]:checked').val(),
-				auto_draft : $('input[name="optimize_auto_draft"]:checked').val(),
-				trash : $('input[name="optimize_trash"]:checked').val()
+				revision: $('input[name="optimize_revision"]:checked').val(),
+				auto_draft: $('input[name="optimize_auto_draft"]:checked').val(),
+				trash: $('input[name="optimize_trash"]:checked').val()
 			};
 
 
@@ -752,29 +785,32 @@
 				'data': {
 					'action': 'run_optimize',
 					'_wp_optimize_nonce': nonce,
-					'selected_action' : optimize_value
+					'selected_action': optimize_value
 				},
 				'success': function (data) {
 					$('.run_optimize').find('.spinner').hide();
-					if ( data.status == 'faild') {
+					if (data.status == 'faild') {
 						optimize.message('faild', '<h3>' + data.html + '</h3>');
 					} else {
 						var message = document.createElement('div');
 						var heading = document.createElement('h3');
-						if ( data.revision ) {
-							$(message).append($(heading).text( $(heading).text() + data.revision ));
+
+						if (data.revision) {
+							$(message).append($(heading).text($(heading).text() + data.revision));
 							optimize.countReset('revision');
 						}
+
 						if (data.auto_draft) {
-							$(message).append($(heading).text( $(heading).text() + data.auto_draft ));
+							$(message).append($(heading).text($(heading).text() + data.auto_draft));
 							optimize.countReset('auto_draft');
 						}
+
 						if (data.trash) {
-							$(message).append($(heading).text( $(heading).text() + data.trash ));
+							$(message).append($(heading).text($(heading).text() + data.trash));
 							optimize.countReset('trash');
 						}
-						if ( $(message).length > 0 ){
-							optimize.message( 'optimize', $(message) );
+						if ($(message).length > 0) {
+							optimize.message('optimize', $(message));
 						}
 
 					}
@@ -782,64 +818,80 @@
 				}
 			});
 		},
-		event: function(){
+		event: function () {
 			$(document).on('click', '#optimize_submit', function (e) {
 				optimize.optimizeSubmit(e);
 			});
 		}
-	}
+	};
 
-	$(function(){
-		optimize.init();
+	$(function () {
+		window.wpa.optimize = optimize;
+		wpa.optimize.init();
 	});
 
 })(jQuery);
 
-/**
- * 設定をインポート
- */
 ;(function($){
-    "use strict";
-    var import_button = '#tools_option_import',
-        import_file_input = 'tools_option_import_file',
-        import_data = '#tools_option_import_data';
+	"use strict";
+	var tools = {
+		import_button : '#tools_option_import',
+		import_file_input : 'tools_option_import_file',
+		import_data : '#tools_option_import_data',
+		init: function(){
+			tools.event();
+		},
+		event: function(){
+			$(document).on( 'change', '#'+tools.import_file_input, function(){
+				var reader = new FileReader(),
+				importData;
+				var file = document.getElementById( tools.import_file_input ).files[0];
+				reader.onload = function(){
+					$(tools.import_data).val( reader.result );
+				};
+				reader.readAsText( file );
+			} );
 
-    $(document).on( 'change', '#'+import_file_input, function(){
-        var reader = new FileReader(),
-            importData;
-        var file = document.getElementById( import_file_input ).files[0];
-        reader.onload = function(){
-            $(import_data).val( reader.result );
-        };
-        reader.readAsText( file );
-    } );
+			$(document).on('click', tools.import_button,function(e){
+				e.preventDefault();
+				var importData;
+				var import_data_text = $(tools.import_data).val();
+				if ( import_data_text.length <= 0 ){
+					import_data_text = $('#import_textarea').val();
+				}
+				var reg = /^a:.*;}$/;
+				if ( ! import_data_text.match( reg ) ){
+					wpa.message('faild', '<h3>' + '更新データが正しくありません' + '</h3>');
+					return false;
+				}
+				var wp_import_nonce = $('#tools_option_import_nonce').val();
+				$.ajax({
+					type : 'post',
+					url: ajaxurl,
+					data : {
+						action : 'wpa_option_import',
+						wp_import_nonce : wp_import_nonce,
+						import_data: import_data_text
+					},
+				}).done(function(data){
+					if ( data === '1' ){
+						wpa.message('success');
+						setTimeout(function(){
+							location.reload();
+						}, 300);
+						return true;
+					} else {
+						wpa.message('faild', '<h3>' + '更新データが正しくありません' + '</h3>');
+						return false;
+					}
+				});
+			});
+		}
+	}; // end .import
 
-    $(document).on('click', import_button,function(e){
-        e.preventDefault();
-        var importData;
-        var import_data_text = $(import_data).val();
-        var reg = /^a:.*;}$/;
-        if ( ! import_data_text.match( reg ) ){
-            alert( '有効なファイルではありません。ファイルが正しいか確認してください。' );
-            return false;
-        }
-        var wp_import_nonce = $('#tools_option_import_nonce').val();
-        $.ajax({
-            type : 'post',
-            url: ajaxurl,
-            data : {
-                action : 'wpa_option_import',
-                wp_import_nonce : wp_import_nonce,
-                import_data: import_data_text
-            },
-            success : function(data){
-                console.log(data);
-                if ( data === '1' ){
-                    alert( 'オプションを更新しました' );
-                    location.reload();
-                    return true;
-                }
-            }
-        });
-    });
+	$(function(){
+		wpa.tools= tools;
+		wpa.tools.init();
+	});
+
 })(jQuery);

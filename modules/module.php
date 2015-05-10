@@ -27,11 +27,15 @@ class module{
 	 */
 	public function __construct(){
 
-		$this->settings = settings::get_instance();
+		$this->settings = $this->get_settings();
 		$this->set_modules();
 
 		$this->modules_instance = $this->register_modules( $this->modules );
 
+	}
+
+	function get_settings(){
+		return settings::get_instance();
 	}
 
 	/**

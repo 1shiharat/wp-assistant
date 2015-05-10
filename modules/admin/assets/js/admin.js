@@ -33,38 +33,41 @@
 		timer: 0,
 		submit: '#wpa-submit',
 		// メッセージを表示
-		message: function( type, message){
+		message: function (type, message) {
 			var messageContainer = $('.wpa-message-' + type);
+
 			if (message) {
 				messageContainer.html(message);
 			}
+
 			var already = 'message-aleady';
-			//messageContainer.fadeIn();
+			clearTimeout(wpa.timer);
 			messageContainer.show();
 			messageContainer.addClass('slideInDown');
-			clearTimeout(wpa.timer);
-			if (!messageContainer.hasClass(already)) {
+			if ( ! messageContainer.hasClass(already)) {
 				wpa.timer = setTimeout(function () {
 					messageContainer.addClass('slideOutUp');
-					setTimeout(function(){
+					setTimeout(function () {
 						messageContainer.removeClass('slideInDown');
-						setTimeout(function(){
+						setTimeout(function () {
 							messageContainer.removeClass('slideOutUp');
 							messageContainer.hide();
-						},1000)
+						}, 1000);
 					}, 1000);
-					//messageContainer.fadeOut('500');
 				}, 1600);
 			}
 		},
+
 		// 初期化
-		init: function(){
+		init: function () {
 			window.addEventListener("hashchange", wpa.changeOnHash, false);
+
 			$('.acoordion').multiAccordion({
 				animate: 100,
 				autoHeight: false,
 				heightStyle: "content"
 			});
+
 			// タブ
 			$('#wpa_tabs').tabs({
 				hide: {
@@ -83,15 +86,17 @@
 			$('.form-group-radiobox').buttonset();
 
 			$('#wpa-submit').attr('disabled', 'disabled');
+
 			wpa.event();
+
 			$('#wpa_tabs_hide').remove();
 		},
 		// 送信ボタンをクリックできるように
-		submit_enhanced: function(){
+		submit_enhanced: function () {
 			$(wpa.submit).removeAttr('disabled');
 		},
 		// ハッシュの変更を監視し、タブを変更
-		changeOnHash: function(){
+		changeOnHash: function () {
 			var tab_id = location.hash;
 			var tabIndexs = {
 				'#wpa-basic-setting': 0,
@@ -103,7 +108,7 @@
 			).addClass("ui-tabs-vertical ui-helper-clearfix");
 		},
 		// オプションを更新
-		updateOption: function(e){
+		updateOption: function (e) {
 			e.preventDefault();
 			if (false === wpa.submit_flag) {
 				return false;
@@ -112,8 +117,8 @@
 			var self = $(this);
 			$('#wpa_tabs ul').find('.spinner').show();
 			var formArray = $('#wpa_settings_form').serializeArray();
-			_.each(formArray,function(form, key){
-				if ( form.name.match( /wpa_supports_check/ ) ){
+			_.each(formArray, function (form, key) {
+				if (form.name.match(/wpa_supports_check/)) {
 					delete formArray[key];
 				}
 			});
@@ -127,11 +132,12 @@
 					'form': formArray
 				},
 				'success': function (data) {
-					if (1 == data) {
+					var status = data + 0;
+					if ( 1 === status ) {
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('success');
 						self.attr('disabled', 'disabled');
-					} else if ( 3 == data ){
+					} else if (3 === status ) {
 						$('#wpa_tabs ul').find('.spinner').hide();
 						wpa.message('no-update');
 						self.attr('disabled', 'disabled');
@@ -143,7 +149,15 @@
 				}
 			});
 		},
-		openMediaUpload: function(self,e){
+
+		/**
+		 * メディアアップローダーを開く
+		 *
+		 * @param self
+		 * @param e
+		 * @returns {boolean}
+		 */
+		openMediaUpload: function (self, e) {
 			e.preventDefault();
 
 			var file_frame = null;
@@ -166,24 +180,28 @@
 			});
 			file_frame.open();
 		},
-		event: function(){
+
+		/**
+		 * イベントの実行
+		 */
+		event: function () {
 			$(document).on('click', wpa.submit, function (e) {
 				wpa.updateOption(e);
 			});
-			$(document).on('click', '.wpa-browse', function(e) {
-				wpa.openMediaUpload($(this),e);
-			} );
-			$(document).change(function(){
+			$(document).on('click', '.wpa-browse', function (e) {
+				wpa.openMediaUpload($(this), e);
+			});
+			$(document).change(function () {
 				wpa.submit_enhanced();
-			})
+			});
 		}
-
 	};
 
 	/**
 	 * ロード時のイベント
 	 */
-	$(function () {
+	$(function (){
+		window.wpa = wpa;
 		wpa.init();
 	});
 

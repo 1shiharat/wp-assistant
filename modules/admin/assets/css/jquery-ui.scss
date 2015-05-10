@@ -1232,6 +1232,8 @@ body .ui-tooltip {
   padding: 0.4em 1em 0em;
   float: right;
   width: 82%;
+	box-shadow: -2px 0px 4px rgba(0,0,0,0.05);
+	margin-top: 3px;
 }
 
 @media screen and ( max-width: 640px){
