@@ -1,0 +1,8 @@
+{
+    "require": {
+        "1shiharat/wp-admin-bootstrap": "dev-master"
+    },
+    "autoload": {
+      "files" : ["vendor/1shiharat/wp-admin-bootstrap/wp-admin-bootstrap.php"]
+    }
+}

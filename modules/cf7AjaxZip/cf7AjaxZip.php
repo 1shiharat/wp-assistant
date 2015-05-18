@@ -54,7 +54,7 @@ class cf7AjaxZip extends module{
 					})
 				})(jQuery);
 			</script>
-		<?
+		<?php
 		}, 99 );
 	}
 

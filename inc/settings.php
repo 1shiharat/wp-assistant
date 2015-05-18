@@ -45,6 +45,7 @@ class settings {
 		if ( null === static::$instance ) {
 			static::$instance = new self();
 		}
+
 		return static::$instance;
 	}
 
@@ -257,7 +258,7 @@ class settings {
 			foreach ( $form_array as $form ) {
 				if ( isset( $form['name'] ) && $form['name'] === 'admin_menu_user[]' ) {
 					$form_save_data['admin_menu_user'][] = $form['value'];
-				} else if( isset( $form['name']  ) && isset( $form['value'] )  ) {
+				} else if ( isset( $form['name'] ) && isset( $form['value'] ) ) {
 					$form_save_data[ $form['name'] ] = $form['value'];
 				}
 			}
@@ -284,25 +285,28 @@ class settings {
 
 	/**
 	 * オプションの更新
+	 *
 	 * @param $option
 	 * @param $value
 	 * @param null $autoload
 	 *
 	 * @return bool
 	 */
-	public function update_option( $option, $value, $autoload = null ){
+	public function update_option( $option, $value, $autoload = null ) {
 		global $wpdb;
 
-		$option = trim($option);
-		if ( empty($option) )
+		$option = trim( $option );
+		if ( empty( $option ) ) {
 			return 2;
+		}
 
 		wp_protect_special_option( $option );
 
-		if ( is_object( $value ) )
+		if ( is_object( $value ) ) {
 			$value = clone $value;
+		}
 
-		$value = sanitize_option( $option, $value );
+		$value     = sanitize_option( $option, $value );
 		$old_value = get_option( $option );
 
 		$value = apply_filters( 'pre_update_option_' . $option, $value, $old_value );
@@ -310,8 +314,9 @@ class settings {
 		$value = apply_filters( 'pre_update_option', $value, $option, $old_value );
 
 		// If the new and old values are the same, no need to update.
-		if ( $value === $old_value )
+		if ( $value === $old_value ) {
 			return 3;
+		}
 
 		if ( apply_filters( 'default_option_' . $option, false ) === $old_value ) {
 			if ( null === $autoload ) {
@@ -332,18 +337,19 @@ class settings {
 		}
 
 		$result = $wpdb->update( $wpdb->options, $update_args, array( 'option_name' => $option ) );
-		if ( ! $result )
+		if ( ! $result ) {
 			return 4;
+		}
 
 		$notoptions = wp_cache_get( 'notoptions', 'options' );
-		if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
-			unset( $notoptions[$option] );
+		if ( is_array( $notoptions ) && isset( $notoptions[ $option ] ) ) {
+			unset( $notoptions[ $option ] );
 			wp_cache_set( 'notoptions', $notoptions, 'options' );
 		}
 
 		if ( ! defined( 'WP_INSTALLING' ) ) {
 			$alloptions = wp_load_alloptions();
-			if ( isset( $alloptions[$option] ) ) {
+			if ( isset( $alloptions[ $option ] ) ) {
 				$alloptions[ $option ] = $serialized_value;
 				wp_cache_set( 'alloptions', $alloptions, 'options' );
 			} else {
@@ -425,17 +431,41 @@ class settings {
 			return;
 		}
 
-		echo '<div class="acoordion ui-accordion ui-accordion-icons ui-widget ui-helper-reset">';
+		echo '<div class="panel-group">';
 		foreach ( (array) $wp_settings_fields[ $page ][ $section ] as $field ) {
+
 			if ( ! empty( $field['args']['label_for'] ) ) {
-				echo '<h3 class="ui-accordion-header ui-helper-reset ui-corner-top"><label for="' . esc_attr( $field['args']['label_for'] ) . '">' . $field['title'] . '</label></h3>';
+
+				echo '
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h4 class="panel-title">
+			<a data-toggle="collapse" href="#wpa-' . $field['id'] . '" aria-expanded="true" aria-controls="collapseOne">
+				<label for="' . esc_attr( $field['args']['label_for'] ) . '">' . $field['title'] . '</label>
+			</a>
+		</h4>
+	</div>
+';
 			} else {
-				echo '<h3 class="ui-accordion-header ui-helper-reset ui-corner-top">' . $field['title'] . '</h3>';
+				echo '
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">
+			<a data-toggle="collapse" href="#wpa-' . $field['id'] . '" aria-expanded="true" aria-controls="collapseOne">
+				<i class="fa fa-chevron-circle-right"></i>
+			' . $field['title'] . '
+			</a>
+		</h4>
+	</div>
+';
 			}
-			echo '<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active">';
+			echo ' <div id="wpa-'. $field['id'] .'" class="panel-collapse collapse in" role="tabpanel">
+			<div class="panel-body">';
 			echo '<p>' . $field['args']['desc'] . '</p>';
 			call_user_func( $field['callback'], $field['args'] );
-			echo '</div>';
+			echo '</div>
+	</div>
+</div>';
 		}
 
 		echo '</div>';

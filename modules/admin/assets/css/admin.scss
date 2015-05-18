@@ -2,7 +2,30 @@
  オリジナルCSS
  */
 $admin-panel-width: 1215px;
-
+.wpa .icheckbox_line-aero,
+.wpa .iradio_line-aero {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 5px 15px 5px 38px;
+  font-size: 13px;
+  line-height: 17px;
+  color: #fff;
+  background: #9cc2cb;
+  border: none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 90px;
+  &.checked{
+	background: darken(#9cc2cb,25);
+  }
+}
+.wpa .form-control.wpa-url{
+  display: inline-block;
+  width: auto;
+}
 @-webkit-keyframes slideInDown {
   0% {
 	-webkit-transform: translate3d(0, -100%, 0);
@@ -159,7 +182,6 @@ $admin-panel-width: 1215px;
   }
   *:focus,
   *:active {
-    outline: none !important;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -248,9 +270,6 @@ h2 #admin-post-nav {
   width: 50px;
   text-align: center;
   vertical-align: text-bottom;
-  span.dashicons{
-
-  }
 }
 
 /**

@@ -6,7 +6,7 @@ use WP_Assistant\inc\config;
 
 ?>
 <?php settings_fields( config::get( 'prefix' ) . 'settings' ); ?>
-<form id="wpa_settings_form" method='post'>
+<form id="wpa_settings_form" class="wpa" method='post'>
 	<div class="wpa-message-wrap">
 		<div class="wpa-message wpa-message-success updated">
 			<h3><span class="dashicons dashicons-update"></span> <?php _e( 'Saved successfully', 'wp-assistant' ) ?></h3>
@@ -36,7 +36,7 @@ use WP_Assistant\inc\config;
 			<?php
 			endforeach; ?>
 			<li class="pull-right">
-				<button type="submit" name="submit" id="wpa-submit" class="button button-primary"><?php _e( 'Save', 'wp-assistant' ); ?></button>
+				<button type="submit" name="submit" id="wpa-submit" class="btn btn-lg btn-block btn-danger"><?php _e( 'Save', 'wp-assistant' ); ?></button>
 				<span class="spinner"></span>
 			</li>
 		</ul>

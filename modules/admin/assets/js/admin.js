@@ -1,30 +1,4 @@
-(function ($) {
-	"use strict";
-	/**
-	 * アコーディオンをすべて開く
-	 */
-	$.fn.multiAccordion = function () {
-		$(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
-			.find("h3")
-			.addClass("ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom")
-			.hover(function () {
-				$(this).toggleClass("ui-state-hover");
-			})
-			.prepend('<span class="ui-icon ui-icon-triangle-1-e"></span>')
-			.click(function () {
-				$(this)
-					.toggleClass("ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom")
-					.find("> .ui-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s").end()
-					.next().toggleClass("ui-accordion-content-active").slideToggle(100);
-				return false;
-			})
-			.next()
-			.addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom")
-			.css("display", "block")
-			.hide()
-			.end().trigger("click");
-	};
-})(jQuery);
+
 
 (function ($) {
 	"use strict";
@@ -62,12 +36,6 @@
 		init: function () {
 			window.addEventListener("hashchange", wpa.changeOnHash, false);
 
-			$('.acoordion').multiAccordion({
-				animate: 100,
-				autoHeight: false,
-				heightStyle: "content"
-			});
-
 			// タブ
 			$('#wpa_tabs').tabs({
 				hide: {
@@ -83,8 +51,30 @@
 				location.hash = $(this).attr('href');
 				window.scrollTo(0, 0);
 			});
-			$('.form-group-radiobox').buttonset();
 
+			$('.wpa input[type=radio]').each(function(){
+				var self = $(this),
+					label = self.next(),
+					label_text = label.text();
+				label.remove();
+				self.iCheck({
+					checkboxClass: 'icheckbox_line-aero',
+					radioClass: 'iradio_line-aero',
+					activeClass: 'active',
+					checkedClass: 'animated flash checked',
+					insert: '<div class="icheck_line-icon"></div>' + label_text
+				});
+			});
+
+			setTimeout(function(){
+				$('.wpa input[type=checkbox]').iCheck({
+					checkboxClass: 'icheckbox_square-aero',
+					activeClass: 'active',
+					checkedClass: 'animated fadeIn checked'
+				});
+			}, 1000);
+
+			$('.wpa input[type=text],.wpa input[type=url],.wpa select').addClass('form-control');
 			$('#wpa-submit').attr('disabled', 'disabled');
 
 			wpa.event();

@@ -1,0 +1,42 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "34b711c59f3e0138def8d2f615fa0ada",
+    "packages": [
+        {
+            "name": "1shiharat/wp-admin-bootstrap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/1shiharat/wp-admin-bootstrap.git",
+                "reference": "2c07cd2921b57dc78834441711bcbf2883c9434f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/1shiharat/wp-admin-bootstrap/zipball/2c07cd2921b57dc78834441711bcbf2883c9434f",
+                "reference": "2c07cd2921b57dc78834441711bcbf2883c9434f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Bootstrap Based CSS Framework for WordPress admin screen.",
+            "time": "2015-05-17 08:36:46"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "1shiharat/wp-admin-bootstrap": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -4,7 +4,7 @@ Plugin Name: WP Assistant
 Plugin URI: http://grow-group.jp/
 Description: This plugin to provide a convenient function when build WordPress site.
 Author: 1shiharaT
-Version: 0.3.0
+Version: 0.3.3
 Author URI: http://grow-group.jp/
 Text Domain: wp-assistant
 Domain Path: /languages/
@@ -31,6 +31,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 require 'inc/config.php';
 require 'inc/autoload.php';
+require 'vendor/1shiharat/wp-admin-bootstrap/wp-admin-bootstrap.php';
+
+
 
 $GLOBALS['WP_Assistant'] = new WP_Assistant();
 

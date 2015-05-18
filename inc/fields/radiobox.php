@@ -33,8 +33,8 @@ class radiobox extends field {
 		<?php
 		foreach ( $this->options as $key => $option ) {
 			?>
-			<input id="<?php echo $this->get( 'id' ) . '_' . $key; ?>" value="<?php echo $key ?>" name="<?php echo $this->get( 'id' ) ?>" type="radio" class="ui-helper-hidden-accessible" <?php helper::checked( $this->get( 'id' ), $key, $this->get( 'default' ) ) ?>/>
-			<label for="<?php echo $this->get( 'id' ) . '_' . $key; ?>" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left"><?php echo $option; ?></label>
+			<input id="<?php echo $this->get( 'id' ) . '_' . $key; ?>" value="<?php echo $key ?>" name="<?php echo $this->get( 'id' ) ?>" type="radio" class="" <?php helper::checked( $this->get( 'id' ), $key, $this->get( 'default' ) ) ?>/>
+			<label for="<?php echo $this->get( 'id' ) . '_' . $key; ?>" class=""><?php echo $option; ?></label>
 		<?php
 		}
 		?>
